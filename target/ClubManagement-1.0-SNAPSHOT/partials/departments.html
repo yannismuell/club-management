@@ -1,0 +1,85 @@
+<div ng-init="init()" class="container-fluid" ng-show="getSignedInState()">
+    <div class="row" ng-include src="'partials/management_nav.html'"></div>
+    <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="messages" class="alert alert-{{alertStatus}}" ng-show="messages">
+                    <span ng-bind="messages"></span>
+                    <i class="dismiss-messages pull-right glyphicon glyphicon-remove" ng-show="messages"></i>
+                </div>
+                <img class="spinner" src="/img/ajax-loader.gif" ng-show="loading"/>
+            </div>
+        </div>
+        <div class="row">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th><h3>Departments</h3></th>
+                        <th><a class="btn btn-add-custom" href="#!/departments/create" role="button">Add Department &raquo;</a></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-lg-12">
+                <form ng-show="departments.length > 0">
+                    <div class="col-lg-6">
+                        <div class="input-group">
+                              <span class="input-group-btn">
+                                  <button type="submit" ng-click="queryDepartmentsByName(search_field)" class="modal-action btn btn-secondary" type="button">Search</button>
+                              </span>
+                            <input id="query-input" type="text" class="form-control" placeholder="Search Department Name/Description" ng-model="search_field" autofocus>
+                        </div>
+                    </div>
+                </form>
+                <div ng-show="submitted && filteredDepartments.length == 0">
+                    <h4>No matching results.</h4>
+                </div>
+                <div class="table-responsive" ng-show="filteredDepartments.length > 0">
+                    <table id="department-table" class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        <tr ng-repeat="department in filteredDepartments | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize | orderBy:'name'">
+                            <td><a href="#!/departments/detail/{{department.websafeDepartmentKey}}">{{department.name}}</a></td>
+                            <td>{{department.description}}</td>
+                            <td>
+                                <button ng-click="deleteDepartmentWithWebsafeDepartmentKey(department.websafeDepartmentKey)" class="btn btn-outline-danger" ng-disabled="loading" title="Delete Department">&#10008;</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <ul class="pagination" ng-show="filteredDepartments.length > 0">
+                    <li ng-class="{disabled: pagination.currentPage == 0 }">
+                        <a ng-class="{disabled: pagination.currentPage == 0 }"
+                           ng-click="pagination.isDisabled($event) || (pagination.currentPage = 0)" href="">&lt&lt</a>&nbsp &nbsp
+                    </li>
+                    <li ng-class="{disabled: pagination.currentPage == 0 }">
+                        <a ng-class="{disabled: pagination.currentPage == 0 }"
+                           ng-click="pagination.isDisabled($event) || (pagination.currentPage = pagination.currentPage - 1)" href="">&lt</a>&nbsp &nbsp
+                    </li>
+
+                    <!-- ng-repeat creates a new scope. Need to specify the pagination.currentPage as $parent.pagination.currentPage -->
+                    <li ng-repeat="page in pagination.pageArray()">
+                        <a ng-click="$parent.pagination.currentPage = page" id="pagination-item" ng-class="{'active': $parent.pagination.currentPage == page}" href="">{{page + 1}}</a>&nbsp &nbsp
+                    </li>
+                    <li ng-class="{disabled: pagination.currentPage == pagination.numberOfPages() - 1}">
+                        <a ng-class="{disabled: pagination.currentPage == pagination.numberOfPages() - 1}"
+                           ng-click="pagination.isDisabled($event) || (pagination.currentPage = pagination.currentPage + 1)" href="">&gt</a>&nbsp &nbsp
+                    </li>
+                    <li ng-class="{disabled: pagination.currentPage == pagination.numberOfPages() - 1}">
+                        <a ng-class="{disabled: pagination.currentPage == pagination.numberOfPages() - 1}"
+                           ng-click="pagination.isDisabled($event) || (pagination.currentPage = pagination.numberOfPages() - 1)" href="">&gt&gt</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+</div>

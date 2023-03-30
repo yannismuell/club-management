@@ -1,0 +1,12 @@
+{
+  "short_name": "3BKProject",
+  "name": "A 3BK Project",
+  "icons": [
+    {
+      "src": "img/launcher-icon-1x.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    }
+  ],
+  "start_url": "index.html?launcher=true"
+}
