@@ -53,6 +53,22 @@
                             </td>
                         </tr>
                     </thead>
+                    <tbody>
+                        <tr>
+                            <th>Miscellaneous Account Settings</th>
+                        </tr>
+                        <tr>
+                            <td>Standard Rest Time</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="form-group" ng-class="{'has-warning': account.restTime != initialAccount.restTime}">
+                                    <span class="label label-warning" ng-show="account.restTime != initialAccount.restTime"> Changed</span>
+                                    <input id="restTime" type="number" name="restTime" name="restTime" onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="account.restTime"class="form-control"/>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
                     <tfoot>
                         <tr>
                             <th>

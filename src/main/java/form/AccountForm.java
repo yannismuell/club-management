@@ -15,6 +15,8 @@ public class AccountForm {
 
     private String mainEmail;
 
+    private float restTime;
+
     private AccountForm() {}
 
     /**
@@ -23,11 +25,12 @@ public class AccountForm {
      * @param surName A String for displaying the user's surname.
      * @param companyName A String for displaying the user's first name.
      */
-    public AccountForm(String firstName, String surName, String companyName, String mainEmail) {
+    public AccountForm(String firstName, String surName, String companyName, String mainEmail, float restTime) {
         this.firstName = firstName;
         this.surName = surName;
         this.companyName = companyName;
         this.mainEmail = mainEmail;
+        this.restTime = restTime;
     }
 
     public String getFirstName() {
@@ -45,5 +48,10 @@ public class AccountForm {
     public String getMainEmail() {
         return this.mainEmail;
     }
+
+    public float getRestTime() {
+        return this.restTime;
+    }
+
 }
 

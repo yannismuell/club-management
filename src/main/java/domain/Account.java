@@ -22,6 +22,8 @@ public class Account {
 
     private String mainEmail;
 
+    private float restTime;
+
     private Account() {}
 
     /**
@@ -31,12 +33,13 @@ public class Account {
      * @param surName
      * @param companyName
      */
-    public Account(String userId, String firstName, String surName, String companyName, String email) {
+    public Account(String userId, String firstName, String surName, String companyName, String email, float restTime) {
         this.userId = userId;
         this.firstName = firstName;
         this.surName = surName;
         this.companyName = companyName;
         this.mainEmail = email;
+        this.restTime = restTime;
     }
 
     public void setMainEmail(String email) { this.mainEmail = email; }
@@ -61,6 +64,13 @@ public class Account {
         return mainEmail;
     }
 
+    public float getRestTime() {
+
+        if (restTime == 0) { restTime = 11; }
+
+        return restTime;
+    }
+
     /**
      * Update the Profile with the given userId, first, second and company name, respectively, and main email
      * @param userId
@@ -68,7 +78,7 @@ public class Account {
      * @param surName
      * @param companyName
      */
-    public void update(String userId, String firstName, String surName, String companyName, String email) {
+    public void update(String userId, String firstName, String surName, String companyName, String email, float restTime) {
         if (userId != null) {
             this.userId = userId;
         }
@@ -84,6 +94,8 @@ public class Account {
         if (email != null) {
             this.mainEmail = email;
         }
+
+        this.restTime = restTime;
     }
 }
 

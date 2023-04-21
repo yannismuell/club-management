@@ -17,26 +17,13 @@ public class OfyService implements ServletContextListener {
 
     public void contextInitialized(ServletContextEvent event) {
 
-        // Use for cloud deployment
-        //ObjectifyService.init();
-
-
-        // Use for local development
-        ObjectifyService.init(new ObjectifyFactory(
-                DatastoreOptions.newBuilder()
-                        .setHost("http://localhost:8081")
-                        .setProjectId("Your-Project-ID")
-                        .build()
-                        .getService()
-        ));
+        ObjectifyService.init();
 
         ObjectifyService.register(Account.class);
         ObjectifyService.register(Department.class);
     }
 
-    @Override
-    public void contextDestroyed(ServletContextEvent servletContextEvent) {
-
+    public  void contextDestroyed (ServletContextEvent event) {
     }
 
     /**
