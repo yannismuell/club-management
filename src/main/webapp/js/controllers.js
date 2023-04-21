@@ -1,23 +1,25 @@
 'use strict';
 
 /**
- * The root project module.
+ * The root clubmanagement module.
  *
- * @type {QRcoolApp|*|{}}
+ * @type {ClubManagementApp|*|{}}
  */
-var QRcoolApp = QRcoolApp || {};
+var ClubManagementApp = ClubManagementApp || {};
 var activeURL = '#!/departments';
 
 
 /**
  * @ngdoc module
- * @name QRcooControllers
+ * @name clubmanagementControllers
  *
  * @description
  * Angular module for controllers.
  *
  */
-QRcoolApp.controllers = angular.module('QRcoolControllers', ['ui.bootstrap']);
+ClubManagementApp.controllers = angular.module('clubmanagementControllers', ['ui.bootstrap']);
+
+
 
 /**
  * @ngdoc controller
@@ -26,7 +28,9 @@ QRcoolApp.controllers = angular.module('QRcoolControllers', ['ui.bootstrap']);
  * @description
  * A controller used for the Documentation page.
  */
-QRcoolApp.controllers.controller('DocumentationCtrl', function ($scope, $log, oauth2Provider, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('DocumentationCtrl', function ($scope, $log, oauth2Provider, HTTP_ERRORS) {
+
+
 });
 
 /**
@@ -36,7 +40,7 @@ QRcoolApp.controllers.controller('DocumentationCtrl', function ($scope, $log, oa
  * @description
  * A controller used for the Account page.
  */
-QRcoolApp.controllers.controller('AccountCtrl', function ($scope, $log, oauth2Provider, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('AccountCtrl', function ($scope, $log, oauth2Provider, HTTP_ERRORS) {
     $scope.submitted = false;
     $scope.loading = false;
 
@@ -46,7 +50,7 @@ QRcoolApp.controllers.controller('AccountCtrl', function ($scope, $log, oauth2Pr
         var retrieveAccountCallback = function () {
             $scope.account = {};
             $scope.loading = true;
-            gapi.client.qrcool.getAccount().
+            gapi.client.clubmanagement.getAccount().
                 execute(function (resp) {
                     $scope.$apply(function () {
                         $scope.loading = false;
@@ -59,6 +63,7 @@ QRcoolApp.controllers.controller('AccountCtrl', function ($scope, $log, oauth2Pr
                             $scope.account.surName = resp.result.surName;
                             $scope.account.companyName = resp.result.companyName;
                             $scope.account.mainEmail = resp.result.mainEmail;
+                            $scope.account.restTime = resp.result.restTime;
                             $scope.initialAccount = resp.result;
                         }
                     });
@@ -78,7 +83,7 @@ QRcoolApp.controllers.controller('AccountCtrl', function ($scope, $log, oauth2Pr
         $scope.submitted = true;
         $scope.loading = true;
         var callback = function() {
-        gapi.client.qrcool.saveAccount($scope.account).
+        gapi.client.clubmanagement.saveAccount($scope.account).
             execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
@@ -103,6 +108,7 @@ QRcoolApp.controllers.controller('AccountCtrl', function ($scope, $log, oauth2Pr
                             surName: $scope.account.surName,
                             companyName: $scope.account.companyName,
                             mainEmail: $scope.account.mainEmail,
+                            restTime: $scope.account.restTime
                         };
                         window.history.back();
                         $log.info($scope.messages + JSON.stringify(resp.result));
@@ -120,12 +126,11 @@ QRcoolApp.controllers.controller('AccountCtrl', function ($scope, $log, oauth2Pr
 
 });
 
-QRcoolApp.controllers.controller('RootCtrl', function ($scope, $location, $timeout, oauth2Provider) {
+ClubManagementApp.controllers.controller('RootCtrl', function ($scope, $location, $timeout, oauth2Provider) {
 
     $scope.isActive = function (viewLocation) {
         return viewLocation === $location.path();
     };
-
     $scope.getActiveURL = function() {
         return activeURL;
     }
@@ -135,31 +140,35 @@ QRcoolApp.controllers.controller('RootCtrl', function ($scope, $location, $timeo
     };
 
     $scope.initSignInButton = function () {
-        function handleCredentialResponse(response) {
-            //console.log("Encoded JWT ID token: " + response.credential);
-            $scope.signIn();
-            window.location.href = '#!/home.html'
-        }
-        window.onload = function () {
-            google.accounts.id.initialize({
-                client_id: "245448757721-vv3901m75sukgnqqh39mhutjm5fqnhnt.apps.googleusercontent.com",
-                callback: handleCredentialResponse
-            });
-
-            google.accounts.id.renderButton(document.getElementById("signInButton"), {
-                theme: 'outline',
-                size: 'large',
-                click_listener: $scope.signIn
-            });
-
-            google.accounts.id.prompt(); // also display the One Tap dialog
-        }
+        gapi.signin.render('signInButton', {
+            'callback': function () {
+                jQuery('#signInButton button').attr('disabled', 'true').css('cursor', 'default');
+                if (gapi.auth.getToken() && gapi.auth.getToken().access_token) {
+                    $scope.$apply(function () {
+                        oauth2Provider.signedIn = true;
+                    });
+                }
+            },
+            'clientid': oauth2Provider.CLIENT_ID,
+            'cookiepolicy': 'single_host_origin',
+            'scope': oauth2Provider.SCOPES
+        });
     };
 
     $scope.signIn = function () {
-        oauth2Provider.signIn();
-        $scope.alertStatus = 'success';
-        $scope.rootMessages = 'Logged ';
+        oauth2Provider.signIn(function () {
+            console.log(gapi.client.oauth2.userinfo.get());
+            gapi.client.oauth2.userinfo.get().execute(function (resp) {
+                $scope.$apply(function () {
+                    console.log(resp);
+                    if (resp.email) {
+                        oauth2Provider.signedIn = true;
+                        $scope.alertStatus = 'success';
+                        $scope.rootMessages = 'Logged in with ' + resp.email;
+                    }
+                });
+            });
+        });
     };
 
     $scope.signOut = function () {
@@ -170,5 +179,19 @@ QRcoolApp.controllers.controller('RootCtrl', function ($scope, $location, $timeo
 
     $scope.collapseNavbar = function () {
         angular.element(document.querySelector('.navbar-collapse')).removeClass('in');
+    };
+});
+
+ClubManagementApp.controllers.controller('OAuth2LoginModalCtrl', function ($scope, $modalInstance, $rootScope, oauth2Provider) {
+    $scope.signInViaModal = function () {
+        oauth2Provider.signIn(function () {
+            gapi.client.oauth2.userinfo.get().execute(function (resp) {
+                $scope.$root.$apply(function () {
+                    $scope.$root.alertStatus = 'success';
+                    $scope.$root.rootMessages = 'Logged in with ' + resp.email;
+                });
+                $modalInstance.close();
+            });
+        });
     };
 });

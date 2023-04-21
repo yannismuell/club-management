@@ -5,8 +5,8 @@
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
 
-    <groupId>com.3BKProject</groupId>
-    <artifactId>ClubManagement</artifactId>
+    <groupId>com.perceptronics</groupId>
+    <artifactId>QRcool</artifactId>
 
     <properties>
         <maven.compiler.source>1.9</maven.compiler.source>
@@ -91,7 +91,7 @@
                 <version>2.1.0</version>
                 <configuration>
                     <!-- plugin configuration -->
-                    <hostname>Your-Project-ID.appspot.com</hostname>
+                    <hostname>qrcool.appspot.com</hostname>
                 </configuration>
             </plugin>
             <plugin>

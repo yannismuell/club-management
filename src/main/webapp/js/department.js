@@ -5,7 +5,7 @@
  * @description
  * A controller used to save a department page.
  */
-QRcoolApp.controllers.controller('getDepartmentsCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('getDepartmentsCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
 
     document.getElementById("query-input").focus();
 
@@ -53,8 +53,7 @@ QRcoolApp.controllers.controller('getDepartmentsCtrl', function ($scope, $log, $
     $scope.init = function () {
         var retrieveDepartmentsCallback = function () {
             $scope.loading = true;
-            /*
-            gapi.client.dutyscheduling.getDepartmentsCreated().
+   clubmanagement         gapi.client..getDepartmentsCreated().
                 execute(function (resp) {
                     $scope.$apply(function () {
                         $scope.loading = false;
@@ -78,12 +77,10 @@ QRcoolApp.controllers.controller('getDepartmentsCtrl', function ($scope, $log, $
                     });
                 }
             );
-            */
         };
         if (!oauth2Provider.signedIn) {
             oauth2Provider.signIn(retrieveDepartmentsCallback);
         } else {
-            console.log("retrieving...");
             retrieveDepartmentsCallback();
         }
     };
@@ -91,7 +88,7 @@ QRcoolApp.controllers.controller('getDepartmentsCtrl', function ($scope, $log, $
     $scope.deleteDepartmentWithWebsafeDepartmentKey = function (websafeDepartmentKey) {
         var callback = function() {
             $scope.loading = true;
-            gapi.client.dutyscheduling.deleteDepartment({websafeDepartmentKey: websafeDepartmentKey})
+            gapi.client.clubmanagement.deleteDepartment({websafeDepartmentKey: websafeDepartmentKey})
             .execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
@@ -123,6 +120,8 @@ QRcoolApp.controllers.controller('getDepartmentsCtrl', function ($scope, $log, $
             callback();
         }
     };
+
+
 });
 
 /**
@@ -132,10 +131,9 @@ QRcoolApp.controllers.controller('getDepartmentsCtrl', function ($scope, $log, $
  * @description
  * A controller used to save a department page.
  */
-QRcoolApp.controllers.controller('detailedDepartmentCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('detailedDepartmentCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
 
     $scope.department = {};
-    $scope.req = true;
     $scope.submitted = false;
     $scope.length = 0;
 
@@ -164,6 +162,51 @@ QRcoolApp.controllers.controller('detailedDepartmentCtrl', function ($scope, $lo
         return angular.element(event.target).hasClass('disabled');
     }
 
+
+    Array.prototype.clone = function(){
+      return this.slice(0)
+    }
+
+    $scope.getSignedInState = function () {
+        return oauth2Provider.signedIn;
+    };
+
+    $scope.initSignInButton = function () {
+        gapi.signin.render('signInButton', {
+            'callback': function () {
+                jQuery('#signInButton button').attr('disabled', 'true').css('cursor', 'default');
+                if (gapi.auth.getToken() && gapi.auth.getToken().access_token) {
+                    $scope.$apply(function () {
+                        oauth2Provider.signedIn = true;
+                    });
+                }
+            },
+            'clientid': oauth2Provider.CLIENT_ID,
+            'cookiepolicy': 'single_host_origin',
+            'scope': oauth2Provider.SCOPES
+        });
+    };
+
+    $scope.signIn = function () {
+        oauth2Provider.signIn(function () {
+            gapi.client.oauth2.userinfo.get().execute(function (resp) {
+                $scope.$apply(function () {
+                    if (resp.email) {
+                        oauth2Provider.signedIn = true;
+                        $scope.alertStatus = 'success';
+                        $scope.rootMessages = 'Logged in with ' + resp.email;
+                    }
+                });
+            });
+        });
+    };
+
+    $scope.signOut = function () {
+        oauth2Provider.signOut();
+        $scope.alertStatus = 'success';
+        $scope.rootMessages = 'Logged out';
+    };
+
     $scope.collapseNavbar = function () {
         angular.element(document.querySelector('.navbar-collapse')).removeClass('in');
     };
@@ -172,7 +215,7 @@ QRcoolApp.controllers.controller('detailedDepartmentCtrl', function ($scope, $lo
         var callback = function() {
             $scope.loading = true;
             $scope.submitted = true;
-            gapi.client.dutyscheduling.deleteDepartment({websafeDepartmentKey: $routeParams.websafeDepartmentKey})
+            gapi.client.clubmanagement.deleteDepartment({websafeDepartmentKey: $routeParams.websafeDepartmentKey})
             .execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
@@ -211,7 +254,7 @@ QRcoolApp.controllers.controller('detailedDepartmentCtrl', function ($scope, $lo
         var callback = function() {
             $scope.loading = true;
             $scope.submitted = true;
-            gapi.client.dutyscheduling.getDepartment({websafeDepartmentKey: $routeParams.websafeDepartmentKey}).execute(function (resp) {
+            gapi.client.clubmanagement.getDepartment({websafeDepartmentKey: $routeParams.websafeDepartmentKey}).execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
@@ -245,7 +288,7 @@ QRcoolApp.controllers.controller('detailedDepartmentCtrl', function ($scope, $lo
  * @description
  * A controller used to save a department page.
  */
-QRcoolApp.controllers.controller('createDepartmentCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('createDepartmentCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
 
     $scope.department = {};
 
@@ -253,7 +296,7 @@ QRcoolApp.controllers.controller('createDepartmentCtrl', function ($scope, $log,
         var retrieveAccountCallback = function () {
             $scope.account = {};
             $scope.loading = true;
-            gapi.client.dutyscheduling.getAccount().
+            gapi.client.clubmanagement.getAccount().
                 execute(function (resp) {
                     $scope.$apply(function () {
                         $scope.loading = false;
@@ -261,7 +304,8 @@ QRcoolApp.controllers.controller('createDepartmentCtrl', function ($scope, $log,
                             // Failed to get a user account.
                             console.log(' unable to get account');
                         } else {
-                            // Succeeded to get the user acount.
+                            // Succeeded to get the user account.
+                            $scope.department.restTime = resp.result.restTime;
                         }
                     });
                 }
@@ -291,7 +335,7 @@ QRcoolApp.controllers.controller('createDepartmentCtrl', function ($scope, $log,
 
         var callback = function() {
             $scope.loading = true;
-            gapi.client.dutyscheduling.createDepartment($scope.department).
+            gapi.client.clubmanagement.createDepartment($scope.department).
             execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
@@ -339,14 +383,14 @@ QRcoolApp.controllers.controller('createDepartmentCtrl', function ($scope, $log,
  * @description
  * A controller used to save a department page.
  */
-QRcoolApp.controllers.controller('saveDepartmentCtrl', function ($scope, $log, $location, $route, oauth2Provider, $routeParams, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('saveDepartmentCtrl', function ($scope, $log, $location, $route, oauth2Provider, $routeParams, HTTP_ERRORS) {
 
     $scope.department = {};
 
     $scope.init = function () {
         var callback = function() {
             $scope.loading = true;
-            gapi.client.dutyscheduling.getDepartment({websafeDepartmentKey: $routeParams.websafeDepartmentKey
+            gapi.client.clubmanagement.getDepartment({websafeDepartmentKey: $routeParams.websafeDepartmentKey
             }).execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
@@ -383,7 +427,7 @@ QRcoolApp.controllers.controller('saveDepartmentCtrl', function ($scope, $log, $
 
          var callback = function() {
             $scope.loading = true;
-            gapi.client.dutyscheduling.saveDepartment({name: $scope.department.name, description: $scope.department.description, departmentKey: $routeParams.websafeDepartmentKey})
+            gapi.client.clubmanagement.saveDepartment({name: $scope.department.name, description: $scope.department.description, restTime: $scope.department.restTime, departmentKey: $routeParams.websafeDepartmentKey})
              .execute(function (resp) {
                  $scope.$apply(function () {
                     $scope.loading = false;

@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('QRcoolApp', ['QRcoolControllers', 'ngRoute', 'ui.bootstrap']).config(['$routeProvider', function ($routeProvider) {
+var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngRoute', 'ui.bootstrap']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
         when('/home', {
             templateUrl: 'index.html',
@@ -69,23 +69,42 @@ app.factory('parentProvider', function ($uibModal) {
     parentProvider.department = {};
 
     return parentProvider;
+
 });
 
 app.factory('oauth2Provider', function ($uibModal) {
 
     var oauth2Provider = {
+        CLIENT_ID: GOOGLE_APP_ENGINE_CLIENT_ID,
+        SCOPES: 'https://www.googleapis.com/auth/userinfo.email profile',
         signedIn: false,
         signinInProgress: false
     };
 
     oauth2Provider.signIn = function (callback) {
-        oauth2Provider.signedIn = true;
-        window.location.href = '#!/home.html'
+        gapi.auth.signIn({
+            'clientid': oauth2Provider.CLIENT_ID,
+            'cookiepolicy': 'single_host_origin',
+            'accesstype': 'online',
+            'approveprompt': 'auto',
+            'scope': oauth2Provider.SCOPES,
+            'callback': callback
+        });
     };
 
     oauth2Provider.signOut = function () {
-        google.accounts.id.disableAutoSelect();
+        //gapi.auth.signOut();
+        gapi.auth2.getAuthInstance().signOut();
         oauth2Provider.signedIn = false;
+    };
+
+    oauth2Provider.showLoginModal = function() {
+        var modalInstance = $modal.open({
+            templateUrl: '/partials/modals/login.modal.html',
+            controller: 'OAuth2LoginModalCtrl'
+        });
+        oauth2Provider.signedIn = true;
+        return modalInstance;
     };
 
     return oauth2Provider;

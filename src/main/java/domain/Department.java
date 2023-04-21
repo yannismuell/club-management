@@ -3,22 +3,12 @@ package domain;
 import com.google.api.server.spi.config.AnnotationBoolean;
 import com.google.api.server.spi.config.ApiResourceProperty;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Parent;
-import domain.Constants;
 import form.DepartmentForm;
-import com.googlecode.objectify.annotation.Load;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
-import static service.OfyService.ofy;
 
 @Entity
 @Cache
@@ -31,9 +21,6 @@ public class Department {
 
     private String description;
 
-    @Load
-    private List<String> employees;
-
     @Parent
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     private Key<Account> accountKey;
@@ -45,20 +32,13 @@ public class Department {
 
     private Department() {}
 
-    private List<String> confirmationEmailRecipients;
-
     public Department(final long id, final String accountID, final DepartmentForm departmentForm, final String email) {
         Preconditions.checkNotNull(departmentForm.getName(), "The name is required");
         this.id = id;
         this.accountKey = Key.create(Account.class, accountID);
         this.accountID = accountID;
 
-        //Key<Department> departmentKey = Key.create(Department.class, id);
-
         updateWithDepartmentForm(departmentForm);
-        employees = new ArrayList<>(0);
-        confirmationEmailRecipients = new ArrayList<>();
-        confirmationEmailRecipients.add(email);
     }
 
     public long getId() {
@@ -73,6 +53,10 @@ public class Department {
 
     public String getDescription() {
         return description;
+    }
+
+    public float getRestTime() {
+        return restTime;
     }
 
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)

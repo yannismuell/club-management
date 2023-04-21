@@ -1,6 +1,6 @@
 
 .mm-overview-table {
-    font-size:8;
+    font-size: large;
 }
 
 .mm-text-code {
@@ -20,7 +20,7 @@ h8 {
 }
 
 .h8 {
-    color:dark-red;
+    color:darkred;
 }
 
 .table-custom {
@@ -216,8 +216,6 @@ opacity: 0.5;
 filter: alpha(opacity=50);
 }
 
-...to this (added ".fade" between the two classes in the second definition):
-
 .modal-backdrop.fade {
 opacity: 0;
 filter: alpha(opacity=0);
@@ -324,5 +322,25 @@ filter: alpha(opacity=50);
 
 
 .pt-3-half {
-    padding-top: 2.4;
+    padding-top: inherit;
+}
+
+/**** ClubManagement ****/
+.colour_CM_Green{
+color: #74ea00;
+}
+
+.colour_CM_Blue{
+color: #1E90FF;
+}
+
+.Navbar_CM_Item {
+    display: block;
+    padding: 0.5rem 1rem;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    margin-bottom: 0;
+    list-style: none;
 }

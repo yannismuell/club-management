@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact name="club-management">
+    <output-path>$PROJECT_DIR$/out/artifacts/club_management</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="club-management" />
+        </element>
+        <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/appengine-web.xml" />
+      </element>
+    </root>
+  </artifact>
+</component>

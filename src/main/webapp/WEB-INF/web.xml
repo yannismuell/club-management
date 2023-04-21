@@ -8,7 +8,7 @@
         <!-- End of Endpoints Frameworks v2.0 -->
         <init-param>
             <param-name>services</param-name>
-            <param-value>spi.ProjectAPI</param-value>
+            <param-value>spi.ClubManagementAPI</param-value>
         </init-param>
         <init-param>
             <param-name>restricted</param-name>
