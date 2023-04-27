@@ -91,7 +91,7 @@
                 <version>2.1.0</version>
                 <configuration>
                     <!-- plugin configuration -->
-                    <hostname>qrcool.appspot.com</hostname>
+                    <hostname>clubmanagement.appspot.com</hostname>
                 </configuration>
             </plugin>
             <plugin>
