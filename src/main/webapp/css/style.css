@@ -135,7 +135,8 @@ h1 {
  * Sidebar
  */
 
-.sidebar {
+.sidebar_QRcool {
+  color: #FFEFCF;
   position: fixed;
   top: 51px;
   bottom: 0;
@@ -325,16 +326,29 @@ filter: alpha(opacity=50);
     padding-top: inherit;
 }
 
-/**** ClubManagement ****/
-.colour_CM_Green{
-color: #74ea00;
+
+
+
+
+/**** QRcool ****/
+
+
+
+/* QRcool-Colour */
+
+.colour_QRcool_Orange {
+    color: #DC8800;
 }
 
-.colour_CM_Blue{
-color: #1E90FF;
+.colour_QRcool_Light-Orange{
+    color: #FFAC1D;
 }
 
-.Navbar_CM_Item {
+
+
+/* QRcool-Nav */
+
+.Navbar_QRcool_Item {
     display: block;
     padding: 0.5rem 1rem;
     display: -ms-flexbox;
@@ -343,4 +357,57 @@ color: #1E90FF;
     flex-direction: column;
     margin-bottom: 0;
     list-style: none;
+}
+
+/* QRcool-Button */
+
+.btn_QRcool{
+    color: white;
+    Display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    background-color: #FFAC1D;
+    border: 1px solid #FFAC1D;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.nav_QRcool_styling {
+    background-color: #6A492B!important;
+}
+
+/* body background-color */
+
+.background-color-beige {
+    background-color: #FFEFCF;
+}
+
+.colour-white {
+    color: white;
+}
+
+/* hover effect */
+
+a:hover {
+    color: #FFAC1D;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* hover effect signin/logout and buttos */
+
+.hover_white:hover {
+    color: white !important;
+    text-decoration :none;
+}
+
+.hover_buttons:hover {
+    color: white !important;
+    text-decoration: none;
 }

@@ -5,7 +5,7 @@
  * @description
  * A controller used to save a department page.
  */
-ClubManagementApp.controllers.controller('getDepartmentsCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
+QRcoolApp.controllers.controller('getDepartmentsCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
 
     document.getElementById("query-input").focus();
 
@@ -53,7 +53,7 @@ ClubManagementApp.controllers.controller('getDepartmentsCtrl', function ($scope,
     $scope.init = function () {
         var retrieveDepartmentsCallback = function () {
             $scope.loading = true;
-   clubmanagement         gapi.client..getDepartmentsCreated().
+            gapi.client.clubmanagement.getDepartmentsCreated().
                 execute(function (resp) {
                     $scope.$apply(function () {
                         $scope.loading = false;
@@ -131,7 +131,7 @@ ClubManagementApp.controllers.controller('getDepartmentsCtrl', function ($scope,
  * @description
  * A controller used to save a department page.
  */
-ClubManagementApp.controllers.controller('detailedDepartmentCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
+QRcoolApp.controllers.controller('detailedDepartmentCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
 
     $scope.department = {};
     $scope.submitted = false;
@@ -288,7 +288,7 @@ ClubManagementApp.controllers.controller('detailedDepartmentCtrl', function ($sc
  * @description
  * A controller used to save a department page.
  */
-ClubManagementApp.controllers.controller('createDepartmentCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
+QRcoolApp.controllers.controller('createDepartmentCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
 
     $scope.department = {};
 
@@ -383,7 +383,7 @@ ClubManagementApp.controllers.controller('createDepartmentCtrl', function ($scop
  * @description
  * A controller used to save a department page.
  */
-ClubManagementApp.controllers.controller('saveDepartmentCtrl', function ($scope, $log, $location, $route, oauth2Provider, $routeParams, HTTP_ERRORS) {
+QRcoolApp.controllers.controller('saveDepartmentCtrl', function ($scope, $log, $location, $route, oauth2Provider, $routeParams, HTTP_ERRORS) {
 
     $scope.department = {};
 

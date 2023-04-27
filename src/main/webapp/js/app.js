@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngRoute', 'ui.bootstrap']).config(['$routeProvider', function ($routeProvider) {
+var app = angular.module('QRcoolApp', ['qrcoolControllers', 'ngRoute', 'ui.bootstrap']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
         when('/home', {
             templateUrl: 'index.html',
