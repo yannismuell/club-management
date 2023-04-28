@@ -26,13 +26,13 @@ Frameworks used:
       [Credentials on Developers Console for OAuth 2.0 client IDs][6].
 
     1. Updated the value of `com.perceptronics` in
-       (src/main/java.com/qrcool/Constants) to reflect the web client ID registered in the
+       (src/main/java.com/clubmanagement/Constants) to reflect the web client ID registered in the
        [Credentials on Developers Console for OAuth 2.0 client IDs][6].
 
 1. User Authenticating with Google Accounts in other Applications
    Types
 
-    - Inside [Constants.java](src/main/java/com/qrcool/Constants.java)
+    - Inside [Constants.java](src/main/java/com/clubmanagement/Constants.java)
       you will find placeholders for Android applications using Google Accounts
       client IDs registered in the
       [Credentials on Developers Console for OAuth 2.0 client IDs][6].
