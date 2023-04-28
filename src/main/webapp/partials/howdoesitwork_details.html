@@ -24,12 +24,12 @@
 
   <script type="text/javascript">
         function init() {
-            gapi.client.load('qrcool', 'v1', null, '//' + window.location.host + '/_ah/api');
+            gapi.client.load('clubmanagement', 'v1', null, '//' + window.location.host + '/_ah/api');
             gapi.client.load('oauth2', 'v2', function () {
-                angular.bootstrap(document, ['QRcoolApp']);
+                angular.bootstrap(document, ['ClubManagementApp']);
                 gapi.auth2.init({
                     'client_id': GOOGLE_APP_ENGINE_CLIENT_ID,
-                    'plugin_name': 'QRCOOL'
+                    'plugin_name': 'CLUBMANAGEMENT'
                 });
             });
         };
@@ -47,22 +47,22 @@
       <div class="col-sm-9 col-md-8 col-lg-10 col-xl-12">
 
         <header class="masthead">
-          <nav class="navbar navbar-expand-md navbar-dark fixed-top nav_QRcool_styling">
-            <a href="index.html"><nav class="navbar-brand"><span class="colour_QRcool_Orange">QR</span><span class="colour_QRcool_Blue">cool</span> </nav></a>
+          <nav class="navbar navbar-expand-md navbar-dark fixed-top nav_ClubManagement_styling">
+            <a href="index.html"><nav class="navbar-brand"><span class="colour_CM_Green">QR</span><span class="colour_CM_Blue">cool</span> </nav></a>
             <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarsExampleDefault">
               <ul class="navbar-nav text-md-center nav-justified w-100 ">
-                <li class="nav-item " ng-class="{ active: isActive('/departments') }" ng-show="getSignedInState()" ng-click="collapseNavbar()"><a class="Navbar_QRcool_Item colour_QRcool_Orange" ng-href="{{getActiveURL()}}">Manage Your Task</a></li>
-                <li class="nav-item " ng-class="{ active: isActive('/documentation')}" ng-click="collapseNavbar()"><a class="Navbar_QRcool_Item colour_QRcool_Orange" href="#!/documentation">Documentation</a></li>
+                <li class="nav-item " ng-class="{ active: isActive('/departments') }" ng-show="getSignedInState()" ng-click="collapseNavbar()"><a class="Navbar_ClubManagement_Item colour_CM_Green" ng-href="{{getActiveURL()}}">Manage Your Task</a></li>
+                <li class="nav-item " ng-class="{ active: isActive('/documentation')}" ng-click="collapseNavbar()"><a class="Navbar_ClubManagement_Item colour_CM_Green" href="#!/documentation">Documentation</a></li>
                 <li class="nav-item">
-                  <a class="Navbar_QRcool_Item colour_QRcool_Orange" href="#">Wiki</a>
+                  <a class="Navbar_ClubManagement_Item colour_CM_Green" href="#">Wiki</a>
                 </li>
-                <li class="nav-item" ng-class="{ active: isActive('/account')}" ng-show="getSignedInState()" ng-click="collapseNavbar()"><a class="Navbar_QRcool_Item colour_QRcool_Orange" href="#!/account">Account</a></li>
+                <li class="nav-item" ng-class="{ active: isActive('/account')}" ng-show="getSignedInState()" ng-click="collapseNavbar()"><a class="Navbar_ClubManagement_Item colour_CM_Green" href="#!/account">Account</a></li>
                 <li class="nav-item">
-                  <a class="Navbar_QRcool_Item colour_QRcool_Orange" href="#!/impressum">Impressum & Privacy</a>
+                  <a class="Navbar_ClubManagement_Item colour_CM_Green" href="#!/impressum">Impressum & Privacy</a>
                 </li>
               </ul>
               <a class="nav-link" id="signOutLink" ng-show="getSignedInState()" ng-click="signOut(); collapseNavbar()" href="#!/home.html">Logout</a>
@@ -80,7 +80,7 @@
 
   <!-- Site footer -->
   <footer id="disclaimer-footer" class="footer">
-    <p>&copy;QRcool by SZ-Ybbs 2023</p>
+    <p>&copy;ClubManagement by SZ-Ybbs 2023</p>
   </footer>
 
 </div>

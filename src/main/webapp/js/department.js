@@ -5,7 +5,7 @@
  * @description
  * A controller used to save a department page.
  */
-QRcoolApp.controllers.controller('getDepartmentsCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('getDepartmentsCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
 
     document.getElementById("query-input").focus();
 
@@ -131,7 +131,7 @@ QRcoolApp.controllers.controller('getDepartmentsCtrl', function ($scope, $log, $
  * @description
  * A controller used to save a department page.
  */
-QRcoolApp.controllers.controller('detailedDepartmentCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('detailedDepartmentCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
 
     $scope.department = {};
     $scope.submitted = false;
@@ -288,7 +288,7 @@ QRcoolApp.controllers.controller('detailedDepartmentCtrl', function ($scope, $lo
  * @description
  * A controller used to save a department page.
  */
-QRcoolApp.controllers.controller('createDepartmentCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('createDepartmentCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
 
     $scope.department = {};
 
@@ -383,7 +383,7 @@ QRcoolApp.controllers.controller('createDepartmentCtrl', function ($scope, $log,
  * @description
  * A controller used to save a department page.
  */
-QRcoolApp.controllers.controller('saveDepartmentCtrl', function ($scope, $log, $location, $route, oauth2Provider, $routeParams, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('saveDepartmentCtrl', function ($scope, $log, $location, $route, oauth2Provider, $routeParams, HTTP_ERRORS) {
 
     $scope.department = {};
 

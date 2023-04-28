@@ -135,7 +135,7 @@ h1 {
  * Sidebar
  */
 
-.sidebar_QRcool {
+.sidebar_ClubManagement {
   color: #FFEFCF;
   position: fixed;
   top: 51px;
@@ -330,11 +330,19 @@ filter: alpha(opacity=50);
 
 
 
-/**** QRcool ****/
+/**** CLubManagement ****/
 
 
 
-/* QRcool-Colour */
+/* ClubManagement-Colour */
+
+.colour_CM_Green{
+color: #74ea00;
+}
+
+.colour_CM_Blue{
+color: #1E90FF;
+}
 
 .colour_QRcool_Orange {
     color: #DC8800;
@@ -346,9 +354,9 @@ filter: alpha(opacity=50);
 
 
 
-/* QRcool-Nav */
+/* ClubManagement-Nav */
 
-.Navbar_QRcool_Item {
+.Navbar_ClubManagement_Item {
     display: block;
     padding: 0.5rem 1rem;
     display: -ms-flexbox;
@@ -359,9 +367,9 @@ filter: alpha(opacity=50);
     list-style: none;
 }
 
-/* QRcool-Button */
+/* ClubManagement-Button */
 
-.btn_QRcool{
+.btn_ClubManagement{
     color: white;
     Display: inline-block;
     font-weight: 400;
@@ -378,7 +386,7 @@ filter: alpha(opacity=50);
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
-.nav_QRcool_styling {
+.nav_ClubManagement_styling {
     background-color: #6A492B!important;
 }
 

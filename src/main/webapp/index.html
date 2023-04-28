@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta property="og:title" content="QRcool">
+    <meta property="og:title" content="ClubManagement">
     <meta property="og:type" content="website">
     <meta property="og:description" content=" Artificial Intelligence computes your duty schedules, based on your requirements and workforce.">
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 
 
-    <title>QRcool</title>
+    <title>ClubManagement</title>
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -26,7 +26,7 @@
         function init() {
             gapi.client.load('clubmanagement', 'v1', null, '//' + window.location.host + '/_ah/api');
             gapi.client.load('oauth2', 'v2', function () {
-                angular.bootstrap(document, ['QRcoolApp']);
+                angular.bootstrap(document, ['ClubManagementApp']);
                 gapi.auth2.init({
                     'client_id': GOOGLE_APP_ENGINE_CLIENT_ID,
                     'plugin_name': 'CLUBMANAGEMENT'
@@ -47,22 +47,22 @@
             <div class="col-sm-9 col-md-8 col-lg-10 col-xl-12">
 
                 <header class="masthead">
-                    <nav class="navbar navbar-expand-md navbar-dark fixed-top nav_QRcool_styling">
-                        <a href="index.html"><nav class="navbar-brand"><span class="colour_QRcool_Orange">QR</span><span class="colour_QRcool_Light-Orange">cool</span> </nav></a>
+                    <nav class="navbar navbar-expand-md navbar-dark fixed-top nav_ClubManagement_styling">
+                        <a href="index.html"><nav class="navbar-brand"><span class="colour_CM_Green">QR</span><span class="colour_CM_Blue">cool</span> </nav></a>
                         <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
 
                         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
                             <ul class="navbar-nav text-md-center nav-justified w-100 ">
-                                <li class="nav-item " ng-class="{ active: isActive('/departments') }" ng-show="getSignedInState()" ng-click="collapseNavbar()"><a class="Navbar_QRcool_Item colour_QRcool_Light-Orange" ng-href="{{getActiveURL()}}">Manage Your Task</a></li>
-                                <li class="nav-item " ng-class="{ active: isActive('/documentation')}" ng-click="collapseNavbar()"><a class="Navbar_QRcool_Item colour_QRcool_Light-Orange" href="#!/documentation">Documentation</a></li>
+                                <li class="nav-item " ng-class="{ active: isActive('/departments') }" ng-show="getSignedInState()" ng-click="collapseNavbar()"><a class="Navbar_ClubManagement_Item colour_CM_Blue" ng-href="{{getActiveURL()}}">Manage Your Task</a></li>
+                                <li class="nav-item " ng-class="{ active: isActive('/documentation')}" ng-click="collapseNavbar()"><a class="Navbar_ClubManagement_Item colour_CM_Blue" href="#!/documentation">Documentation</a></li>
                                 <li class="nav-item">
-                                    <a class="Navbar_QRcool_Item colour_QRcool_Light-Orange" href="#">Wiki</a>
+                                    <a class="Navbar_ClubManagement_Item colour_CM_Blue" href="#">Wiki</a>
                                 </li>
-                                <li class="nav-item" ng-class="{ active: isActive('/account')}" ng-show="getSignedInState()" ng-click="collapseNavbar()"><a class="Navbar_QRcool_Item colour_QRcool_Light-Orange" href="#!/account">Account</a></li>
+                                <li class="nav-item" ng-class="{ active: isActive('/account')}" ng-show="getSignedInState()" ng-click="collapseNavbar()"><a class="Navbar_ClubManagement_Item colour_CM_Blue" href="#!/account">Account</a></li>
                                 <li class="nav-item">
-                                    <a class="Navbar_QRcool_Item colour_QRcool_Light-Orange" href="#!/impressum">Impressum & Privacy</a>
+                                    <a class="Navbar_ClubManagement_Item colour_CM_Blue" href="#!/impressum">Impressum & Privacy</a>
                                 </li>
                             </ul>
                             <a class="nav-link colour-white hover_white" id="signOutLink" ng-show="getSignedInState()" ng-click="signOut(); collapseNavbar()" href="#!/home.html">Logout</a>
@@ -80,7 +80,7 @@
 
     <!-- Site footer -->
     <footer id="disclaimer-footer" class="footer">
-        <p>&copy;QRcool by SZ-Ybbs 2023</p>
+        <p>&copy;ClubManagement by SZ-Ybbs 2023</p>
     </footer>
 
 </div>

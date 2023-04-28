@@ -58,4 +58,4 @@ Frameworks used:
 [14]: https://github.com/GoogleCloudPlatform/app-maven-plugin
 [15]: https://github.com/GoogleCloudPlatform/app-gradle-plugin
 
-#QRcool
+#ClubManagement

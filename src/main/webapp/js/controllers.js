@@ -3,21 +3,21 @@
 /**
  * The root clubmanagement module.
  *
- * @type {QRcoolApp|*|{}}
+ * @type {ClubManagementApp|*|{}}
  */
-var QRcoolApp = QRcoolApp || {};
+var ClubManagementApp = ClubManagementApp || {};
 var activeURL = '#!/departments';
 
 
 /**
  * @ngdoc module
- * @name qrcoolControllers
+ * @name clubmanagementControllers
  *
  * @description
  * Angular module for controllers.
  *
  */
-QRcoolApp.controllers = angular.module('qrcoolControllers', ['ui.bootstrap']);
+ClubManagementApp.controllers = angular.module('clubmanagementControllers', ['ui.bootstrap']);
 
 
 
@@ -28,7 +28,7 @@ QRcoolApp.controllers = angular.module('qrcoolControllers', ['ui.bootstrap']);
  * @description
  * A controller used for the Documentation page.
  */
-QRcoolApp.controllers.controller('DocumentationCtrl', function ($scope, $log, oauth2Provider, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('DocumentationCtrl', function ($scope, $log, oauth2Provider, HTTP_ERRORS) {
 
 
 });
@@ -40,7 +40,7 @@ QRcoolApp.controllers.controller('DocumentationCtrl', function ($scope, $log, oa
  * @description
  * A controller used for the Account page.
  */
-QRcoolApp.controllers.controller('AccountCtrl', function ($scope, $log, oauth2Provider, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('AccountCtrl', function ($scope, $log, oauth2Provider, HTTP_ERRORS) {
     $scope.submitted = false;
     $scope.loading = false;
 
@@ -126,7 +126,7 @@ QRcoolApp.controllers.controller('AccountCtrl', function ($scope, $log, oauth2Pr
 
 });
 
-QRcoolApp.controllers.controller('RootCtrl', function ($scope, $location, $timeout, oauth2Provider) {
+ClubManagementApp.controllers.controller('RootCtrl', function ($scope, $location, $timeout, oauth2Provider) {
 
     $scope.isActive = function (viewLocation) {
         return viewLocation === $location.path();
@@ -182,7 +182,7 @@ QRcoolApp.controllers.controller('RootCtrl', function ($scope, $location, $timeo
     };
 });
 
-QRcoolApp.controllers.controller('OAuth2LoginModalCtrl', function ($scope, $modalInstance, $rootScope, oauth2Provider) {
+ClubManagementApp.controllers.controller('OAuth2LoginModalCtrl', function ($scope, $modalInstance, $rootScope, oauth2Provider) {
     $scope.signInViaModal = function () {
         oauth2Provider.signIn(function () {
             gapi.client.oauth2.userinfo.get().execute(function (resp) {
