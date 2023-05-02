@@ -367,8 +367,8 @@ color: #1E90FF;
     vertical-align: middle;
     cursor: pointer;
     user-select: none;
-    background-color: #FFAC1D;
-    border: 1px solid #FFAC1D;
+    background-color: #199080;
+    border: 3px bold #007E5E;
     padding: 0.375rem 0.75rem;
     font-size: 1rem;
     line-height: 1.5;
@@ -390,19 +390,23 @@ color: #1E90FF;
     color: white;
 }
 
-/* hover effect */
+/* hover effects */
 
 a:hover {
-    font-weight: bold;
+    font-weight: normal;
     text-decoration: none;
 }
 
-/* hover effect signin/logout and buttos */
+/* hover effect signIn/logout and buttons */
+
+/* SignIn/LogOut*/
 
 .hover_white:hover {
-    color: white !important;
+    color: #74ea00 !important;
     text-decoration :none;
 }
+
+/*Buttons Start-Site*/
 
 .hover_buttons:hover {
     color: white !important;
