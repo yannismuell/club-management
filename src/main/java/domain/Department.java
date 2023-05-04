@@ -8,7 +8,6 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Parent;
-import form.ClubmemberForm;
 import form.DepartmentForm;
 
 @Entity
@@ -33,7 +32,7 @@ public class Department {
 
     private Department() {}
 
-    public Department(final long id, final String accountID, final ClubmemberForm departmentForm, final String email) {
+    public Department(final long id, final String accountID, final DepartmentForm departmentForm, final String email) {
         Preconditions.checkNotNull(departmentForm.getName(), "The name is required");
         this.id = id;
         this.accountKey = Key.create(Account.class, accountID);

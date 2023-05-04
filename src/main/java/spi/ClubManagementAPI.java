@@ -306,7 +306,7 @@ public class ClubManagementAPI {
         Clubmember clubmember = ofy().transact(new Work<Clubmember>() {
             @Override
             public Clubmember run() {
-                Clubmember clubmember = new Department(clubmemberID, userId, clubmemberForm, email);
+                Clubmember clubmember = new Clubmember(clubmemberID, userId, clubmemberForm, email);
                 ofy().save().entities(clubmember, account).now();
                 return clubmember;
             }

@@ -8,7 +8,7 @@ import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Parent;
-import form.DepartmentForm;
+import form.ClubmemberForm;
 
 @Entity
 @Cache
@@ -32,13 +32,13 @@ public class Clubmember {
 
     private Clubmember() {}
 
-    public Clubmember(final long id, final String accountID, final DepartmentForm departmentForm, final String email) {
-        Preconditions.checkNotNull(departmentForm.getName(), "The name is required");
+    public Clubmember(final long id, final String accountID, final ClubmemberForm clubmemberForm, final String email) {
+        Preconditions.checkNotNull(clubmemberForm.getName(), "The name is required");
         this.id = id;
         this.accountKey = Key.create(Account.class, accountID);
         this.accountID = accountID;
 
-        updateWithDepartmentForm(departmentForm);
+        updateWithClubmemberForm(clubmemberForm);
     }
 
     public long getId() {
@@ -68,15 +68,15 @@ public class Clubmember {
         return Key.create(accountKey, Clubmember.class, id).toLegacyUrlSafe();
     }
 
-    public String getWebsafeDepartmentKey() {
+    public String getWebsafeClubmemberKey() {
         return Key.create(accountKey, Clubmember.class, id).toLegacyUrlSafe();
     }
 
 
-    public void updateWithDepartmentForm(DepartmentForm departmentForm) {
-        this.name = departmentForm.getName();
-        this.description = departmentForm.getDescription();
-        this.restTime = departmentForm.getRestTime();
+    public void updateWithClubmemberForm(ClubmemberForm clubmemberForm) {
+        this.name = clubmemberForm.getName();
+        this.description = clubmemberForm.getDescription();
+        this.restTime = clubmemberForm.getRestTime();
     }
 
     public void update(String name, String description, float restTime) {
