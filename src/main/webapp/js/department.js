@@ -120,8 +120,6 @@ ClubManagementApp.controllers.controller('getDepartmentsCtrl', function ($scope,
             callback();
         }
     };
-
-
 });
 
 /**
@@ -291,36 +289,6 @@ ClubManagementApp.controllers.controller('detailedDepartmentCtrl', function ($sc
 ClubManagementApp.controllers.controller('createDepartmentCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
 
     $scope.department = {};
-
-    getAccountData = function () {
-        var retrieveAccountCallback = function () {
-            $scope.account = {};
-            $scope.loading = true;
-            gapi.client.clubmanagement.getAccount().
-                execute(function (resp) {
-                    $scope.$apply(function () {
-                        $scope.loading = false;
-                        if (resp.error) {
-                            // Failed to get a user account.
-                            console.log(' unable to get account');
-                        } else {
-                            // Succeeded to get the user account.
-                            $scope.department.restTime = resp.result.restTime;
-                        }
-                    });
-                }
-            );
-        };
-
-        if (!oauth2Provider.signedIn) {
-            var modalInstance = oauth2Provider.showLoginModal();
-            modalInstance.result.then(retrieveAccountCallback);
-        } else {
-            retrieveAccountCallback();
-        }
-    };
-
-    getAccountData();
 
     document.getElementById("name").focus();
 
