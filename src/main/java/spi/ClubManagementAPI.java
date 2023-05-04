@@ -30,7 +30,7 @@ import clubmanagement.Constants;
  * Defines v1 of a scheduler app API, which provides simple methods.
  */
 @Api(
-        name = "clubmanagement",
+        name = "clubmanagemegnt",
         version = "v1",
         // You can add additional SCOPES as a comma separated list of values
         scopes = {Constants.EMAIL_SCOPE},
@@ -202,6 +202,8 @@ public class ClubManagementAPI {
      * @return a list of Departments that the user created.
      * @throws UnauthorizedException when the user is not signed in.
      */
+
+
     @ApiMethod(
             name = "getDepartmentsCreated",
             path = "department/created",
@@ -217,7 +219,29 @@ public class ClubManagementAPI {
         List<Department> departments = ofy().load().type(Department.class).ancestor(ownerKey).list();
         return departments;
     }
+    /**
+     * Returns a list of Clubmembers that the user created.
+     * In order to receive the websafeDepartmentKey via the JSON params, uses a POST method.
+     *
+     * @param user An user who invokes this method, null when the user is not signed in.
+     * @return a list of Departments that the user created.
+     * @throws UnauthorizedException when the user is not signed in.
+     */
+    @ApiMethod(
+            name = "getClubmembersCreated",
+            path = "clubmember/created",
+            httpMethod = HttpMethod.POST
+    )
+    public List<Clubmember> getClubmembersCreated(final User user) throws UnauthorizedException {
+        // If not signed in, throw a 401 error.
+        if (user == null) {
+            throw new UnauthorizedException("Authorization required");
+        }
 
+        Key<Account>ownerKey = Key.create(Account.class, user.getUserId());
+        List<Clubmember> clubmembers = ofy().load().type(Clubmember.class).ancestor(ownerKey).list();
+        return clubmembers;
+    }
     /**
      * Creates a new Department object and stores it to the datastore.
      *
@@ -253,6 +277,42 @@ public class ClubManagementAPI {
         });
 
         return department;
+    }
+    /**
+     * Creates a new Department object and stores it to the datastore.
+     *
+     * @param user A user who invokes this method, null when the user is not signed in.
+     * @param clubmemberForm A DepartmentForm object representing user's inputs.
+     * @return A newly created Department Object.
+     * @throws UnauthorizedException when the user is not signed in.
+     */
+    @ApiMethod(name = "createClubmember",
+            path = "clubmember/create",
+            httpMethod = HttpMethod.POST)
+    public Clubmember createClubmember(final User user, final ClubmemberForm clubmemberForm) throws UnauthorizedException {
+        if (user == null) {
+            throw new UnauthorizedException("Authorization required");
+        }
+
+        Key<Account> accountKey = Key.create(Account.class, getUserId(user));
+        String websafeAccountKey = accountKey.toLegacyUrlSafe();
+
+        final Key<Clubmember> clubmemberKey = factory().allocateId(accountKey, Clubmember.class);
+        final long clubmemberID = clubmemberKey.getId();
+        final String userId = getUserId(user);
+        Account account = getAccountFromUser(user, userId);
+        String email = account.getMainEmail();
+
+        Clubmember clubmember = ofy().transact(new Work<Clubmember>() {
+            @Override
+            public Clubmember run() {
+                Clubmember clubmember = new Department(clubmemberID, userId, clubmemberForm, email);
+                ofy().save().entities(clubmember, account).now();
+                return clubmember;
+            }
+        });
+
+        return clubmember;
     }
 
     /**

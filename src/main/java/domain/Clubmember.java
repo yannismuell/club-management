@@ -4,16 +4,15 @@ import com.google.api.server.spi.config.AnnotationBoolean;
 import com.google.api.server.spi.config.ApiResourceProperty;
 import com.google.common.base.Preconditions;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Parent;
-import form.ClubmemberForm;
 import form.DepartmentForm;
 
 @Entity
 @Cache
-public class Department {
+public class Clubmember {
 
     @Id
     private Long id;
@@ -31,9 +30,9 @@ public class Department {
 
     private float restTime = 11;
 
-    private Department() {}
+    private Clubmember() {}
 
-    public Department(final long id, final String accountID, final ClubmemberForm departmentForm, final String email) {
+    public Clubmember(final long id, final String accountID, final DepartmentForm departmentForm, final String email) {
         Preconditions.checkNotNull(departmentForm.getName(), "The name is required");
         this.id = id;
         this.accountKey = Key.create(Account.class, accountID);
@@ -66,11 +65,11 @@ public class Department {
     }
 
     public String getWebsafeAccountKey() {
-        return Key.create(accountKey, Department.class, id).toLegacyUrlSafe();
+        return Key.create(accountKey, Clubmember.class, id).toLegacyUrlSafe();
     }
 
     public String getWebsafeDepartmentKey() {
-        return Key.create(accountKey, Department.class, id).toLegacyUrlSafe();
+        return Key.create(accountKey, Clubmember.class, id).toLegacyUrlSafe();
     }
 
 
