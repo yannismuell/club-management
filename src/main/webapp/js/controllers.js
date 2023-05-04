@@ -123,7 +123,6 @@ ClubManagementApp.controllers.controller('AccountCtrl', function ($scope, $log, 
             callback();
         }
     };
-
 });
 
 ClubManagementApp.controllers.controller('RootCtrl', function ($scope, $location, $timeout, oauth2Provider) {
