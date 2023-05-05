@@ -1,0 +1,5 @@
+~/google-cloud-sdk/bin/gcloud beta emulators datastore start --host-port=localhost:8081
+
+#--data-dir=/Users/max/Development/Perceptronics/target/Perceptronics-1.0-SNAPSHOT
+
+

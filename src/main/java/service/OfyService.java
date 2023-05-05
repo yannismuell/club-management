@@ -1,6 +1,5 @@
 package service;
 
-import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
@@ -17,7 +16,17 @@ public class OfyService implements ServletContextListener {
 
     public void contextInitialized(ServletContextEvent event) {
 
-        ObjectifyService.init();
+        // Use for GAE deploymnet
+        //ObjectifyService.init();
+
+        // Use for local development
+        ObjectifyService.init(new ObjectifyFactory(
+                DatastoreOptions.newBuilder()
+                        .setHost("http://localhost:8081")
+                        .setProjectId("clubmanagement-382206")
+                        .build()
+                        .getService()
+        ));
 
         ObjectifyService.register(Account.class);
         ObjectifyService.register(Department.class);
