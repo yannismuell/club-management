@@ -46,17 +46,17 @@
 
                         <tbody>
 
-                        <tr ng-repeat="clubmember in filteredDepartments | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize | orderBy:'name'">
-                            <td><a href="#!/clubmembers/detail/{{department.websafeDepartmentKey}}">{{department.name}}</a></td>
+                        <tr ng-repeat="clubmember in filteredClubmembers | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize | orderBy:'name'">
+                            <td><a href="#!/clubmembers/detail/{{clubmember.websafeClubmemberKey}}">{{clubmember.name}}</a></td>
                             <td>{{clubmember.description}}</td>
                             <td>
-                                <button ng-click="deleteClubmemberWithWebsafeClubmemberKey(department.websafeDepartmentKey)" class="btn btn-outline-danger" ng-disabled="loading" title="Delete Department">&#10008;</button>
+                                <button ng-click="deleteClubmemberWithWebsafeClubmemberKey(clubmember.websafeClubmemberKey)" class="btn btn-outline-danger" ng-disabled="loading" title="Delete Clubmember">&#10008;</button>
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-                <ul class="pagination" ng-show="filteredDepartments.length > 0">
+                <ul class="pagination" ng-show="filteredClubmembers.length > 0">
                     <li ng-class="{disabled: pagination.currentPage == 0 }">
                         <a ng-class="{disabled: pagination.currentPage == 0 }"
                            ng-click="pagination.isDisabled($event) || (pagination.currentPage = 0)" href="">&lt&lt</a>&nbsp &nbsp

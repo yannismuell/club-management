@@ -38,6 +38,25 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
                 templateUrl: 'partials/department_details.html',
                 controller: 'detailedDepartmentCtrl'
         }).
+                /*when('/clubmembers', {
+                     templateUrl: 'partials/clubmembers.html',
+                     controller: 'getClubmembersCtrl'
+                }).
+                when('/clubmembers/create', {
+                      templateUrl: 'partials/clubmembers_create.html',
+                      controller: 'createClubmemberCtrl'
+                }).
+                when('/clubmembers/edit/:websafeClubmemberKey', {
+                      templateUrl: 'partials/clubmembers_edit.html',
+                      controller: 'saveClubmemberCtrl'
+                }).
+                when('/clubmembers/delete/:websafeClubmemberKey', {
+                      templateUrl: 'partials/clubmembers.html',
+                      controller: 'getClubmemberCtrl'
+                }).
+                when('/clubmembers/detail/:websafeClubmemberKey', {
+                        templateUrl: 'partials/clubmember_details.html',
+                        controller: 'detailedClubmemberCtrl'*/
         when('/impressum', {
             templateUrl: 'partials/impressum.html'
         }).

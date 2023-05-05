@@ -32,7 +32,7 @@
                                 <label for="description">Minimum RestTime <span class="required">*</span></label>
                                 <input id="restTime" type="number" name="restTime" name="restTime" onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="clubmember.restTime"class="form-control"/>
                             </div>
-                            <button ng-click="createClubmember(clubmemberForm)" class="btn btn-add-custom" ng-disabled="!isValidDepartment(departmentForm) || loading">Add</button>
+                            <button ng-click="createClubmember(clubmemberForm)" class="btn btn-add-custom" ng-disabled="!isValidClubmember(clubmemberForm) || loading">Add</button>
                         </form>
                         <p><a class="nav-link" onclick="window.history.back();" href="">« Back</a></p>
                     </div>
