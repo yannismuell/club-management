@@ -36,9 +36,9 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
         }).
         when('/departments/detail/:websafeDepartmentKey', {
                 templateUrl: 'partials/department_details.html',
-                controller: 'detailedDepartmentCtrl'
+                controller: ''
         }).
-                /*when('/clubmembers', {
+                when('/clubmembers', {
                      templateUrl: 'partials/clubmembers.html',
                      controller: 'getClubmembersCtrl'
                 }).
@@ -46,6 +46,7 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
                       templateUrl: 'partials/clubmembers_create.html',
                       controller: 'createClubmemberCtrl'
                 }).
+                /*Funktioniert noch nicht
                 when('/clubmembers/edit/:websafeClubmemberKey', {
                       templateUrl: 'partials/clubmembers_edit.html',
                       controller: 'saveClubmemberCtrl'
