@@ -30,7 +30,7 @@ import clubmanagement.Constants;
  * Defines v1 of a scheduler app API, which provides simple methods.
  */
 @Api(
-        name = "clubmanagemegnt",
+        name = "clubmanagement",
         version = "v1",
         // You can add additional SCOPES as a comma separated list of values
         scopes = {Constants.EMAIL_SCOPE},
@@ -521,6 +521,30 @@ public class ClubManagementAPI {
 
         return clubmember;
     }
+    /*
+    /**
+     * Creates a new Admin object and stores it to the datastore.
+     *
+     * @param user A user who invokes this method, null when the user is not signed in.
+     * @param adminForm A AdminForm object representing user's inputs.
+     * @return A newly created Admin Object.
+     * @throws UnauthorizedException when the user is not signed in.
+
+    @ApiMethod(name = "createAdmins",
+            path = "admin/create",
+            httpMethod = HttpMethod.POST)
+    public Admin createAdmin(final User user, final AdminForm adminForm) throws Exception {
+        checkUserOk(user);
+
+        final Key<Admin> adminKey = factory().allocateId(Admin.class);
+        final long adminId = adminKey.getId();
+
+        Admin admin = new Admin(adminId, adminForm);
+        ofy().save().entities(admin).now();
+
+        return admin;
+    }
+    */
 }
 
 
