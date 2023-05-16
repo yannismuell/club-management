@@ -7,8 +7,6 @@
  */
 var ClubManagementApp = ClubManagementApp || {};
 var activeURL = '#!/departments';
-
-
 /**
  * @ngdoc module
  * @name clubmanagementControllers
@@ -58,7 +56,7 @@ ClubManagementApp.controllers.controller('AccountCtrl', function ($scope, $log, 
                             // Failed to get a user account.
                             console.log(' unable to get account');
                         } else {
-                            // Succeeded to get the user acount.
+                            // Succeeded to get the user account.
                             $scope.account.firstName = resp.result.firstName;
                             $scope.account.surName = resp.result.surName;
                             $scope.account.companyName = resp.result.companyName;
@@ -155,16 +153,27 @@ ClubManagementApp.controllers.controller('RootCtrl', function ($scope, $location
     };
 
     $scope.signIn = function () {
-        oauth2Provider.signIn(function () {
+        /*oauth2Provider.signIn(function () {
             console.log(gapi.client.oauth2.userinfo.get());
             gapi.client.oauth2.userinfo.get().execute(function (resp) {
                 $scope.$apply(function () {
                     console.log(resp);
-                    if (resp.email) {
+                    $scope.signIn = function () {*/
+                     oauth2Provider.signIn(function () {
+                     gapi.client.oauth2.userinfo.get().execute(function (resp) {
+                     $scope.$apply(function () {
+                     const email = resp.email;
+                     if (email === 'felix.wittmann05@gmail.com' || email === 'davidreiter01@gmail.com' || email === 'florian.hoermann5524@gmail.com' || email === 'yannismueller124@gmail.com') {
+                     oauth2Provider.signedIn = true;
+                     $scope.alertStatus = 'success';
+                     $scope.rootMessages = 'Logged in with ' + resp.email;
+                     }
+                    return false;
+                    /*if (resp.email) {
                         oauth2Provider.signedIn = true;
                         $scope.alertStatus = 'success';
                         $scope.rootMessages = 'Logged in with ' + resp.email;
-                    }
+                    }*/
                 });
             });
         });
