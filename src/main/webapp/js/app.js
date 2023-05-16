@@ -46,7 +46,7 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
                       templateUrl: 'partials/clubmembers_create.html',
                       controller: 'createClubmemberCtrl'
                 }).
-                /*Funktioniert noch nicht
+                /*
                 when('/clubmembers/edit/:websafeClubmemberKey', {
                       templateUrl: 'partials/clubmembers_edit.html',
                       controller: 'saveClubmemberCtrl'

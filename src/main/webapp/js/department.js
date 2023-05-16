@@ -169,42 +169,6 @@ ClubManagementApp.controllers.controller('detailedDepartmentCtrl', function ($sc
         return oauth2Provider.signedIn;
     };
 
-    $scope.initSignInButton = function () {
-        gapi.signin.render('signInButton', {
-            'callback': function () {
-                jQuery('#signInButton button').attr('disabled', 'true').css('cursor', 'default');
-                if (gapi.auth.getToken() && gapi.auth.getToken().access_token) {
-                    $scope.$apply(function () {
-                        oauth2Provider.signedIn = true;
-                    });
-                }
-            },
-            'clientid': oauth2Provider.CLIENT_ID,
-            'cookiepolicy': 'single_host_origin',
-            'scope': oauth2Provider.SCOPES
-        });
-    };
-
-    $scope.signIn = function () {
-        oauth2Provider.signIn(function () {
-            gapi.client.oauth2.userinfo.get().execute(function (resp) {
-                $scope.$apply(function () {
-                    if (resp.email) {
-                        oauth2Provider.signedIn = true;
-                        $scope.alertStatus = 'success';
-                        $scope.rootMessages = 'Logged in with ' + resp.email;
-                    }
-                });
-            });
-        });
-    };
-
-    $scope.signOut = function () {
-        oauth2Provider.signOut();
-        $scope.alertStatus = 'success';
-        $scope.rootMessages = 'Logged out';
-    };
-
     $scope.collapseNavbar = function () {
         angular.element(document.querySelector('.navbar-collapse')).removeClass('in');
     };
