@@ -163,7 +163,7 @@ ClubManagementApp.controllers.controller('RootCtrl', function ($scope, $location
                      gapi.client.oauth2.userinfo.get().execute(function (resp) {
                      $scope.$apply(function () {
                      const email = resp.email;
-                     if (email === 'felix.wittmann05@gmail.com' || email === 'david.reiter01@gmail.com' || email === 'florian.hoermann5524@gmail.com' || email === 'yannismueller124@gmail.com') {
+                     if (email === 'felix.wittmann05@gmail.com' || email === 'davidreiter01@gmail.com' || email === 'florian.hoermann5524@gmail.com' || email === 'yannismueller124@gmail.com') {
                      oauth2Provider.signedIn = true;
                      $scope.alertStatus = 'success';
                      $scope.rootMessages = 'Logged in with ' + resp.email;
