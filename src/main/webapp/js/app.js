@@ -46,6 +46,7 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
                       templateUrl: 'partials/clubmembers_create.html',
                       controller: 'createClubmemberCtrl'
                 }).
+                /*
                 when('/clubmembers/edit/:websafeClubmemberKey', {
                       templateUrl: 'partials/clubmembers_edit.html',
                       controller: 'saveClubmemberCtrl'.
@@ -55,10 +56,11 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
                       templateUrl: 'partials/clubmembers.html',
                       controller: 'getClubmemberCtrl'
                 }).
-                */
+
                 when('/clubmembers/detail/:websafeClubmemberKey', {
                         templateUrl: 'partials/clubmember_details.html',
                         controller: 'detailedClubmemberCtrl'
+                        */
         when('/impressum', {
             templateUrl: 'partials/impressum.html'
         }).
