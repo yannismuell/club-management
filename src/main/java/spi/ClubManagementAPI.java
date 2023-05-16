@@ -522,5 +522,3 @@ public class ClubManagementAPI {
         return clubmember;
     }
 }
-
-
