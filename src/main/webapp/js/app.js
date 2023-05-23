@@ -46,18 +46,21 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
                       templateUrl: 'partials/clubmembers_create.html',
                       controller: 'createClubmemberCtrl'
                 }).
-                /*Funktioniert noch nicht
+                /*
                 when('/clubmembers/edit/:websafeClubmemberKey', {
                       templateUrl: 'partials/clubmembers_edit.html',
-                      controller: 'saveClubmemberCtrl'
+                      controller: 'saveClubmemberCtrl'.
+
                 }).
                 when('/clubmembers/delete/:websafeClubmemberKey', {
                       templateUrl: 'partials/clubmembers.html',
                       controller: 'getClubmemberCtrl'
                 }).
+
                 when('/clubmembers/detail/:websafeClubmemberKey', {
                         templateUrl: 'partials/clubmember_details.html',
-                        controller: 'detailedClubmemberCtrl'*/
+                        controller: 'detailedClubmemberCtrl'
+                        */
         when('/impressum', {
             templateUrl: 'partials/impressum.html'
         }).
@@ -87,6 +90,10 @@ app.factory('parentProvider', function ($uibModal) {
     parentProvider.departments = [];
 
     parentProvider.department = {};
+
+    parentProvider.clubmembers = [];
+
+    parentProvider.clubmember = {};
 
     return parentProvider;
 

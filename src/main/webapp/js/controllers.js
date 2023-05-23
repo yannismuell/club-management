@@ -7,6 +7,7 @@
  */
 var ClubManagementApp = ClubManagementApp || {};
 var activeURL = '#!/departments';
+var activeURL = '#!/clubmembers';
 /**
  * @ngdoc module
  * @name clubmanagementControllers
@@ -134,22 +135,6 @@ ClubManagementApp.controllers.controller('RootCtrl', function ($scope, $location
 
     $scope.getSignedInState = function () {
         return oauth2Provider.signedIn;
-    };
-
-    $scope.initSignInButton = function () {
-        gapi.signin.render('signInButton', {
-            'callback': function () {
-                jQuery('#signInButton button').attr('disabled', 'true').css('cursor', 'default');
-                if (gapi.auth.getToken() && gapi.auth.getToken().access_token) {
-                    $scope.$apply(function () {
-                        oauth2Provider.signedIn = true;
-                    });
-                }
-            },
-            'clientid': oauth2Provider.CLIENT_ID,
-            'cookiepolicy': 'single_host_origin',
-            'scope': oauth2Provider.SCOPES
-        });
     };
 
     $scope.signIn = function () {
