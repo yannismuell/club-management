@@ -545,6 +545,168 @@ public class ClubManagementAPI {
         return admin;
     }
     */
+
+    /**
+     * Returns a list of Trainers that the user created.
+     * In order to receive the websafeDepartmentKey via the JSON params, uses a POST method.
+     *
+     * @param user An user who invokes this method, null when the user is not signed in.
+     * @return a list of Departments that the user created.
+     * @throws UnauthorizedException when the user is not signed in.
+     */
+    @ApiMethod(
+            name = "getTrainersCreated",
+            path = "trainer/created",
+            httpMethod = HttpMethod.POST
+    )
+    public List<Trainer> getTrainersCreated(final User user) throws UnauthorizedException {
+        // If not signed in, throw a 401 error.
+        if (user == null) {
+            throw new UnauthorizedException("Authorization required");
+        }
+
+        Key<Account>ownerKey = Key.create(Account.class, user.getUserId());
+        List<Trainer> trainers = ofy().load().type(Trainer.class).ancestor(ownerKey).list();
+        return trainers;
+    }
+    /**
+     * Creates a new Trainer object and stores it to the datastore.
+     *
+     * @param user A user who invokes this method, null when the user is not signed in.
+     * @param trainerForm A TrainerForm object representing user's inputs.
+     * @return A newly created Department Object.
+     * @throws UnauthorizedException when the user is not signed in.
+     */
+    @ApiMethod(name = "createTrainer",
+            path = "trainer/create",
+            httpMethod = HttpMethod.POST)
+    public Trainer createTrainer(final User user, final TrainerForm trainerForm) throws UnauthorizedException {
+        if (user == null) {
+            throw new UnauthorizedException("Authorization required");
+        }
+
+        Key<Account> accountKey = Key.create(Account.class, getUserId(user));
+        String websafeAccountKey = accountKey.toLegacyUrlSafe();
+
+        final Key<Trainer> trainerKey = factory().allocateId(accountKey, Trainer.class);
+        final long trainerID = trainerKey.getId();
+        final String userId = getUserId(user);
+        Account account = getAccountFromUser(user, userId);
+        String email = account.getMainEmail();
+
+        Trainer trainer = ofy().transact(new Work<Trainer>() {
+            @Override
+            public Trainer run() {
+                Trainer trainer = new Trainer(trainerID, userId, trainerForm, email);
+                ofy().save().entities(trainer, account).now();
+                return trainer;
+            }
+        });
+
+        return trainer;
+    }
+    /**
+     * Saves a Trainer object and stores it to the datastore.
+     *
+     * @param user        A user who invokes this method, null when the user is not signed in.
+     * @param name        The department name
+     * @param description The Trainer description
+     * @param restTime    The minimum rest time required between consecutive shifts
+     * @return An updated trainer object.
+     * @throws UnauthorizedException when the user is not signed in.
+     */
+    @ApiMethod(name = "saveTrainer",
+            path = "trainer/save/{trainerKey}",
+            httpMethod = HttpMethod.POST)
+    public Trainer saveTrainer(final User user,
+                                     @Named ("name") final String name,
+                                     @Named ("description") final String description,
+                                     @Named ("restTime") final float restTime,
+                                     @Named ("trainerKey") final String websafeTrainerKey)
+            throws UnauthorizedException  {
+        if (user == null) {
+            throw new UnauthorizedException("Authorization required");
+        }
+
+        Trainer trainer = ofy().transact(new Work<Trainer>() {
+            @Override
+            public Trainer run() {
+                Key<Trainer> trainerKey = Key.create(websafeTrainerKey);
+                Trainer trainer = ofy().load().key(trainerKey).now();
+                trainer.update(name, description, restTime);
+                ofy().save().entity(trainer).now();
+                return trainer;
+            }
+        });
+
+        return (trainer);
+    }
+
+    /**
+     * Deletes a Trainer object and removes it from the datastore.
+     *
+     * @param user A user who invokes this method, null when the user is not signed in.
+     * @param websafeTrainerKey A TrainerForm object representing user's inputs.
+     * @return A newly created Trainer Object.
+     * @throws UnauthorizedException when the user is not signed in.
+     */
+    @ApiMethod(name = "deleteTrainer",
+            path = "trainer/delete/{websafeDepartmentKey}",
+            httpMethod = HttpMethod.DELETE)
+    public WrappedBoolean deleteTrainer(final User user, @Named ("websafeTrainerKey") final String websafeTrainerKey)
+            throws UnauthorizedException, ConflictException, NotFoundException, ForbiddenException  {
+        if (user == null) {
+            throw new UnauthorizedException("Authorization required");
+        }
+
+        Key<Trainer> trainerKey = Key.create(websafeTrainerKey);
+        Trainer trainer = ofy().load().key(trainerKey).now();
+
+        TxResult<Boolean> result = ofy().transact(new Work<TxResult<Boolean>>() {
+            @Override
+            public TxResult<Boolean> run() {
+
+                ofy().delete().key(trainerKey).now();
+                return new TxResult<>(true);
+            }
+        });
+
+        return new WrappedBoolean(result.getResult());
+    }
+
+    /**
+     * Returns a Trainer object with the given trainerID.
+     *
+     * @param websafeTrainerKey The String representation of the Trainer Key.
+     * @return a Trainer object with the given departmentID.
+     * @throws NotFoundException when there is no Department with the given departmentID.
+     */
+
+    @ApiMethod(
+            name = "getTrainer",
+            path = "trainer/{websafeTrainerKey}",
+            httpMethod = HttpMethod.GET
+    )
+    public Trainer getTrainer(final User user, @Named("websafeTrainerKey") final String websafeTrainerKey)
+            throws UnauthorizedException, NotFoundException {
+
+        if (user == null) {
+            throw new UnauthorizedException("Authorization required");
+        }
+
+        Key<Trainer> trainerKey = Key.create(websafeTrainerKey);
+        Trainer trainer = ofy().load().key(trainerKey).now();
+
+        if (trainer == null) {
+            throw new NotFoundException("No Trainer found with key: " + websafeTrainerKey);
+        }
+
+        if (!trainer.getAccountKey().toString().equals(Key.create(Account.class, user.getUserId()).toString())) {
+            throw new UnauthorizedException("Security Violation: User not owner of trainer?");
+        }
+
+        return trainer;
+    }
 }
 
 
