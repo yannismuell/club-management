@@ -60,7 +60,30 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
                 when('/clubmembers/detail/:websafeClubmemberKey', {
                         templateUrl: 'partials/clubmember_details.html',
                         controller: 'detailedClubmemberCtrl'
-                        */
+                */
+                                when('/trainers', {
+                                     templateUrl: 'partials/trainers.html',
+                                     controller: 'getTrainersCtrl'
+                                }).
+                                when('/trainers/create', {
+                                      templateUrl: 'partials/trainers_create.html',
+                                      controller: 'createTrainerCtrl'
+                                      /*
+                                }).
+                                when('/trainers/edit/:websafeTrainerKey', {
+                                      templateUrl: 'partials/trainers_edit.html',
+                                      controller: 'saveTrainerCtrl'.
+
+                                }).
+                                when('/trainers/delete/:websafeTrainerKey', {
+                                      templateUrl: 'partials/trainers.html',
+                                      controller: 'getClubmemberCtrl'
+                                }).
+
+                                when('/trainers/detail/:websafeTrainerKey', {
+                                        templateUrl: 'partials/trainer_details.html',
+                                        controller: 'detailedTrainerCtrl'
+                                        */
         when('/impressum', {
             templateUrl: 'partials/impressum.html'
         }).
@@ -94,6 +117,10 @@ app.factory('parentProvider', function ($uibModal) {
     parentProvider.clubmembers = [];
 
     parentProvider.clubmember = {};
+
+    parentProvider.trainers = [];
+
+    parentProvider.trainer = {};
 
     return parentProvider;
 
