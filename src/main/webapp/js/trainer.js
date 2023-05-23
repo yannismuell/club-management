@@ -1,27 +1,27 @@
 /**
  * @ngdoc controller
- * @name getDepartmentCtrl
+ * @name getTrainerCtrl
  *
  * @description
- * A controller used to save a department page.
+ * A controller used to save a trainer page.
  */
-ClubManagementApp.controllers.controller('getDepartmentsCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('getTrainersCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
 
     document.getElementById("query-input").focus();
 
     $scope.submitted = false;
     $scope.loading = false;
-    activeURL = '#!/departments';
+    activeURL = '#!/trainers';
 
-    $scope.departments = [];
-    $scope.filteredDepartments = [];
+    $scope.trainers = [];
+    $scope.filteredTrainers = [];
 
     $scope.pagination = $scope.pagination || {};
     $scope.pagination.currentPage = 0;
     $scope.pagination.pageSize = 25;
 
     $scope.pagination.numberOfPages = function () {
-        return Math.ceil($scope.filteredDepartments.length / $scope.pagination.pageSize);
+        return Math.ceil($scope.filteredTrainers.length / $scope.pagination.pageSize);
     };
 
     $scope.pagination.pageArray = function () {
@@ -37,30 +37,30 @@ ClubManagementApp.controllers.controller('getDepartmentsCtrl', function ($scope,
         return angular.element(event.target).hasClass('disabled');
     }
 
-    $scope.queryDepartmentsByName = function (search_field) {
-        $scope.filteredDepartments = [];
-        $scope.departments.forEach(function(element) {
+    $scope.queryTrainersByName = function (search_field) {
+        $scope.filteredTrainers = [];
+        $scope.trainers.forEach(function(element) {
             let nameToSearch = element.name.toLowerCase();
             let descriptionToSearch = element.description.toLowerCase();
             let searchString = search_field.toLowerCase();
             if (nameToSearch.includes(searchString) || descriptionToSearch.includes(searchString)){
-                $scope.filteredDepartments.push(element);
+                $scope.filteredTrainers.push(element);
             }
         });
         $scope.pagination.currentPage = 0;
     }
 
     $scope.init = function () {
-        var retrieveDepartmentsCallback = function () {
+        var retrieveTrainerCallback = function () {
             $scope.loading = true;
-            gapi.client.clubmanagement.getDepartmentsCreated().
+            gapi.client.clubmanagement.getTrainersCreated().
                 execute(function (resp) {
                     $scope.$apply(function () {
                         $scope.loading = false;
                         if (resp.error) {
                             // The request has failed.
                             var errorMessage = resp.error.message || '';
-                            $scope.messages = 'Failed to obtain departments : ' + errorMessage;
+                            $scope.messages = 'Failed to obtain clubmembers : ' + errorMessage;
                             $scope.alertStatus = 'warning';
                             $log.error($scope.messages );
                         } else {
@@ -69,9 +69,9 @@ ClubManagementApp.controllers.controller('getDepartmentsCtrl', function ($scope,
                             $scope.messages = 'Query succeeded';
                             $scope.alertStatus = 'success';
                             $log.info($scope.messages);
-                            $scope.departments = resp.items;
-                            $scope.filteredDepartments = $scope.departments;
-                            parentProvider.departments = $scope.departments;
+                            $scope.clubmembers = resp.items;
+                            $scope.filteredClubmembers = $scope.clubmembers;
+                            parentProvider.clubmembers = $scope.clubmembers;
                         }
                         $scope.submitted = true;
                     });
@@ -79,35 +79,35 @@ ClubManagementApp.controllers.controller('getDepartmentsCtrl', function ($scope,
             );
         };
         if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(retrieveDepartmentsCallback);
+            oauth2Provider.signIn(retrieveClubmembersCallback);
         } else {
-            retrieveDepartmentsCallback();
+            retrieveClubmembersCallback();
         }
     };
 
-    $scope.deleteDepartmentWithWebsafeDepartmentKey = function (websafeDepartmentKey) {
+    $scope.deleteClubmemberWithWebsafeClubmemberKey = function (websafeClubmemberKey) {
         var callback = function() {
             $scope.loading = true;
-            gapi.client.clubmanagement.deleteDepartment({websafeDepartmentKey: websafeDepartmentKey})
+            gapi.client.clubmanagement.deleteClubmember({websafeClubmemberKey: websafeClubmemberKey})
             .execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
                         // The request has failed.
                         var errorMessage = resp.error.message || '';
-                        $scope.messages = 'Failed to delete department : ' + errorMessage;
+                        $scope.messages = 'Failed to delete clubmember : ' + errorMessage;
                         $scope.alertStatus = 'warning';
-                        $log.error($scope.messages + ' Department : ' + JSON.stringify($scope.department));
+                        $log.error($scope.messages + ' Clubmember : ' + JSON.stringify($scope.clubmember));
                         if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
                             oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
                             return;
                         }
                     } else {
                         // The request has succeeded.
-                        $scope.messages = 'The department has been deleted ';
+                        $scope.messages = 'The clubmember has been deleted ';
                         $scope.alertStatus = 'success';
                         $scope.submitted = false;
-                        $scope.department = {};
+                        $scope.clubmember = {};
                         $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
                         $route.reload();
                     }
@@ -124,14 +124,14 @@ ClubManagementApp.controllers.controller('getDepartmentsCtrl', function ($scope,
 
 /**
  * @ngdoc controller
- * @name detailedDepartmentCtrl
+     * @name detailedClubmemberCtrl
  *
  * @description
- * A controller used to save a department page.
+ * A controller used to save a clubmember page.
  */
-ClubManagementApp.controllers.controller('detailedDepartmentCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('detailedClubmemberCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
 
-    $scope.department = {};
+    $scope.clubmember = {};
     $scope.submitted = false;
     $scope.length = 0;
 
@@ -160,7 +160,6 @@ ClubManagementApp.controllers.controller('detailedDepartmentCtrl', function ($sc
         return angular.element(event.target).hasClass('disabled');
     }
 
-
     Array.prototype.clone = function(){
       return this.slice(0)
     }
@@ -173,32 +172,32 @@ ClubManagementApp.controllers.controller('detailedDepartmentCtrl', function ($sc
         angular.element(document.querySelector('.navbar-collapse')).removeClass('in');
     };
 
-    $scope.deleteDepartment = function (departmentForm) {
+    $scope.deleteClubmember = function (clubmemberForm) {
         var callback = function() {
             $scope.loading = true;
             $scope.submitted = true;
-            gapi.client.clubmanagement.deleteDepartment({websafeDepartmentKey: $routeParams.websafeDepartmentKey})
+            gapi.client.clubmanagement.deleteClubmember({websafeClubmemberKey: $routeParams.websafeClubmemberKey})
             .execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
                         var errorMessage = resp.error.message || '';
-                        $scope.messages = 'Failed to delete department : ' + errorMessage;
+                        $scope.messages = 'Failed to delete clubmember : ' + errorMessage;
                         $scope.alertStatus = 'warning';
-                        $log.error($scope.messages + ' Department : ' + JSON.stringify($scope.department));
+                        $log.error($scope.messages + ' Clubmember : ' + JSON.stringify($scope.clubmember));
                         if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
                             oauth2Provider.signIn();//   showLoginModal();
                             return;
                         }
                         $route.reload();
                     } else {
-                        $scope.messages = 'The department has been deleted ';
+                        $scope.messages = 'The clubmember has been deleted ';
                         $scope.alertStatus = 'success';
                         $scope.submitted = false;
-                        $scope.department = {};
+                        $scope.clubmember = {};
                         $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
                         $timeout(function () {
-                            $location.path('/departments');
+                            $location.path('/clubmembers');
                             $route.reload();
                         });
                     }
@@ -216,21 +215,21 @@ ClubManagementApp.controllers.controller('detailedDepartmentCtrl', function ($sc
         var callback = function() {
             $scope.loading = true;
             $scope.submitted = true;
-            gapi.client.clubmanagement.getDepartment({websafeDepartmentKey: $routeParams.websafeDepartmentKey}).execute(function (resp) {
+            gapi.client.clubmanagement.getClubmember({websafeClubmemberKey: $routeParams.websafeClubmemberKey}).execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
                         var errorMessage = resp.error.message || '';
-                        $scope.messages = 'Failed to get the department : ' + $routeParams.websafeDepartmentKey  + ' ' + errorMessage;
+                        $scope.messages = 'Failed to get the clubmember : ' + $routeParams.websafeClubmemberKey  + ' ' + errorMessage;
                         $scope.alertStatus = 'warning';
                         $log.error($scope.messages);
                     } else {
                         $scope.submitted = false;
                         $scope.alertStatus = 'success';
-                        $scope.department = resp.result;
-                        parentProvider.department = $scope.department;
+                        $scope.clubmember = resp.result;
+                        parentProvider.clubmember = $scope.clubmember;
 
-                        if ($scope.department == null) { $scope.department = []; }
+                        if ($scope.clubmember == null) { $scope.clubmember = []; }
                     }
                 });
             });
@@ -245,48 +244,48 @@ ClubManagementApp.controllers.controller('detailedDepartmentCtrl', function ($sc
 
 /**
  * @ngdoc controller
- * @name createDepartmentCtrl
+ * @name createClubmemberCtrl
  *
  * @description
- * A controller used to save a department page.
+ * A controller used to save a clubmember page.
  */
-ClubManagementApp.controllers.controller('createDepartmentCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
 
-    $scope.department = {};
+    $scope.clubmember = {};
 
     document.getElementById("name").focus();
 
-    $scope.isValidDepartment = function (departmentForm) {
-        return !departmentForm.$invalid;
+    $scope.isValidClubmember = function (clubmemberForm) {
+        return !clubmemberForm.$invalid;
     }
 
-    $scope.createDepartment = function (departmentForm) {
-        if (!$scope.isValidDepartment(departmentForm)) {
+    $scope.createTrainer = function (trainerForm) {
+        if (!$scope.isValidTrainer(trainerForm)) {
             return;
         }
 
         var callback = function() {
             $scope.loading = true;
-            gapi.client.clubmanagement.createDepartment($scope.department).
+            gapi.client.clubmanagement.createTrainer($scope.trainer).
             execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
                         // The request has failed.
                         var errorMessage = resp.error.message || '';
-                        $scope.messages = 'Failed to save a department : ' + errorMessage;
+                        $scope.messages = 'Failed to save a trainer : ' + errorMessage;
                         $scope.alertStatus = 'warning';
-                        $log.error($scope.messages + ' Department : ' + JSON.stringify($scope.department));
+                        $log.error($scope.messages + ' Trainer : ' + JSON.stringify($scope.trainer));
                         if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
                             oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
                             return;
                         }
                     } else {
                         // The request has succeeded.
-                        $scope.messages = 'The department has been saved : ' + resp.result.name;
+                        $scope.messages = 'The trainer has been saved : ' + resp.result.name;
                         $scope.alertStatus = 'success';
                         $scope.submitted = false;
-                        $scope.department = {};
+                        $scope.trainer = {};
                         $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
                     }
                 });
@@ -310,32 +309,32 @@ ClubManagementApp.controllers.controller('createDepartmentCtrl', function ($scop
 
 /**
  * @ngdoc controller
- * @name saveDepartmentCtrl
+ * @name saveTrainerCtrl
  *
  * @description
- * A controller used to save a department page.
+ * A controller used to save a trainer page.
  */
-ClubManagementApp.controllers.controller('saveDepartmentCtrl', function ($scope, $log, $location, $route, oauth2Provider, $routeParams, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('saveTrainerCtrl', function ($scope, $log, $location, $route, oauth2Provider, $routeParams, HTTP_ERRORS) {
 
-    $scope.department = {};
+    $scope.trainer = {};
 
     $scope.init = function () {
         var callback = function() {
             $scope.loading = true;
-            gapi.client.clubmanagement.getDepartment({websafeDepartmentKey: $routeParams.websafeDepartmentKey
+            gapi.client.clubmanagement.getTrainer({websafeTrainerKey: $routeParams.websafeTrainerKey
             }).execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
                         // The request has failed.
                         var errorMessage = resp.error.message || '';
-                        $scope.messages = 'Failed to get the department : ' + $routeParams.websafeDepartmentKey  + ' ' + errorMessage;
+                        $scope.messages = 'Failed to get the trainer : ' + $routeParams.websafeTrainerKey  + ' ' + errorMessage;
                         $scope.alertStatus = 'warning';
                         $log.error($scope.messages);
                     } else {
                         // The request has succeeded.
                         $scope.alertStatus = 'success';
-                        $scope.department = resp.result;
+                        $scope.trainer = resp.result;
                     }
                 });
             });
@@ -347,37 +346,37 @@ ClubManagementApp.controllers.controller('saveDepartmentCtrl', function ($scope,
         }
     };
 
-    $scope.isValidDepartment = function (departmentForm) {
-        return !departmentForm.$invalid;
+    $scope.isValidTrainer = function (trainerForm) {
+        return !trainerForm.$invalid;
     }
 
-    $scope.saveDepartment = function (departmentForm) {
-         $scope.department.websafeDepartmentKey = $routeParams.websafeDepartmentKey;
-         if (!$scope.isValidDepartment(departmentForm)) {
+    $scope.saveTrainer = function (trainerForm) {
+         $scope.trainer.websafeTrainerKey = $routeParams.websafeTrainerKey;
+         if (!$scope.isValidTrainer(trainerForm)) {
              return;
          }
 
          var callback = function() {
             $scope.loading = true;
-            gapi.client.clubmanagement.saveDepartment({name: $scope.department.name, description: $scope.department.description, restTime: $scope.department.restTime, departmentKey: $routeParams.websafeDepartmentKey})
+            gapi.client.trainer.saveTrainer({name: $scope.trainer.name, description: $scope.trainer.description, restTime: $scope.trainer.restTime, trainerKey: $routeParams.websafeTrainerKey})
              .execute(function (resp) {
                  $scope.$apply(function () {
                     $scope.loading = false;
                      if (resp.error) {
                          var errorMessage = resp.error.message || '';
-                         $scope.messages = 'Failed to save a department : ' + errorMessage;
+                         $scope.messages = 'Failed to save a trainer : ' + errorMessage;
                          $scope.alertStatus = 'warning';
-                         $log.error($scope.messages + ' Department : ' + JSON.stringify($scope.department));
+                         $log.error($scope.messages + ' Trainer : ' + JSON.stringify($scope.department));
                          if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
                              oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
                              return;
                          }
                          $route.reload();
                      } else {
-                         $scope.messages = 'The department has been saved : ' + resp.result.name;
+                         $scope.messages = 'The trainer has been saved : ' + resp.result.name;
                          $scope.alertStatus = 'success';
                          $scope.submitted = false;
-                         $scope.department = {};
+                         $scope.trainer = {};
                          $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
                          window.history.back();
                      }

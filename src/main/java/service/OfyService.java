@@ -30,6 +30,8 @@ public class OfyService implements ServletContextListener {
 
         ObjectifyService.register(Account.class);
         ObjectifyService.register(Department.class);
+        ObjectifyService.register(Clubmember.class);
+        ObjectifyService.register(Trainer.class);
     }
 
     public  void contextDestroyed (ServletContextEvent event) {
