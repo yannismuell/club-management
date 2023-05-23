@@ -60,7 +60,7 @@ ClubManagementApp.controllers.controller('getTrainersCtrl', function ($scope, $l
                         if (resp.error) {
                             // The request has failed.
                             var errorMessage = resp.error.message || '';
-                            $scope.messages = 'Failed to obtain clubmembers : ' + errorMessage;
+                            $scope.messages = 'Failed to obtain trainers : ' + errorMessage;
                             $scope.alertStatus = 'warning';
                             $log.error($scope.messages );
                         } else {
@@ -69,9 +69,9 @@ ClubManagementApp.controllers.controller('getTrainersCtrl', function ($scope, $l
                             $scope.messages = 'Query succeeded';
                             $scope.alertStatus = 'success';
                             $log.info($scope.messages);
-                            $scope.clubmembers = resp.items;
-                            $scope.filteredClubmembers = $scope.clubmembers;
-                            parentProvider.clubmembers = $scope.clubmembers;
+                            $scope.trainers = resp.items;
+                            $scope.filteredTrainer = $scope.trainer;
+                            parentProvider.trainer = $scope.trainer;
                         }
                         $scope.submitted = true;
                     });
@@ -79,35 +79,35 @@ ClubManagementApp.controllers.controller('getTrainersCtrl', function ($scope, $l
             );
         };
         if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(retrieveClubmembersCallback);
+            oauth2Provider.signIn(retrieveTrainerCallback);
         } else {
-            retrieveClubmembersCallback();
+            retrieveTrainerCallback();
         }
     };
 
-    $scope.deleteClubmemberWithWebsafeClubmemberKey = function (websafeClubmemberKey) {
+    $scope.deleteTrainerWithWebsafeTrainerKey = function (websafeTrainerKey) {
         var callback = function() {
             $scope.loading = true;
-            gapi.client.clubmanagement.deleteClubmember({websafeClubmemberKey: websafeClubmemberKey})
+            gapi.client.clubmanagement.deleteTrainer({websafeTrainerKey: websafeTrainerKey})
             .execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
                         // The request has failed.
                         var errorMessage = resp.error.message || '';
-                        $scope.messages = 'Failed to delete clubmember : ' + errorMessage;
+                        $scope.messages = 'Failed to delete trainer : ' + errorMessage;
                         $scope.alertStatus = 'warning';
-                        $log.error($scope.messages + ' Clubmember : ' + JSON.stringify($scope.clubmember));
+                        $log.error($scope.messages + ' Trainer : ' + JSON.stringify($scope.trainer));
                         if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
                             oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
                             return;
                         }
                     } else {
                         // The request has succeeded.
-                        $scope.messages = 'The clubmember has been deleted ';
+                        $scope.messages = 'The trainer has been deleted ';
                         $scope.alertStatus = 'success';
                         $scope.submitted = false;
-                        $scope.clubmember = {};
+                        $scope.trainer = {};
                         $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
                         $route.reload();
                     }
@@ -124,14 +124,14 @@ ClubManagementApp.controllers.controller('getTrainersCtrl', function ($scope, $l
 
 /**
  * @ngdoc controller
-     * @name detailedClubmemberCtrl
+     * @name detailedTrainerCtrl
  *
  * @description
- * A controller used to save a clubmember page.
+ * A controller used to save a trainer page.
  */
-ClubManagementApp.controllers.controller('detailedClubmemberCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('detailedTrainerCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
 
-    $scope.clubmember = {};
+    $scope.trainer = {};
     $scope.submitted = false;
     $scope.length = 0;
 
@@ -172,32 +172,32 @@ ClubManagementApp.controllers.controller('detailedClubmemberCtrl', function ($sc
         angular.element(document.querySelector('.navbar-collapse')).removeClass('in');
     };
 
-    $scope.deleteClubmember = function (clubmemberForm) {
+    $scope.deleteTrainer = function (trainerForm) {
         var callback = function() {
             $scope.loading = true;
             $scope.submitted = true;
-            gapi.client.clubmanagement.deleteClubmember({websafeClubmemberKey: $routeParams.websafeClubmemberKey})
+            gapi.client.clubmanagement.deleteTrainer({websafeTrainerKey: $routeParams.websafeTrainerKey})
             .execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
                         var errorMessage = resp.error.message || '';
-                        $scope.messages = 'Failed to delete clubmember : ' + errorMessage;
+                        $scope.messages = 'Failed to delete trainer : ' + errorMessage;
                         $scope.alertStatus = 'warning';
-                        $log.error($scope.messages + ' Clubmember : ' + JSON.stringify($scope.clubmember));
+                        $log.error($scope.messages + ' Trainer : ' + JSON.stringify($scope.trainer));
                         if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
                             oauth2Provider.signIn();//   showLoginModal();
                             return;
                         }
                         $route.reload();
                     } else {
-                        $scope.messages = 'The clubmember has been deleted ';
+                        $scope.messages = 'The trainer has been deleted ';
                         $scope.alertStatus = 'success';
                         $scope.submitted = false;
-                        $scope.clubmember = {};
+                        $scope.trainer = {};
                         $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
                         $timeout(function () {
-                            $location.path('/clubmembers');
+                            $location.path('/trainer');
                             $route.reload();
                         });
                     }
@@ -215,21 +215,21 @@ ClubManagementApp.controllers.controller('detailedClubmemberCtrl', function ($sc
         var callback = function() {
             $scope.loading = true;
             $scope.submitted = true;
-            gapi.client.clubmanagement.getClubmember({websafeClubmemberKey: $routeParams.websafeClubmemberKey}).execute(function (resp) {
+            gapi.client.clubmanagement.getTrainer({websafeTrainerKey: $routeParams.websafeTrainerKey}).execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
                         var errorMessage = resp.error.message || '';
-                        $scope.messages = 'Failed to get the clubmember : ' + $routeParams.websafeClubmemberKey  + ' ' + errorMessage;
+                        $scope.messages = 'Failed to get the trainer : ' + $routeParams.websafeTrainerKey  + ' ' + errorMessage;
                         $scope.alertStatus = 'warning';
                         $log.error($scope.messages);
                     } else {
                         $scope.submitted = false;
                         $scope.alertStatus = 'success';
-                        $scope.clubmember = resp.result;
-                        parentProvider.clubmember = $scope.clubmember;
+                        $scope.trainer = resp.result;
+                        parentProvider.trainer = $scope.trainer;
 
-                        if ($scope.clubmember == null) { $scope.clubmember = []; }
+                        if ($scope.trainer == null) { $scope.trainer = []; }
                     }
                 });
             });
@@ -244,19 +244,19 @@ ClubManagementApp.controllers.controller('detailedClubmemberCtrl', function ($sc
 
 /**
  * @ngdoc controller
- * @name createClubmemberCtrl
+ * @name createTrainerCtrl
  *
  * @description
- * A controller used to save a clubmember page.
+ * A controller used to save a trainer page.
  */
-ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('createTrainerCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
 
-    $scope.clubmember = {};
+    $scope.trainer = {};
 
     document.getElementById("name").focus();
 
-    $scope.isValidClubmember = function (clubmemberForm) {
-        return !clubmemberForm.$invalid;
+    $scope.isValidTrainer = function (trainerForm) {
+        return !trainerForm.$invalid;
     }
 
     $scope.createTrainer = function (trainerForm) {
