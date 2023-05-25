@@ -219,7 +219,6 @@ public class ClubManagementAPI {
         List<Department> departments = ofy().load().type(Department.class).ancestor(ownerKey).list();
         return departments;
     }
-
     /**
      * Creates a new Department object and stores it to the datastore.
      *
@@ -521,30 +520,6 @@ public class ClubManagementAPI {
 
         return clubmember;
     }
-    /*
-    /**
-     * Creates a new Admin object and stores it to the datastore.
-     *
-     * @param user A user who invokes this method, null when the user is not signed in.
-     * @param adminForm A AdminForm object representing user's inputs.
-     * @return A newly created Admin Object.
-     * @throws UnauthorizedException when the user is not signed in.
-
-    @ApiMethod(name = "createAdmins",
-            path = "admin/create",
-            httpMethod = HttpMethod.POST)
-    public Admin createAdmin(final User user, final AdminForm adminForm) throws Exception {
-        checkUserOk(user);
-
-        final Key<Admin> adminKey = factory().allocateId(Admin.class);
-        final long adminId = adminKey.getId();
-
-        Admin admin = new Admin(adminId, adminForm);
-        ofy().save().entities(admin).now();
-
-        return admin;
-    }
-    */
 
     /**
      * Returns a list of Trainers that the user created.
