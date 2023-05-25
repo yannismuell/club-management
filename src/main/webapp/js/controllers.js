@@ -8,7 +8,7 @@
 var ClubManagementApp = ClubManagementApp || {};
 var activeURL = '#!/departments';
 var activeURL = '#!/clubmembers';
-var activeURL = '#!/trainers';
+/*var activeURL = '#!/trainers';
 /**
  * @ngdoc module
  * @name clubmanagementControllers

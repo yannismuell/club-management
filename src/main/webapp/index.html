@@ -55,7 +55,8 @@
 
                         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
                             <ul class="navbar-nav text-md-center nav-justified w-100 ">
-                                <li class="nav-item " ng-class="{ active: isActive('/departments') }" ng-show="getSignedInState()" ng-click="collapseNavbar()"><a class="Navbar_ClubManagement_Item colour_CM_Blue" ng-href="{{getActiveURL()}}">Your Club</a></li>
+                                <li class="nav-item " ng-class="{ active: isActive('/departments')  || isActive('/clubmembers') || isActive('/trainers') ) }" ng-show="getSignedInState()" ng-click="collapseNavbar()"><a class="Navbar_ClubManagement_Item colour_CM_Blue" ng-href="{{getActiveURL()}}">Your Club</a></li>
+
                                 <li class="nav-item " ng-class="{ active: isActive('/documentation')}" ng-click="collapseNavbar()"><a class="Navbar_ClubManagement_Item colour_CM_Blue" href="#!/documentation">Documentation</a></li>
                                 <li class="nav-item">
                                     <a class="Navbar_ClubManagement_Item colour_CM_Blue" href="#">Wiki</a>
@@ -98,5 +99,6 @@
 <script src="/js/controllers.js"></script>
 <script src="/js/department.js"></script>
 <script src="/js/clubmember.js"></script>
+<script src="/js/trainer.js"></script>
 </body>
 </html>
