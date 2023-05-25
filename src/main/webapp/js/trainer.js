@@ -51,7 +51,7 @@ ClubManagementApp.controllers.controller('getTrainersCtrl', function ($scope, $l
     }
 
     $scope.init = function () {
-        var retrieveTrainerCallback = function () {
+        var retrieveTrainersCallback = function () {
             $scope.loading = true;
             gapi.client.clubmanagement.getTrainersCreated().
                 execute(function (resp) {
@@ -70,8 +70,8 @@ ClubManagementApp.controllers.controller('getTrainersCtrl', function ($scope, $l
                             $scope.alertStatus = 'success';
                             $log.info($scope.messages);
                             $scope.trainers = resp.items;
-                            $scope.filteredTrainer = $scope.trainer;
-                            parentProvider.trainer = $scope.trainer;
+                            $scope.filteredTrainers = $scope.trainers;
+                            parentProvider.trainers = $scope.trainers;
                         }
                         $scope.submitted = true;
                     });
@@ -79,9 +79,9 @@ ClubManagementApp.controllers.controller('getTrainersCtrl', function ($scope, $l
             );
         };
         if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(retrieveTrainerCallback);
+            oauth2Provider.signIn(retrieveTrainersCallback);
         } else {
-            retrieveTrainerCallback();
+            retrieveTrainersCallback();
         }
     };
 
