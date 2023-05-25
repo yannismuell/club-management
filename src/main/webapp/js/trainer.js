@@ -11,7 +11,7 @@ ClubManagementApp.controllers.controller('getTrainersCtrl', function ($scope, $l
 
     $scope.submitted = false;
     $scope.loading = false;
-    activeURL = '#!/trainers';
+    /*activeURL = '#!/trainers';*/
 
     $scope.trainers = [];
     $scope.filteredTrainers = [];
