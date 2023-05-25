@@ -8,11 +8,11 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Parent;
-import form.DepartmentForm;
+import form.MatchForm;
 
 @Entity
 @Cache
-public class Department {
+public class Match {
 
     @Id
     private Long id;
@@ -30,15 +30,15 @@ public class Department {
 
     private float restTime = 11;
 
-    private Department() {}
+    private Match() {}
 
-    public Department(final long id, final String accountID, final DepartmentForm departmentForm, final String email) {
-        Preconditions.checkNotNull(departmentForm.getName(), "The name is required");
+    public Match(final long id, final String accountID, final MatchForm macthForm, final String email) {
+        Preconditions.checkNotNull(matchForm.getName(), "The name is required");
         this.id = id;
         this.accountKey = Key.create(Account.class, accountID);
         this.accountID = accountID;
 
-        updateWithDepartmentForm(departmentForm);
+        updateWithMatchForm(matchForm);
     }
 
     public long getId() {
@@ -65,18 +65,18 @@ public class Department {
     }
 
     public String getWebsafeAccountKey() {
-        return Key.create(accountKey, Department.class, id).toLegacyUrlSafe();
+        return Key.create(accountKey, Match.class, id).toLegacyUrlSafe();
     }
 
-    public String getWebsafeDepartmentKey() {
-        return Key.create(accountKey, Department.class, id).toLegacyUrlSafe();
+    public String getWebsafeMatchKey() {
+        return Key.create(accountKey, Match.class, id).toLegacyUrlSafe();
     }
 
 
-    public void updateWithDepartmentForm(DepartmentForm departmentForm) {
-        this.name = departmentForm.getName();
-        this.description = departmentForm.getDescription();
-        this.restTime = departmentForm.getRestTime();
+    public void updateWithMatchForm(MatchForm matchForm) {
+        this.name = matchForm.getName();
+        this.description = matchForm.getDescription();
+        this.restTime = matchForm.getRestTime();
     }
 
     public void update(String name, String description, float restTime) {
