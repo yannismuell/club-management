@@ -195,42 +195,42 @@ public class ClubManagementAPI {
     }
 
     /**
-     * Returns a list of Departments that the user created.
-     * In order to receive the websafeDepartmentKey via the JSON params, uses a POST method.
+     * Returns a list of Matches that the user created.
+     * In order to receive the websafeMatchKey via the JSON params, uses a POST method.
      *
      * @param user An user who invokes this method, null when the user is not signed in.
-     * @return a list of Departments that the user created.
+     * @return a list of Matches that the user created.
      * @throws UnauthorizedException when the user is not signed in.
      */
 
 
     @ApiMethod(
-            name = "getDepartmentsCreated",
-            path = "department/created",
+            name = "getMatchesCreated",
+            path = "match/created",
             httpMethod = HttpMethod.POST
     )
-    public List<Department> getDepartmentsCreated(final User user) throws UnauthorizedException {
+    public List<Match> getMatchesCreated(final User user) throws UnauthorizedException {
         // If not signed in, throw a 401 error.
         if (user == null) {
             throw new UnauthorizedException("Authorization required");
         }
 
         Key<Account>ownerKey = Key.create(Account.class, user.getUserId());
-        List<Department> departments = ofy().load().type(Department.class).ancestor(ownerKey).list();
-        return departments;
+        List<Match> matches = ofy().load().type(Match.class).ancestor(ownerKey).list();
+        return matches;
     }
     /**
-     * Creates a new Department object and stores it to the datastore.
+     * Creates a new Match object and stores it to the datastore.
      *
      * @param user A user who invokes this method, null when the user is not signed in.
-     * @param departmentForm A DepartmentForm object representing user's inputs.
-     * @return A newly created Department Object.
+     * @param matchForm A MatchForm object representing user's inputs.
+     * @return A newly created Match Object.
      * @throws UnauthorizedException when the user is not signed in.
      */
-    @ApiMethod(name = "createDepartment",
-            path = "department/create",
+    @ApiMethod(name = "createMatch",
+            path = "match/create",
             httpMethod = HttpMethod.POST)
-    public Department createDepartment(final User user, final DepartmentForm departmentForm) throws UnauthorizedException {
+    public Match createMatch(final User user, final MatchForm matchForm) throws UnauthorizedException {
         if (user == null) {
             throw new UnauthorizedException("Authorization required");
         }
@@ -238,87 +238,87 @@ public class ClubManagementAPI {
         Key<Account> accountKey = Key.create(Account.class, getUserId(user));
         String websafeAccountKey = accountKey.toLegacyUrlSafe();
 
-        final Key<Department> departmentKey = factory().allocateId(accountKey, Department.class);
-        final long departmentID = departmentKey.getId();
+        final Key<Match> matchKey = factory().allocateId(accountKey, Match.class);
+        final long matchID = matchKey.getId();
         final String userId = getUserId(user);
         Account account = getAccountFromUser(user, userId);
         String email = account.getMainEmail();
 
-        Department department = ofy().transact(new Work<Department>() {
+        Match match = ofy().transact(new Work<Match>() {
             @Override
-            public Department run() {
-                Department department = new Department(departmentID, userId, departmentForm, email);
-                ofy().save().entities(department, account).now();
-                return department;
+            public Match run() {
+                Match match = new Match(matchID, userId, matchForm, email);
+                ofy().save().entities(match, account).now();
+                return match;
             }
         });
 
-        return department;
+        return match;
     }
 
 
     /**
-     * Saves a Department object and stores it to the datastore.
+     * Saves a Match object and stores it to the datastore.
      *
      * @param user A user who invokes this method, null when the user is not signed in.
-     * @param name The department name
-     * @param description The department description
+     * @param name The match name
+     * @param description The match description
      * @param restTime The minimum rest time required between consecutive shifts
-     * @return An updated department object.
+     * @return An updated match object.
      * @throws UnauthorizedException when the user is not signed in.
      */
-    @ApiMethod(name = "saveDepartment",
-            path = "department/save/{departmentKey}",
+    @ApiMethod(name = "saveMatch",
+            path = "match/save/{matchKey}",
             httpMethod = HttpMethod.POST)
-    public Department saveDepartment(final User user,
+    public Match saveMatch(final User user,
                                      @Named ("name") final String name,
                                      @Named ("description") final String description,
                                      @Named ("restTime") final float restTime,
-                                     @Named ("departmentKey") final String websafeDepartmentKey)
+                                     @Named ("matchKey") final String websafeMatchKey)
             throws UnauthorizedException  {
         if (user == null) {
             throw new UnauthorizedException("Authorization required");
         }
 
-        Department department = ofy().transact(new Work<Department>() {
+        Match match = ofy().transact(new Work<Match>() {
             @Override
-            public Department run() {
-                Key<Department> departmentKey = Key.create(websafeDepartmentKey);
-                Department department = ofy().load().key(departmentKey).now();
-                department.update(name, description, restTime);
-                ofy().save().entity(department).now();
-                return department;
+            public Match run() {
+                Key<Match> matchKey = Key.create(websafeMatchKey);
+                Match match = ofy().load().key(matchKey).now();
+                match.update(name, description, restTime);
+                ofy().save().entity(match).now();
+                return match;
             }
         });
 
-        return (department);
+        return (match);
     }
 
     /**
-     * Deletes a Department object and removes it from the datastore.
+     * Deletes a Match object and removes it from the datastore.
      *
      * @param user A user who invokes this method, null when the user is not signed in.
-     * @param websafeDepartmentKey A DepartmentForm object representing user's inputs.
-     * @return A newly created Department Object.
+     * @param websafeMatchKey A MatchForm object representing user's inputs.
+     * @return A newly created Match Object.
      * @throws UnauthorizedException when the user is not signed in.
      */
-    @ApiMethod(name = "deleteDepartment",
-            path = "department/delete/{websafeDepartmentKey}",
+    @ApiMethod(name = "deleteMatch",
+            path = "match/delete/{websafeMatchKey}",
             httpMethod = HttpMethod.DELETE)
-    public WrappedBoolean deleteDepartment(final User user, @Named ("websafeDepartmentKey") final String websafeDepartmentKey)
+    public WrappedBoolean deleteMatch(final User user, @Named ("websafeMatchKey") final String websafeMatchKey)
             throws UnauthorizedException, ConflictException, NotFoundException, ForbiddenException  {
         if (user == null) {
             throw new UnauthorizedException("Authorization required");
         }
 
-        Key<Department> departmentKey = Key.create(websafeDepartmentKey);
-        Department department = ofy().load().key(departmentKey).now();
+        Key<Match> matchKey = Key.create(websafeMatchKey);
+        Match match = ofy().load().key(matchKey).now();
 
         TxResult<Boolean> result = ofy().transact(new Work<TxResult<Boolean>>() {
             @Override
             public TxResult<Boolean> run() {
 
-                ofy().delete().key(departmentKey).now();
+                ofy().delete().key(matchKey).now();
                 return new TxResult<>(true);
             }
         });
@@ -327,44 +327,44 @@ public class ClubManagementAPI {
     }
 
     /**
-     * Returns a Department object with the given departmentID.
+     * Returns a Match object with the given matchID.
      *
-     * @param websafeDepartmentKey The String representation of the Department Key.
-     * @return a Department object with the given departmentID.
-     * @throws NotFoundException when there is no Department with the given departmentID.
+     * @param websafeMatchKey The String representation of the Match Key.
+     * @return a Match object with the given matchID.
+     * @throws NotFoundException when there is no Match with the given matchID.
      */
 
     @ApiMethod(
-            name = "getDepartment",
-            path = "department/{websafeDepartmentKey}",
+            name = "getMatch",
+            path = "match/{websafeMatchKey}",
             httpMethod = HttpMethod.GET
     )
-    public Department getDepartment(final User user, @Named("websafeDepartmentKey") final String websafeDepartmentKey)
+    public Match getMatch(final User user, @Named("websafeMatchKey") final String websafeMatchKey)
             throws UnauthorizedException, NotFoundException {
 
         if (user == null) {
             throw new UnauthorizedException("Authorization required");
         }
 
-        Key<Department> departmentKey = Key.create(websafeDepartmentKey);
-        Department department = ofy().load().key(departmentKey).now();
+        Key<Match> matchKey = Key.create(websafeMatchKey);
+        Match match = ofy().load().key(matchKey).now();
 
-        if (department == null) {
-            throw new NotFoundException("No Department found with key: " + websafeDepartmentKey);
+        if (match == null) {
+            throw new NotFoundException("No Match found with key: " + websafeMatchKey);
         }
 
-        if (!department.getAccountKey().toString().equals(Key.create(Account.class, user.getUserId()).toString())) {
-            throw new UnauthorizedException("Security Violation: User not owner of department?");
+        if (!match.getAccountKey().toString().equals(Key.create(Account.class, user.getUserId()).toString())) {
+            throw new UnauthorizedException("Security Violation: User not owner of match?");
         }
 
-        return department;
+        return match;
     }
     /**
      * Returns a list of Clubmembers that the user created.
-     * In order to receive the websafeDepartmentKey via the JSON params, uses a POST method.
+     * In order to receive the websafeClubmemberKey via the JSON params, uses a POST method.
      *
      * @param user An user who invokes this method, null when the user is not signed in.
-     * @return a list of Departments that the user created.
+     * @return a list of Clubmembers that the user created.
      * @throws UnauthorizedException when the user is not signed in.
      */
     @ApiMethod(
@@ -387,7 +387,7 @@ public class ClubManagementAPI {
      *
      * @param user A user who invokes this method, null when the user is not signed in.
      * @param clubmemberForm A ClubmemberForm object representing user's inputs.
-     * @return A newly created Department Object.
+     * @return A newly created Clubmember Object.
      * @throws UnauthorizedException when the user is not signed in.
      */
     @ApiMethod(name = "createClubmember",
@@ -422,7 +422,7 @@ public class ClubManagementAPI {
      * Saves a Clubmember object and stores it to the datastore.
      *
      * @param user        A user who invokes this method, null when the user is not signed in.
-     * @param name        The department name
+     * @param name        The clubmember name
      * @param description The Clubmember description
      * @param restTime    The minimum rest time required between consecutive shifts
      * @return An updated clubmember object.
@@ -464,7 +464,7 @@ public class ClubManagementAPI {
      * @throws UnauthorizedException when the user is not signed in.
      */
     @ApiMethod(name = "deleteClubmember",
-            path = "clubmember/delete/{websafeDepartmentKey}",
+            path = "clubmember/delete/{websafeTrainerKey}",
             httpMethod = HttpMethod.DELETE)
     public WrappedBoolean deleteClubmember(final User user, @Named ("websafeClubmemberKey") final String websafeClubmemberKey)
             throws UnauthorizedException, ConflictException, NotFoundException, ForbiddenException  {
@@ -491,8 +491,8 @@ public class ClubManagementAPI {
      * Returns a Clubmember object with the given clubmemberID.
      *
      * @param websafeClubmemberKey The String representation of the Clubmember Key.
-     * @return a Clubmember object with the given departmentID.
-     * @throws NotFoundException when there is no Department with the given departmentID.
+     * @return a Clubmember object with the given trainerID.
+     * @throws NotFoundException when there is no Trainer with the given trainerID.
      */
 
     @ApiMethod(
@@ -523,10 +523,10 @@ public class ClubManagementAPI {
 
     /**
      * Returns a list of Trainers that the user created.
-     * In order to receive the websafeDepartmentKey via the JSON params, uses a POST method.
+     * In order to receive the websafeTrainerKey via the JSON params, uses a POST method.
      *
      * @param user An user who invokes this method, null when the user is not signed in.
-     * @return a list of Departments that the user created.
+     * @return a list of Trainers that the user created.
      * @throws UnauthorizedException when the user is not signed in.
      */
     @ApiMethod(
@@ -549,7 +549,7 @@ public class ClubManagementAPI {
      *
      * @param user A user who invokes this method, null when the user is not signed in.
      * @param trainerForm A TrainerForm object representing user's inputs.
-     * @return A newly created Department Object.
+     * @return A newly created Trainer Object.
      * @throws UnauthorizedException when the user is not signed in.
      */
     @ApiMethod(name = "createTrainer",
@@ -584,7 +584,7 @@ public class ClubManagementAPI {
      * Saves a Trainer object and stores it to the datastore.
      *
      * @param user        A user who invokes this method, null when the user is not signed in.
-     * @param name        The department name
+     * @param name        The trainer name
      * @param description The Trainer description
      * @param restTime    The minimum rest time required between consecutive shifts
      * @return An updated trainer object.
@@ -626,7 +626,7 @@ public class ClubManagementAPI {
      * @throws UnauthorizedException when the user is not signed in.
      */
     @ApiMethod(name = "deleteTrainer",
-            path = "trainer/delete/{websafeDepartmentKey}",
+            path = "trainer/delete/{websafeTrainerKey}",
             httpMethod = HttpMethod.DELETE)
     public WrappedBoolean deleteTrainer(final User user, @Named ("websafeTrainerKey") final String websafeTrainerKey)
             throws UnauthorizedException, ConflictException, NotFoundException, ForbiddenException  {
@@ -653,8 +653,8 @@ public class ClubManagementAPI {
      * Returns a Trainer object with the given trainerID.
      *
      * @param websafeTrainerKey The String representation of the Trainer Key.
-     * @return a Trainer object with the given departmentID.
-     * @throws NotFoundException when there is no Department with the given departmentID.
+     * @return a Trainer object with the given trainerID.
+     * @throws NotFoundException when there is no Trainer with the given trainerID.
      */
 
     @ApiMethod(
