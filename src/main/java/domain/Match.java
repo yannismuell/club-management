@@ -32,7 +32,7 @@ public class Match {
 
     private Match() {}
 
-    public Match(final long id, final String accountID, final MatchForm macthForm, final String email) {
+    public Match(final long id, final String accountID, final MatchForm matchForm, final String email) {
         Preconditions.checkNotNull(matchForm.getName(), "The name is required");
         this.id = id;
         this.accountKey = Key.create(Account.class, accountID);

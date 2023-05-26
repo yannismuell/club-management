@@ -1,28 +1,28 @@
 package form;
 
-public class DepartmentForm {
+public class MatchForm {
 
     private String name;
 
     private String description;
 
-    private String websafeDepartmentKey;
+    private String websafeMatchKey;
 
     private float restTime;
 
-    private DepartmentForm() {}
+    private MatchForm() {}
 
     /**
      * Public constructor is solely for Unit Test.
      * @param name
      * @param description
-     * @param websafeDepartmentKey
+     * @param websafeMatchKey
      */
 
-    public DepartmentForm(String name, String description, String websafeDepartmentKey, float restTime) {
+    public MatchForm(String name, String description, String websafeMatchKey, float restTime) {
         this.name = name;
         this.description = description;
-        this.websafeDepartmentKey = websafeDepartmentKey;
+        this.websafeMatchKey = websafeMatchKey;
         this.restTime = restTime;
     }
 
@@ -34,7 +34,7 @@ public class DepartmentForm {
         return description;
     }
 
-    public String getWebsafeDepartmentKey() { return websafeDepartmentKey; }
+    public String getWebsafeMatchKey() { return websafeMatchKey; }
 
     public float getRestTime() { return restTime; }
 }
