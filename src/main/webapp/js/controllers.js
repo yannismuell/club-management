@@ -6,7 +6,7 @@
  * @type {ClubManagementApp|*|{}}
  */
 var ClubManagementApp = ClubManagementApp || {};
-var activeURL = '#!/departments';
+var activeURL = '#!/matches';
 var activeURL = '#!/clubmembers';
 /*var activeURL = '#!/trainers';
 /**

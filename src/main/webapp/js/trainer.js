@@ -366,7 +366,7 @@ ClubManagementApp.controllers.controller('saveTrainerCtrl', function ($scope, $l
                          var errorMessage = resp.error.message || '';
                          $scope.messages = 'Failed to save a trainer : ' + errorMessage;
                          $scope.alertStatus = 'warning';
-                         $log.error($scope.messages + ' Trainer : ' + JSON.stringify($scope.department));
+                         $log.error($scope.messages + ' Trainer : ' + JSON.stringify($scope.trainer));
                          if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
                              oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
                              return;
