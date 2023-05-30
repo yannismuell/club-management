@@ -63,7 +63,7 @@ ClubManagementApp.controllers.controller('AccountCtrl', function ($scope, $log, 
                             $scope.account.surName = resp.result.surName;
                             $scope.account.companyName = resp.result.companyName;
                             $scope.account.mainEmail = resp.result.mainEmail;
-                            $scope.account.restTime = resp.result.restTime;
+                            $scope.account.alter = resp.result.alter;
                             $scope.initialAccount = resp.result;
                         }
                     });
@@ -108,7 +108,7 @@ ClubManagementApp.controllers.controller('AccountCtrl', function ($scope, $log, 
                             surName: $scope.account.surName,
                             companyName: $scope.account.companyName,
                             mainEmail: $scope.account.mainEmail,
-                            restTime: $scope.account.restTime
+                            alter: $scope.account.alter
                         };
                         window.history.back();
                         $log.info($scope.messages + JSON.stringify(resp.result));
