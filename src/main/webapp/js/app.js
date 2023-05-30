@@ -30,12 +30,12 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
               templateUrl: 'partials/matches_edit.html',
               controller: 'saveMatchCtrl'
         }).
-        when('/matches/delete/:websafeDepartmentKey', {
-              templateUrl: 'partials/departments.html',
-              controller: 'getDepartmentCtrl'
+        when('/matches/delete/:websafeMatchKey', {
+              templateUrl: 'partials/matches.html',
+              controller: 'getMatchCtrl'
         }).
-        when('/departments/detail/:websafeDepartmentKey', {
-                templateUrl: 'partials/department_details.html',
+        when('/matches/detail/:websafeMatchKey', {
+                templateUrl: 'partials/match_details.html',
                 controller: ''
         }).
                 when('/clubmembers', {
@@ -110,9 +110,9 @@ app.factory('parentProvider', function ($uibModal) {
 
     var parentProvider = {};
 
-    parentProvider.departments = [];
+    parentProvider.matches = [];
 
-    parentProvider.department = {};
+    parentProvider.match = {};
 
     parentProvider.clubmembers = [];
 
