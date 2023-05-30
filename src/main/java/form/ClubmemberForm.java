@@ -8,7 +8,7 @@ public class ClubmemberForm {
 
     private String websafeClubmemberKey;
 
-    private float restTime;
+    private float alter;
 
     private ClubmemberForm() {}
 
@@ -19,11 +19,11 @@ public class ClubmemberForm {
      * @param websafeClubmemberKey
      */
 
-    public ClubmemberForm(String name, String description, String websafeClubmemberKey, float restTime) {
+    public ClubmemberForm(String name, String description, String websafeClubmemberKey, float alter) {
         this.name = name;
         this.description = description;
         this.websafeClubmemberKey = websafeClubmemberKey;
-        this.restTime = restTime;
+        this.alter = alter;
     }
 
     public String getName() {
@@ -36,6 +36,6 @@ public class ClubmemberForm {
 
     public String getWebsafeClubmemberKey() { return websafeClubmemberKey; }
 
-    public float getRestTime() { return restTime; }
+    public float getAlter() { return alter; }
 }
 

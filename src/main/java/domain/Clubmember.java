@@ -28,7 +28,7 @@ public class Clubmember {
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     private String accountID;
 
-    private float restTime = 11;
+    private float alter = 11;
 
     private Clubmember() {}
 
@@ -55,8 +55,8 @@ public class Clubmember {
         return description;
     }
 
-    public float getRestTime() {
-        return restTime;
+    public float getAlter() {
+        return alter;
     }
 
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
@@ -76,13 +76,13 @@ public class Clubmember {
     public void updateWithClubmemberForm(ClubmemberForm clubmemberForm) {
         this.name = clubmemberForm.getName();
         this.description = clubmemberForm.getDescription();
-        this.restTime = clubmemberForm.getRestTime();
+        this.alter = clubmemberForm.getAlter();
     }
 
-    public void update(String name, String description, float restTime) {
+    public void update(String name, String description, float alter) {
         this.name = name;
         this.description = description;
-        this.restTime = restTime;
+        this.alter = alter;
     }
 
     @Override
