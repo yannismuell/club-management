@@ -1,33 +1,34 @@
 
+
 .mm-overview-table {
     font-size: large;
 }
 
 .mm-text-code {
-    width:130px;
+    width: 130px;
 }
 
 .mm-input {
-    width:60px;
+    width: 60px;
 }
 
 .modal-footer {
-    align:left;
+    align: left;
 }
 
 h8 {
-    color:green;
+    color: green;
 }
 
 .h8 {
-    color:darkred;
+    color: darkred;
 }
 
 .table-custom {
     font-size: 11px;
 }
 
-body{
+body {
     background: #D9DBDC;
 }
 
@@ -49,15 +50,15 @@ body{
 }
 
 .custom-date-blue {
-    padding-top:0.3cm;
+    padding-top: 0.3cm;
     color: blue;
-    font-weight:bold;
+    font-weight: bold;
 }
 
 .custom-date-green {
-    padding-top:0.3cm;
+    padding-top: 0.3cm;
     color: green;
-    font-weight:bold;
+    font-weight: bold;
 }
 
 .custom-weekend {
@@ -69,16 +70,16 @@ body{
 }
 
 .custom-date-sat {
-    padding-top:0.3cm;
+    padding-top: 0.3cm;
     color: red;
-    font-weight:bold;
+    font-weight: bold;
     background-color: #ffe0b3;
 }
 
 .custom-date-sun {
-    padding-top:0.3cm;
+    padding-top: 0.3cm;
     color: red;
-    font-weight:bold;
+    font-weight: bold;
     background-color: #ffb3b3;
 }
 
@@ -100,15 +101,16 @@ body{
     border-color: green;
     color: green;
 }
+
 .btn-add-custom:hover {
     color: white;
-    background:green;
+    background: green;
 }
+
 .btn-add-custom:disabled {
     border-color: green;
     color: LightGreen;
 }
-
 
 body {
     margin: 10px;
@@ -116,72 +118,61 @@ body {
 
 /* Move down content because we have a fixed navbar that is 3.5rem tall */
 body {
-  padding-top: 3.5rem;
+    padding-top: 3.5rem;
 }
 
-/*
- * Typography
- */
+/* Typography */
 
 h1 {
-  padding-bottom: 9px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #eee;
+    padding-bottom: 9px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
 }
 
-
-
-/*
- * Sidebar
- */
+/* Sidebar */
 
 .sidebar_ClubManagement {
-  color: #FFEFCF;
-  position: fixed;
-  top: 51px;
-  bottom: 0;
-  left: 0;
-  z-index: 1000;
-  padding: 20px 0;
-  overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-  border-right: 1px solid #eee;
+    color: #FFEFCF;
+    position: fixed;
+    top: 51px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 20px 0;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    border-right: 1px solid #eee;
 }
 
 .sidebar .nav {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .sidebar .nav-item {
-  width: 100%;
+    width: 100%;
 }
 
 .sidebar .nav-item + .nav-item {
-  margin-left: 0;
+    margin-left: 0;
 }
 
 .sidebar .nav-link {
-  border-radius: 0;
+    border-radius: 0;
 }
 
-/*
- * Dashboard
- */
+/* Dashboard */
 
 /* Placeholders */
 .placeholders {
-  padding-bottom: 3rem;
+    padding-bottom: 3rem;
 }
 
 .placeholder img {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
 }
 
-/*
-required for modal dialog
-*/
-
+/* required for modal dialog */
 .fade.in {
     padding-top: 51px;
     opacity: .9;
@@ -201,63 +192,63 @@ required for modal dialog
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
-
 
 /* fixing modal black background */
 
 .modal-backdrop.fade {
-opacity: 0;
-filter: alpha(opacity=0);
+    opacity: 0;
+    filter: alpha(opacity=0);
 }
+
 .modal-backdrop.in {
-opacity: 0.5;
-filter: alpha(opacity=50);
+    opacity: 0.5;
+    filter: alpha(opacity=50);
 }
 
 .modal-backdrop.fade {
-opacity: 0;
-filter: alpha(opacity=0);
-}
-.modal-backdrop.fade.in {
-opacity: 0.5;
-filter: alpha(opacity=50);
+    opacity: 0;
+    filter: alpha(opacity=0);
 }
 
+.modal-backdrop.fade.in {
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
 
 @media screen and (min-width: 1308px) {
     .modal-dialog {
-      width: 2000px; /* New width for default modal */
+        width: 2000px; /* New width for default modal */
     }
+
     .modal-lg {
-      width: 100%; /* New width for small modal */
+        width: 100%; /* New width for small modal */
     }
+
     .modal-sm {
-      width: 100px; /* New width for small modal */
+        width: 100px; /* New width for small modal */
     }
 }
 
 @media screen and (min-width: 1308px) {
-
     .modal-xl {
-      width: 2000px; /* New width for large modal */
+        width: 2000px; /* New width for large modal */
     }
 
     .modal-lg {
-      width: 2000px; /* New width for large modal */
+        width: 2000px; /* New width for large modal */
     }
 
     .modal-md {
-      width: 2000px; /* New width for large modal */
+        width: 2000px; /* New width for large modal */
     }
 
     .modal-sn {
-      width: 2000px; /* New width for large modal */
+        width: 2000px; /* New width for large modal */
     }
 }
-
 
 /****
 **
@@ -266,35 +257,34 @@ filter: alpha(opacity=50);
 **
 ****/
 
-
-/*Theme the Tabulator element*/
-#example-table-theme{
-    background-color:#ccc;
+/* Theme the Tabulator element */
+#example-table-theme {
+    background-color: #ccc;
     border: 1px solid #333;
     border-radius: 10px;
 }
 
-/*Theme the header*/
+/* Theme the header */
 #example-table-theme .tabulator-header {
-    background-color:#333;
-    color:#fff;
+    background-color: #333;
+    color: #fff;
     text-align: center;
 }
 
-/*Allow column header names to wrap lines*/
+/* Allow column header names to wrap lines */
 #example-table-theme .tabulator-header .tabulator-col,
 #example-table-theme .tabulator-header .tabulator-col-row-handle {
     white-space: normal;
 }
 
-/*Color the table rows*/
-#example-table-theme .tabulator-tableHolder .tabulator-table .tabulator-row{
-    color:#fff;
+/* Color the table rows */
+#example-table-theme .tabulator-tableHolder .tabulator-table .tabulator-row {
+    color: #fff;
     background-color: #666;
 }
 
-/*Color even rows*/
-    #example-table-theme .tabulator-tableHolder .tabulator-table .tabulator-row:nth-child(even) {
+/* Color even rows */
+#example-table-theme .tabulator-tableHolder .tabulator-table .tabulator-row:nth-child(even) {
     background-color: #444;
 }
 
@@ -305,14 +295,12 @@ filter: alpha(opacity=50);
 **
 ****/
 
-
 .table-wrapper {
     display: block;
     max-height: 300px;
     overflow-y: auto;
     -ms-overflow-style: -ms-autohiding-scrollbar;
 }
-
 
 /****
 **
@@ -321,27 +309,20 @@ filter: alpha(opacity=50);
 **
 ****/
 
-
 .pt-3-half {
     padding-top: inherit;
 }
 
-
-
-
-
-/**** CLubManagement ****/
-
-
+/**** ClubManagement ****/
 
 /* ClubManagement-Colour */
 
-.colour_CM_Green{
-color: #74ea00;
+.colour_CM_Green {
+    color: #74ea00;
 }
 
-.colour_CM_Blue{
-color: #1E90FF;
+.colour_CM_Blue {
+    color: #1E90FF;
 }
 
 /* ClubManagement-Nav */
@@ -359,7 +340,7 @@ color: #1E90FF;
 
 /* ClubManagement-Button */
 
-.btn_ClubManagement{
+.btn_ClubManagement {
     color: white;
     Display: inline-block;
     font-weight: 400;
@@ -373,7 +354,7 @@ color: #1E90FF;
     font-size: 1rem;
     line-height: 1.5;
     border-radius: 1rem;
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .nav_ClubManagement_styling {
@@ -399,14 +380,14 @@ a:hover {
 
 /* hover effect signIn/logout and buttons */
 
-/* SignIn/LogOut*/
+/* SignIn/LogOut */
 
 .hover_white:hover {
     color: #74ea00 !important;
-    text-decoration :none;
+    text-decoration: none;
 }
 
-/*Buttons Start-Site*/
+/* Buttons Start-Site */
 
 .hover_buttons:hover {
     color: #000000 !important;
@@ -414,42 +395,32 @@ a:hover {
 }
 
 .btnDocumentation {
-
     color: white;
-        Display: inline-block;
-        font-weight: 400;
-        text-align: center;
-        vertical-align: middle;
-        cursor: pointer;
-        user-select: none;
-        background-color: #007E5E;
-        border: 3px solid #004A30;
-        padding: 0.375rem 0.75rem;
-        font-size: 1rem;
-        line-height: 1.5;
-        border-radius: 1rem;
-        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    Display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    background-color: #007E5E;
+    border: 3px solid #004A30;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 1rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-/*Create Department Button in "Your Club"
 
-.btnCreateDepartments{
+.footer {
+    margin-top: 150px; /* Adjust the value as needed */
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+}
 
-        border-color: black;
-        color: green;
-        display: inline-block;
-        font-weight: 400;
-        text-align: center;
-        vertical-align: middle;
-        cursor: pointer;
-        user-select: none;
-        background-color: transparent;
-        border: 1px solid transparent;
-        padding: 0.375rem 0.75rem;
-        font-size: 1rem;
-        line-height: 1.5;
-        border-radius: 0.25rem;
-        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-    */
+.instagram-icon {
+    width: 24px;
+    height: 24px;
 }
 
