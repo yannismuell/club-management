@@ -18,19 +18,19 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
             templateUrl: 'partials/documentation.html',
             controller: 'DocumentationCtrl'
         }).
-        when('/departments', {
-             templateUrl: 'partials/departments.html',
-             controller: 'getDepartmentsCtrl'
+        when('/matches', {
+             templateUrl: 'partials/matches.html',
+             controller: 'getMatchesCtrl'
         }).
-        when('/departments/create', {
-              templateUrl: 'partials/departments_create.html',
-              controller: 'createDepartmentCtrl'
+        when('/matches/create', {
+              templateUrl: 'partials/matches_create.html',
+              controller: 'createMatchCtrl'
         }).
-        when('/departments/edit/:websafeDepartmentKey', {
-              templateUrl: 'partials/departments_edit.html',
-              controller: 'saveDepartmentCtrl'
+        when('/matches/edit/:websafeMatchey', {
+              templateUrl: 'partials/matches_edit.html',
+              controller: 'saveMatchCtrl'
         }).
-        when('/departments/delete/:websafeDepartmentKey', {
+        when('/matches/delete/:websafeDepartmentKey', {
               templateUrl: 'partials/departments.html',
               controller: 'getDepartmentCtrl'
         }).
