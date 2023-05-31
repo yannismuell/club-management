@@ -1,104 +1,32 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:title" content="ClubManagement">
-  <meta property="og:type" content="website">
-  <meta property="og:description" content=" Artificial Intelligence computes your duty schedules, based on your requirements and workforce.">
-  <link rel="manifest" href="/manifest.json">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-
-
-  <title>ClubManagement</title>
-
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
-  <link href="css/style.css" rel="stylesheet">
-
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular-route.js"></script>
-
-  <script type="text/javascript">
-        function init() {
-            gapi.client.load('clubmanagement', 'v1', null, '//' + window.location.host + '/_ah/api');
-            gapi.client.load('oauth2', 'v2', function () {
-                angular.bootstrap(document, ['ClubManagementApp']);
-                gapi.auth2.init({
-                    'client_id': GOOGLE_APP_ENGINE_CLIENT_ID,
-                    'plugin_name': 'CLUBMANAGEMENT'
-                });
-            });
-        };
-    </script>
-
-  <script src="//apis.google.com/js/client:plusone.js?onload=init"></script>
-
+  <meta charset="UTF-8">
+  <title>ClubManagementApp</title>
 </head>
-
-<!-- Restore the credential from cookie if stored by calling initClient() -->
-<body ng-controller="RootCtrl">
+<body>
 <div class="container-fluid">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-9 col-md-8 col-lg-10 col-xl-12">
+  <div class="jumbotron row">
+    <div class="col-lg-12 col-lg-12">
+      <h1>ClubManagementApp</h1>
 
-        <header class="masthead">
-          <nav class="navbar navbar-expand-md navbar-dark fixed-top nav_ClubManagement_styling">
-            <a href="index.html"><nav class="navbar-brand"><span class="colour_CM_Green">Club</span><span class="colour_CM_Blue">Management</span> </nav></a>
-            <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
+      <div class="row">
+        <div class="col-lg-4">
+          <h2>How Does it Work?</h2>
+          <p>Club Management lists all the members of the club. Every member has his own personal information
+            and his own id. A crucial function is the management of the tournaments which need to be funded by
+            the membership fees and the sponsors.
+            Various functions like a ranking system will be implemented in the list as well as the trainers.
+          </p>
+          <img src="MicrosoftTeams-image.png">
+        </div>
 
-            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-              <ul class="navbar-nav text-md-center nav-justified w-100 ">
-                <li class="nav-item " ng-class="{ active: isActive('/matches') || isActive('/clubmembers') || isActive('/trainers') }" ng-show="getSignedInState()" ng-click="collapseNavbar()"><a class="Navbar_ClubManagement_Item colour_CM_Green" ng-href="{{getActiveURL()}}">Your Club</a></li>
-                <li class="nav-item " ng-class="{ active: isActive('/documentation')}" ng-click="collapseNavbar()"><a class="Navbar_ClubManagement_Item colour_CM_Green" href="#!/documentation">Documentation</a></li>
-                <li class="nav-item">
-                  <a class="Navbar_ClubManagement_Item colour_CM_Green" href="#">Wiki</a>
-                </li>
-                <li class="nav-item" ng-class="{ active: isActive('/account')}" ng-show="getSignedInState()" ng-click="collapseNavbar()"><a class="Navbar_ClubManagement_Item colour_CM_Green" href="#!/account">Account</a></li>
-                <li class="nav-item">
-                  <a class="Navbar_ClubManagement_Item colour_CM_Green" href="#!/impressum">Impressum & Privacy</a>
-                </li>
-              </ul>
-              <a class="nav-link" id="signOutLink" ng-show="getSignedInState()" ng-click="signOut(); collapseNavbar()" href="#!/home.html">Logout</a>
-              <a class="nav-link" id="signInLink"  ng-hide="getSignedInState()" ng-click="signIn(); collapseNavbar()" href="#!/roster">SignIn</a>
 
-            </div>
-          </nav>
-          <main role="main">
-            <ng-view></ng-view>
-          </main>
-        </header>
       </div>
     </div>
   </div>
-
-
-  <!-- Site footer -->
-  <footer id="disclaimer-footer" class="footer">
-    <p>&copy;ClubManagement by SZ-Ybbs 2023</p>
-  </footer>
-
 </div>
-<!-- /container -->
-<span ng-hide="true" id="signInButton" style="display: none" disabled="true"></span>
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" rel="stylesheet">
-
-<script src="/js/constants.js"></script>
-<script src="/js/app.js"></script>
-<script src="/js/controllers.js"></script>
-<script src="/js/match.js"></script>
-<script src="/js/clubmember.js"></script>
-<script src="/js/trainer.js"></script>
+</div>
+</div>
 </body>
 </html>
