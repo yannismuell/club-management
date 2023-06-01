@@ -2,7 +2,7 @@
  * @ngdoc controller
  * @name getMatchCtrl
  *
- * @description
+ * @gegner
  * A controller used to save a match page.
  */
 ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
@@ -41,9 +41,9 @@ ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $lo
         $scope.filteredMatches = [];
         $scope.matches.forEach(function(element) {
             let nameToSearch = element.name.toLowerCase();
-            let descriptionToSearch = element.description.toLowerCase();
+            let gegnerToSearch = element.gegner.toLowerCase();
             let searchString = search_field.toLowerCase();
-            if (nameToSearch.includes(searchString) || descriptionToSearch.includes(searchString)){
+            if (nameToSearch.includes(searchString) || gegnerToSearch.includes(searchString)){
                 $scope.filteredMatches.push(element);
             }
         });
@@ -126,7 +126,7 @@ ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $lo
  * @ngdoc controller
  * @name detailedMatchCtrl
  *
- * @description
+ * @gegner
  * A controller used to save a match page.
  */
 ClubManagementApp.controllers.controller('detailedMatchCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
@@ -247,7 +247,7 @@ ClubManagementApp.controllers.controller('detailedMatchCtrl', function ($scope, 
  * @ngdoc controller
  * @name createMatchCtrl
  *
- * @description
+ * @gegner
  * A controller used to save a match page.
  */
 ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
@@ -312,7 +312,7 @@ ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $l
  * @ngdoc controller
  * @name saveMatchCtrl
  *
- * @description
+ * @gegner
  * A controller used to save a match page.
  */
 ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log, $location, $route, oauth2Provider, $routeParams, HTTP_ERRORS) {
@@ -359,7 +359,7 @@ ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log
 
          var callback = function() {
             $scope.loading = true;
-            gapi.client.clubmanagement.saveMatch({name: $scope.match.name, description: $scope.match.description, restTime: $scope.match.restTime, matchKey: $routeParams.websafeMatchKey})
+            gapi.client.clubmanagement.saveMatch({name: $scope.match.name, gegner: $scope.match.gegner, restTime: $scope.match.restTime, matchKey: $routeParams.websafeMatchKey})
              .execute(function (resp) {
                  $scope.$apply(function () {
                     $scope.loading = false;

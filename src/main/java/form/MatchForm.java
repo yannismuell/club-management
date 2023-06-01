@@ -4,7 +4,7 @@ public class MatchForm {
 
     private String name;
 
-    private String description;
+    private String gegner;
 
     private String websafeMatchKey;
 
@@ -15,13 +15,13 @@ public class MatchForm {
     /**
      * Public constructor is solely for Unit Test.
      * @param name
-     * @param description
+     * @param gegner
      * @param websafeMatchKey
      */
 
-    public MatchForm(String name, String description, String websafeMatchKey, float restTime) {
+    public MatchForm(String name, String gegner, String websafeMatchKey, float restTime) {
         this.name = name;
-        this.description = description;
+        this.gegner = gegner;
         this.websafeMatchKey = websafeMatchKey;
         this.restTime = restTime;
     }
@@ -30,8 +30,8 @@ public class MatchForm {
         return name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getGegner() {
+        return gegner;
     }
 
     public String getWebsafeMatchKey() { return websafeMatchKey; }
