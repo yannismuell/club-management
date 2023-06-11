@@ -64,18 +64,6 @@ public class ClubManagementAPI {
      * @param user A User object injected by the cloud endpoints.
      * @return the App Engine userId for the user.
      */
-    private static String getUserId(User user) {
-        String userId = user.getUserId();
-        if (userId == null) {
-            LOG.info("userId is null, so trying to obtain it from the datastore.");
-            AppEngineUser appEngineUser = new AppEngineUser(user);
-            ofy().save().entity(appEngineUser).now();
-            // Begin new session for not using session cache.
-            AppEngineUser savedUser = ofy().load().key(appEngineUser.getKey()).now();
-            userId = savedUser.getUser().getUserId();
-        }
-        return userId;
-    }
 
     /**
      * Just a wrapper for Boolean.
@@ -95,7 +83,7 @@ public class ClubManagementAPI {
 
     /**
      * A wrapper class that can embrace a generic result or some kind of exception.
-     *
+     * <p>
      * Use this wrapper class for the return type of objectify transaction.
      *
      * @param <ResultType> The type of the actual return object.
@@ -134,8 +122,6 @@ public class ClubManagementAPI {
         }
     }
 
-
-
     /**
      * Returns an Account object associated with the given user object. The cloud endpoints system
      * automatically inject the User object.
@@ -155,7 +141,7 @@ public class ClubManagementAPI {
     /**
      * Creates or updates an Account object associated with the given user object.
      *
-     * @param user A User object injected by the cloud endpoints.
+     * @param user        A User object injected by the cloud endpoints.
      * @param accountForm An AccountForm object sent from the client form.
      * @return Account object just created.
      * @throws UnauthorizedException when the User object is null.
@@ -194,31 +180,62 @@ public class ClubManagementAPI {
         return account;
     }
 
+    private static void checkUserOk(User user) throws Exception {
+
+        if (user == null) {
+            throw new UnauthorizedException("Authorization required");
+        }
+
+        EmailValidator validator = new EmailValidator();
+        if (!validator.valid(user.getEmail())) {
+            throw new Exception("Invalid Email format");
+        }
+
+        if (!validator.emailDomainIsOk(user.getEmail())) {
+            throw new Exception("Invalid Email Domain");
+        }
+    }
     /**
-     * Returns a list of Matches that the user created.
+     * Returns a list of Matches
      * In order to receive the websafeMatchKey via the JSON params, uses a POST method.
      *
      * @param user An user who invokes this method, null when the user is not signed in.
      * @return a list of Matches that the user created.
      * @throws UnauthorizedException when the user is not signed in.
      */
-
-
     @ApiMethod(
-            name = "getMatchesCreated",
-            path = "match/created",
+            name = "getMatches",
+            path = "match/all",
             httpMethod = HttpMethod.POST
     )
-    public List<Match> getMatchesCreated(final User user) throws UnauthorizedException {
-        // If not signed in, throw a 401 error.
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
-        }
-
-        Key<Account>ownerKey = Key.create(Account.class, user.getUserId());
-        List<Match> matches = ofy().load().type(Match.class).ancestor(ownerKey).list();
+    public List<Match> getMatches(final User user) throws Exception {
+        checkUserOk(user);
+        List<Match> matches = ofy().load().type(Match.class).list();
         return matches;
     }
+    /**
+     * Returns a Match object with the given matchID.
+     *
+     * @param websafeMatchKey The String representation of the Match Key.
+     * @return a Match object with the given matchID.
+     * @throws NotFoundException when there is no Match with the given matchID.
+     */
+    @ApiMethod(
+            name = "getMatch",
+            path = "match/{websafeMatchKey}",
+            httpMethod = HttpMethod.GET
+    )
+    public Match getMatch(final User user, @Named("websafeMatchKey") final String websafeMatchKey)
+            throws Exception {
+        checkUserOk(user);
+        Key<Match> matchKey = Key.create(websafeMatchKey);
+        Match match = ofy().load().key(matchKey).now();
+        if (match == null) {
+            throw new NotFoundException("No match found with key: " + websafeMatchKey);
+        }
+        return match;
+    }
+
     /**
      * Creates a new Match object and stores it to the datastore.
      *
@@ -230,40 +247,20 @@ public class ClubManagementAPI {
     @ApiMethod(name = "createMatch",
             path = "match/create",
             httpMethod = HttpMethod.POST)
-    public Match createMatch(final User user, final MatchForm matchForm) throws UnauthorizedException {
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
-        }
-
-        Key<Account> accountKey = Key.create(Account.class, getUserId(user));
-        String websafeAccountKey = accountKey.toLegacyUrlSafe();
-
-        final Key<Match> matchKey = factory().allocateId(accountKey, Match.class);
-        final long matchID = matchKey.getId();
-        final String userId = getUserId(user);
-        Account account = getAccountFromUser(user, userId);
-        String email = account.getMainEmail();
-
-        Match match = ofy().transact(new Work<Match>() {
-            @Override
-            public Match run() {
-                Match match = new Match(matchID, userId, matchForm, email);
-                ofy().save().entities(match, account).now();
-                return match;
-            }
-        });
-
+    public Match createMatch(final User user, final MatchForm matchForm) throws Exception {
+        checkUserOk(user);
+        final Key<Match> matchKey = factory().allocateId(Match.class);
+        final long matchId = matchKey.getId();
+        Match match = new Match(matchId, matchForm);
+        ofy().save().entities(match).now();
         return match;
     }
-
-
     /**
      * Saves a Match object and stores it to the datastore.
      *
      * @param user A user who invokes this method, null when the user is not signed in.
      * @param name The match name
      * @param description The match description
-     * @param restTime The minimum rest time required between consecutive shifts
      * @return An updated match object.
      * @throws UnauthorizedException when the user is not signed in.
      */
@@ -271,415 +268,65 @@ public class ClubManagementAPI {
             path = "match/save/{matchKey}",
             httpMethod = HttpMethod.POST)
     public Match saveMatch(final User user,
-                                     @Named ("name") final String name,
-                                     @Named ("description") final String description,
-                                     @Named ("restTime") final float restTime,
-                                     @Named ("matchKey") final String websafeMatchKey)
-            throws UnauthorizedException  {
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
-        }
-
+                                   @Named ("name") final String name,
+                                   @Named ("description") final String description,
+                                   @Named ("capacity") final int capacity,
+                                   @Named ("matchKey") final String websafeMatchKey)
+            throws Exception  {
+        checkUserOk(user);
         Match match = ofy().transact(new Work<Match>() {
             @Override
             public Match run() {
                 Key<Match> matchKey = Key.create(websafeMatchKey);
                 Match match = ofy().load().key(matchKey).now();
-                match.update(name, description, restTime);
+                match.update(name, description, capacity);
                 ofy().save().entity(match).now();
                 return match;
             }
         });
-
         return (match);
     }
 
     /**
      * Deletes a Match object and removes it from the datastore.
      *
-     * @param user A user who invokes this method, null when the user is not signed in.
-     * @param websafeMatchKey A MatchForm object representing user's inputs.
+     * @param user             A user who invokes this method, null when the user is not signed in.
+     * @param websafeMatchKey A Match object representing user's inputs.
      * @return A newly created Match Object.
      * @throws UnauthorizedException when the user is not signed in.
      */
     @ApiMethod(name = "deleteMatch",
             path = "match/delete/{websafeMatchKey}",
             httpMethod = HttpMethod.DELETE)
-    public WrappedBoolean deleteMatch(final User user, @Named ("websafeMatchKey") final String websafeMatchKey)
-            throws UnauthorizedException, ConflictException, NotFoundException, ForbiddenException  {
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
-        }
+    public WrappedBoolean deleteMatch(final User user, @Named("websafeMatchKey") final String websafeMatchKey) throws Exception {
+        checkUserOk(user);
+
+        // Caution! This will delete all Match entities
+        // Iterable<Key<Match>> allKeys = ofy().load().type(Match.class).keys();
+        // ofy().delete().keys(allKeys);
 
         Key<Match> matchKey = Key.create(websafeMatchKey);
         Match match = ofy().load().key(matchKey).now();
-
         TxResult<Boolean> result = ofy().transact(new Work<TxResult<Boolean>>() {
             @Override
             public TxResult<Boolean> run() {
-
                 ofy().delete().key(matchKey).now();
                 return new TxResult<>(true);
             }
         });
-
         return new WrappedBoolean(result.getResult());
     }
 
-    /**
-     * Returns a Match object with the given matchID.
-     *
-     * @param websafeMatchKey The String representation of the Match Key.
-     * @return a Match object with the given matchID.
-     * @throws NotFoundException when there is no Match with the given matchID.
-     */
-
-    @ApiMethod(
-            name = "getMatch",
-            path = "match/{websafeMatchKey}",
-            httpMethod = HttpMethod.GET
-    )
-    public Match getMatch(final User user, @Named("websafeMatchKey") final String websafeMatchKey)
-            throws UnauthorizedException, NotFoundException {
-
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
+    private static String getUserId(User user) {
+        String userId = user.getUserId();
+        if (userId == null) {
+            LOG.info("userId is null, so trying to obtain it from the datastore.");
+            AppEngineUser appEngineUser = new AppEngineUser(user);
+            ofy().save().entity(appEngineUser).now();
+// Begin new session for not using session cache.
+            AppEngineUser savedUser = ofy().load().key(appEngineUser.getKey()).now();
+            userId = savedUser.getUser().getUserId();
         }
-
-        Key<Match> matchKey = Key.create(websafeMatchKey);
-        Match match = ofy().load().key(matchKey).now();
-
-        if (match == null) {
-            throw new NotFoundException("No Match found with key: " + websafeMatchKey);
-        }
-
-        if (!match.getAccountKey().toString().equals(Key.create(Account.class, user.getUserId()).toString())) {
-            throw new UnauthorizedException("Security Violation: User not owner of match?");
-        }
-
-        return match;
-    }
-    /**
-     * Returns a list of Clubmembers that the user created.
-     * In order to receive the websafeClubmemberKey via the JSON params, uses a POST method.
-     *
-     * @param user An user who invokes this method, null when the user is not signed in.
-     * @return a list of Clubmembers that the user created.
-     * @throws UnauthorizedException when the user is not signed in.
-     */
-    @ApiMethod(
-            name = "getClubmembersCreated",
-            path = "clubmember/created",
-            httpMethod = HttpMethod.POST
-    )
-    public List<Clubmember> getClubmembersCreated(final User user) throws UnauthorizedException {
-        // If not signed in, throw a 401 error.
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
-        }
-
-        Key<Account>ownerKey = Key.create(Account.class, user.getUserId());
-        List<Clubmember> clubmembers = ofy().load().type(Clubmember.class).ancestor(ownerKey).list();
-        return clubmembers;
-    }
-    /**
-     * Creates a new Clubmember object and stores it to the datastore.
-     *
-     * @param user A user who invokes this method, null when the user is not signed in.
-     * @param clubmemberForm A ClubmemberForm object representing user's inputs.
-     * @return A newly created Clubmember Object.
-     * @throws UnauthorizedException when the user is not signed in.
-     */
-    @ApiMethod(name = "createClubmember",
-            path = "clubmember/create",
-            httpMethod = HttpMethod.POST)
-    public Clubmember createClubmember(final User user, final ClubmemberForm clubmemberForm) throws UnauthorizedException {
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
-        }
-
-        Key<Account> accountKey = Key.create(Account.class, getUserId(user));
-        String websafeAccountKey = accountKey.toLegacyUrlSafe();
-
-        final Key<Clubmember> clubmemberKey = factory().allocateId(accountKey, Clubmember.class);
-        final long clubmemberID = clubmemberKey.getId();
-        final String userId = getUserId(user);
-        Account account = getAccountFromUser(user, userId);
-        String email = account.getMainEmail();
-
-        Clubmember clubmember = ofy().transact(new Work<Clubmember>() {
-            @Override
-            public Clubmember run() {
-                Clubmember clubmember = new Clubmember(clubmemberID, userId, clubmemberForm, email);
-                ofy().save().entities(clubmember, account).now();
-                return clubmember;
-            }
-        });
-
-        return clubmember;
-    }
-    /**
-     * Saves a Clubmember object and stores it to the datastore.
-     *
-     * @param user        A user who invokes this method, null when the user is not signed in.
-     * @param name        The clubmember name
-     * @param description The Clubmember description
-     * @param restTime    The minimum rest time required between consecutive shifts
-     * @return An updated clubmember object.
-     * @throws UnauthorizedException when the user is not signed in.
-     */
-    @ApiMethod(name = "saveClubmember",
-            path = "clubmember/save/{clubmemberKey}",
-            httpMethod = HttpMethod.POST)
-    public Clubmember saveClubmember(final User user,
-                                     @Named ("name") final String name,
-                                     @Named ("description") final String description,
-                                     @Named ("restTime") final float restTime,
-                                     @Named ("clubmemberKey") final String websafeClubmemberKey)
-            throws UnauthorizedException  {
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
-        }
-
-        Clubmember clubmember = ofy().transact(new Work<Clubmember>() {
-            @Override
-            public Clubmember run() {
-                Key<Clubmember> clubmemberKey = Key.create(websafeClubmemberKey);
-                Clubmember clubmember = ofy().load().key(clubmemberKey).now();
-                clubmember.update(name, description, restTime);
-                ofy().save().entity(clubmember).now();
-                return clubmember;
-            }
-        });
-
-        return (clubmember);
-    }
-
-    /**
-     * Deletes a Clubmember object and removes it from the datastore.
-     *
-     * @param user A user who invokes this method, null when the user is not signed in.
-     * @param websafeClubmemberKey A ClubmemberForm object representing user's inputs.
-     * @return A newly created Clubmember Object.
-     * @throws UnauthorizedException when the user is not signed in.
-     */
-    @ApiMethod(name = "deleteClubmember",
-            path = "clubmember/delete/{websafeTrainerKey}",
-            httpMethod = HttpMethod.DELETE)
-    public WrappedBoolean deleteClubmember(final User user, @Named ("websafeClubmemberKey") final String websafeClubmemberKey)
-            throws UnauthorizedException, ConflictException, NotFoundException, ForbiddenException  {
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
-        }
-
-        Key<Clubmember> clubmemberKey = Key.create(websafeClubmemberKey);
-        Clubmember clubmember = ofy().load().key(clubmemberKey).now();
-
-        TxResult<Boolean> result = ofy().transact(new Work<TxResult<Boolean>>() {
-            @Override
-            public TxResult<Boolean> run() {
-
-                ofy().delete().key(clubmemberKey).now();
-                return new TxResult<>(true);
-            }
-        });
-
-        return new WrappedBoolean(result.getResult());
-    }
-
-    /**
-     * Returns a Clubmember object with the given clubmemberID.
-     *
-     * @param websafeClubmemberKey The String representation of the Clubmember Key.
-     * @return a Clubmember object with the given trainerID.
-     * @throws NotFoundException when there is no Trainer with the given trainerID.
-     */
-
-    @ApiMethod(
-            name = "getClubmember",
-            path = "clubmember/{websafeClubmemberKey}",
-            httpMethod = HttpMethod.GET
-    )
-    public Clubmember getClubmember(final User user, @Named("websafeClubmemberKey") final String websafeClubmemberKey)
-            throws UnauthorizedException, NotFoundException {
-
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
-        }
-
-        Key<Clubmember> clubmemberKey = Key.create(websafeClubmemberKey);
-        Clubmember clubmember = ofy().load().key(clubmemberKey).now();
-
-        if (clubmember == null) {
-            throw new NotFoundException("No Clubmember found with key: " + websafeClubmemberKey);
-        }
-
-        if (!clubmember.getAccountKey().toString().equals(Key.create(Account.class, user.getUserId()).toString())) {
-            throw new UnauthorizedException("Security Violation: User not owner of clubmember?");
-        }
-
-        return clubmember;
-    }
-
-    /**
-     * Returns a list of Trainers that the user created.
-     * In order to receive the websafeTrainerKey via the JSON params, uses a POST method.
-     *
-     * @param user An user who invokes this method, null when the user is not signed in.
-     * @return a list of Trainers that the user created.
-     * @throws UnauthorizedException when the user is not signed in.
-     */
-    @ApiMethod(
-            name = "getTrainersCreated",
-            path = "trainer/created",
-            httpMethod = HttpMethod.POST
-    )
-    public List<Trainer> getTrainersCreated(final User user) throws UnauthorizedException {
-        // If not signed in, throw a 401 error.
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
-        }
-
-        Key<Account>ownerKey = Key.create(Account.class, user.getUserId());
-        List<Trainer> trainers = ofy().load().type(Trainer.class).ancestor(ownerKey).list();
-        return trainers;
-    }
-    /**
-     * Creates a new Trainer object and stores it to the datastore.
-     *
-     * @param user A user who invokes this method, null when the user is not signed in.
-     * @param trainerForm A TrainerForm object representing user's inputs.
-     * @return A newly created Trainer Object.
-     * @throws UnauthorizedException when the user is not signed in.
-     */
-    @ApiMethod(name = "createTrainer",
-            path = "trainer/create",
-            httpMethod = HttpMethod.POST)
-    public Trainer createTrainer(final User user, final TrainerForm trainerForm) throws UnauthorizedException {
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
-        }
-
-        Key<Account> accountKey = Key.create(Account.class, getUserId(user));
-        String websafeAccountKey = accountKey.toLegacyUrlSafe();
-
-        final Key<Trainer> trainerKey = factory().allocateId(accountKey, Trainer.class);
-        final long trainerID = trainerKey.getId();
-        final String userId = getUserId(user);
-        Account account = getAccountFromUser(user, userId);
-        String email = account.getMainEmail();
-
-        Trainer trainer = ofy().transact(new Work<Trainer>() {
-            @Override
-            public Trainer run() {
-                Trainer trainer = new Trainer(trainerID, userId, trainerForm, email);
-                ofy().save().entities(trainer, account).now();
-                return trainer;
-            }
-        });
-
-        return trainer;
-    }
-    /**
-     * Saves a Trainer object and stores it to the datastore.
-     *
-     * @param user        A user who invokes this method, null when the user is not signed in.
-     * @param name        The trainer name
-     * @param description The Trainer description
-     * @param restTime    The minimum rest time required between consecutive shifts
-     * @return An updated trainer object.
-     * @throws UnauthorizedException when the user is not signed in.
-     */
-    @ApiMethod(name = "saveTrainer",
-            path = "trainer/save/{trainerKey}",
-            httpMethod = HttpMethod.POST)
-    public Trainer saveTrainer(final User user,
-                                     @Named ("name") final String name,
-                                     @Named ("description") final String description,
-                                     @Named ("restTime") final float restTime,
-                                     @Named ("trainerKey") final String websafeTrainerKey)
-            throws UnauthorizedException  {
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
-        }
-
-        Trainer trainer = ofy().transact(new Work<Trainer>() {
-            @Override
-            public Trainer run() {
-                Key<Trainer> trainerKey = Key.create(websafeTrainerKey);
-                Trainer trainer = ofy().load().key(trainerKey).now();
-                trainer.update(name, description, restTime);
-                ofy().save().entity(trainer).now();
-                return trainer;
-            }
-        });
-
-        return (trainer);
-    }
-
-    /**
-     * Deletes a Trainer object and removes it from the datastore.
-     *
-     * @param user A user who invokes this method, null when the user is not signed in.
-     * @param websafeTrainerKey A TrainerForm object representing user's inputs.
-     * @return A newly created Trainer Object.
-     * @throws UnauthorizedException when the user is not signed in.
-     */
-    @ApiMethod(name = "deleteTrainer",
-            path = "trainer/delete/{websafeTrainerKey}",
-            httpMethod = HttpMethod.DELETE)
-    public WrappedBoolean deleteTrainer(final User user, @Named ("websafeTrainerKey") final String websafeTrainerKey)
-            throws UnauthorizedException, ConflictException, NotFoundException, ForbiddenException  {
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
-        }
-
-        Key<Trainer> trainerKey = Key.create(websafeTrainerKey);
-        Trainer trainer = ofy().load().key(trainerKey).now();
-
-        TxResult<Boolean> result = ofy().transact(new Work<TxResult<Boolean>>() {
-            @Override
-            public TxResult<Boolean> run() {
-
-                ofy().delete().key(trainerKey).now();
-                return new TxResult<>(true);
-            }
-        });
-
-        return new WrappedBoolean(result.getResult());
-    }
-
-    /**
-     * Returns a Trainer object with the given trainerID.
-     *
-     * @param websafeTrainerKey The String representation of the Trainer Key.
-     * @return a Trainer object with the given trainerID.
-     * @throws NotFoundException when there is no Trainer with the given trainerID.
-     */
-
-    @ApiMethod(
-            name = "getTrainer",
-            path = "trainer/{websafeTrainerKey}",
-            httpMethod = HttpMethod.GET
-    )
-    public Trainer getTrainer(final User user, @Named("websafeTrainerKey") final String websafeTrainerKey)
-            throws UnauthorizedException, NotFoundException {
-
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
-        }
-
-        Key<Trainer> trainerKey = Key.create(websafeTrainerKey);
-        Trainer trainer = ofy().load().key(trainerKey).now();
-
-        if (trainer == null) {
-            throw new NotFoundException("No Trainer found with key: " + websafeTrainerKey);
-        }
-
-        if (!trainer.getAccountKey().toString().equals(Key.create(Account.class, user.getUserId()).toString())) {
-            throw new UnauthorizedException("Security Violation: User not owner of trainer?");
-        }
-
-        return trainer;
+        return userId;
     }
 }

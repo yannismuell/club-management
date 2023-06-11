@@ -56,7 +56,7 @@ ClubManagementApp.controllers.controller('AccountCtrl', function ($scope, $log, 
                         $scope.loading = false;
                         if (resp.error) {
                             // Failed to get a user account.
-                            console.log(' unable to get account');
+                            // console.log(' unable to get account');
                         } else {
                             // Succeeded to get the user account.
                             $scope.account.firstName = resp.result.firstName;

@@ -9,6 +9,8 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Parent;
 import form.MatchForm;
+import spi.ClubManagementAPI;
+import java.util.logging.Logger;
 
 @Entity
 @Cache
@@ -30,13 +32,15 @@ public class Match {
 
     private float restTime = 11;
 
+    private static final Logger LOG = Logger.getLogger(ClubManagementAPI.class.getName());
     private Match() {}
 
-    public Match(final long id, final String accountID, final MatchForm matchForm, final String email) {
+    public Match(final long id, final MatchForm matchForm) {
+        LOG.info("Name: ." + matchForm.getName());
         Preconditions.checkNotNull(matchForm.getName(), "The name is required");
         this.id = id;
-        this.accountKey = Key.create(Account.class, accountID);
-        this.accountID = accountID;
+        /*this.accountKey = Key.create(Account.class, accountID);
+        this.accountID = accountID;*/
 
         updateWithMatchForm(matchForm);
     }

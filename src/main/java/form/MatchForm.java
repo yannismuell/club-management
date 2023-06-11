@@ -10,15 +10,13 @@ public class MatchForm {
 
     private float restTime;
 
-    private MatchForm() {}
-
+    private MatchForm(){}
     /**
      * Public constructor is solely for Unit Test.
      * @param name
      * @param description
      * @param websafeMatchKey
      */
-
     public MatchForm(String name, String description, String websafeMatchKey, float restTime) {
         this.name = name;
         this.description = description;

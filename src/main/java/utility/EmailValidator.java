@@ -1,5 +1,7 @@
 package utility;
 
+import clubmanagement.Constants;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,11 +18,17 @@ public class EmailValidator {
         pattern = Pattern.compile(EMAIL_PATTERN);
     }
 
+    public boolean emailDomainIsOk(String str)
+    {
+        String domain = str.substring(str.indexOf("@") + 1);
+        return (domain.equals(Constants.EMAIL_DOMAIN) || domain.equals(Constants.EMAIL_EXAMPLE));
+    }
+
     /**
      * Validate hex with regular expression
      *
      * @param hex
-     *            hex for validation
+     * hex for validation
      * @return true valid hex, false invalid hex
      */
     public boolean valid(final String hex) {
@@ -32,7 +40,3 @@ public class EmailValidator {
 
     }
 }
-
-
-
-

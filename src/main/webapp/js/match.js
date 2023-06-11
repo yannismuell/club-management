@@ -53,7 +53,7 @@ ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $lo
     $scope.init = function () {
         var retrieveMatchesCallback = function () {
             $scope.loading = true;
-            gapi.client.clubmanagement.getMatchesCreated().
+            gapi.client.clubmanagement.getMatches().
                 execute(function (resp) {
                     $scope.$apply(function () {
                         $scope.loading = false;
@@ -267,9 +267,12 @@ ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $l
 
         var callback = function() {
             $scope.loading = true;
+            console.log("Match: ", $scope.match);
             gapi.client.clubmanagement.createMatch($scope.match).
             execute(function (resp) {
+            console.log("Match1: ", $scope.match);
                 $scope.$apply(function () {
+                console.log("Match2: ", $scope.match);
                     $scope.loading = false;
                     if (resp.error) {
                         // The request has failed.

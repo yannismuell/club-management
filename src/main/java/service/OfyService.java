@@ -1,6 +1,7 @@
 package service;
 
 import com.google.cloud.datastore.DatastoreOptions;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
@@ -11,7 +12,7 @@ import javax.servlet.ServletContextListener;
 
 /**
  * Custom Objectify Service that this application should use.
- */
+*/
 public class OfyService implements ServletContextListener {
 
     public void contextInitialized(ServletContextEvent event) {
@@ -34,12 +35,13 @@ public class OfyService implements ServletContextListener {
         ObjectifyService.register(Trainer.class);
     }
 
-    public  void contextDestroyed (ServletContextEvent event) {
+    public void contextDestroyed(ServletContextEvent event) {
     }
 
     /**
      * Use this static method for getting the Objectify service object in order to make sure the
      * above static block is executed before using Objectify.
+     *
      * @return Objectify service object.
      */
     public static Objectify ofy() {
@@ -48,6 +50,7 @@ public class OfyService implements ServletContextListener {
 
     /**
      * Use this static method for getting the Objectify service factory.
+     *
      * @return ObjectifyFactory.
      */
     public static ObjectifyFactory factory() {
