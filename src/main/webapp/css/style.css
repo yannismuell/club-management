@@ -417,10 +417,13 @@ a:hover {
     background-color: #f2f2f2;
     padding: 20px;
     border-radius: 10px;
+    position: relative;
+    clear: both;
 }
 
-.instagram-icon {
+.social-icon {
     width: 24px;
     height: 24px;
+    margin-right: 10px;
 }
 

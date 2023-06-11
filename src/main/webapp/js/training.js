@@ -1,27 +1,27 @@
 /**
  * @ngdoc controller
- * @name getMatchCtrl
+ * @name getTrainingCtrl
  *
- * @gegner
- * A controller used to save a match page.
+ * @description
+ * A controller used to save a training page.
  */
-ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('getTrainingsCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
 
     document.getElementById("query-input").focus();
 
     $scope.submitted = false;
     $scope.loading = false;
-    activeURL = '#!/matches';
+    activeURL = '#!/trainings';
 
-    $scope.matches = [];
-    $scope.filteredMatches = [];
+    $scope.trainings = [];
+    $scope.filteredTrainings = [];
 
     $scope.pagination = $scope.pagination || {};
     $scope.pagination.currentPage = 0;
     $scope.pagination.pageSize = 25;
 
     $scope.pagination.numberOfPages = function () {
-        return Math.ceil($scope.filteredMatches.length / $scope.pagination.pageSize);
+        return Math.ceil($scope.filteredTrainings.length / $scope.pagination.pageSize);
     };
 
     $scope.pagination.pageArray = function () {
@@ -37,30 +37,30 @@ ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $lo
         return angular.element(event.target).hasClass('disabled');
     }
 
-    $scope.queryMatchesByName = function (search_field) {
-        $scope.filteredMatches = [];
-        $scope.matches.forEach(function(element) {
+    $scope.queryTrainingsByName = function (search_field) {
+        $scope.filteredTrainings = [];
+        $scope.trainings.forEach(function(element) {
             let nameToSearch = element.name.toLowerCase();
-            let gegnerToSearch = element.gegner.toLowerCase();
+            let descriptionToSearch = element.description.toLowerCase();
             let searchString = search_field.toLowerCase();
-            if (nameToSearch.includes(searchString) || gegnerToSearch.includes(searchString)){
-                $scope.filteredMatches.push(element);
+            if (nameToSearch.includes(searchString) || descriptionToSearch.includes(searchString)){
+                $scope.filteredTrainings.push(element);
             }
         });
         $scope.pagination.currentPage = 0;
     }
 
     $scope.init = function () {
-        var retrieveMatchesCallback = function () {
+        var retrieveTrainingsCallback = function () {
             $scope.loading = true;
-            gapi.client.clubmanagement.getMatches().
+            gapi.client.clubmanagement.getTrainingsCreated().
                 execute(function (resp) {
                     $scope.$apply(function () {
                         $scope.loading = false;
                         if (resp.error) {
                             // The request has failed.
                             var errorMessage = resp.error.message || '';
-                            $scope.messages = 'Failed to obtain matches : ' + errorMessage;
+                            $scope.messages = 'Failed to obtain trainings : ' + errorMessage;
                             $scope.alertStatus = 'warning';
                             $log.error($scope.messages );
                         } else {
@@ -69,9 +69,9 @@ ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $lo
                             $scope.messages = 'Query succeeded';
                             $scope.alertStatus = 'success';
                             $log.info($scope.messages);
-                            $scope.matches = resp.items;
-                            $scope.filteredMatches = $scope.matches;
-                            parentProvider.matches = $scope.matches;
+                            $scope.trainings = resp.items;
+                            $scope.filteredTrainings = $scope.trainings;
+                            parentProvider.trainings = $scope.trainings;
                         }
                         $scope.submitted = true;
                     });
@@ -79,35 +79,35 @@ ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $lo
             );
         };
         if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(retrieveMatchesCallback);
+            oauth2Provider.signIn(retrieveTrainingsCallback);
         } else {
-            retrieveMatchesCallback();
+            retrieveTrainingsCallback();
         }
     };
 
-    $scope.deleteMatchWithWebsafeMatchKey = function (websafeMatchKey) {
+    $scope.deleteTrainingWithWebsafeTrainingKey = function (websafeTrainingKey) {
         var callback = function() {
             $scope.loading = true;
-            gapi.client.clubmanagement.deleteMatch({websafeMatchKey: websafeMatchKey})
+            gapi.client.clubmanagement.deleteTraining({websafeTrainingKey: websafeTrainingKey})
             .execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
                         // The request has failed.
                         var errorMessage = resp.error.message || '';
-                        $scope.messages = 'Failed to delete match : ' + errorMessage;
+                        $scope.messages = 'Failed to delete training : ' + errorMessage;
                         $scope.alertStatus = 'warning';
-                        $log.error($scope.messages + ' Match : ' + JSON.stringify($scope.match));
+                        $log.error($scope.messages + ' training : ' + JSON.stringify($scope.training));
                         if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
                             oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
                             return;
                         }
                     } else {
                         // The request has succeeded.
-                        $scope.messages = 'The match has been deleted ';
+                        $scope.messages = 'The training has been deleted ';
                         $scope.alertStatus = 'success';
                         $scope.submitted = false;
-                        $scope.match = {};
+                        $scope.training = {};
                         $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
                         $route.reload();
                     }
@@ -124,14 +124,14 @@ ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $lo
 
 /**
  * @ngdoc controller
- * @name detailedMatchCtrl
+ * @name detailedTrainingCtrl
  *
- * @gegner
- * A controller used to save a match page.
+ * @description
+ * A controller used to save a training page.
  */
-ClubManagementApp.controllers.controller('detailedMatchCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('detailedTrainingCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
 
-    $scope.match = {};
+    $scope.training = {};
     $scope.submitted = false;
     $scope.length = 0;
 
@@ -173,32 +173,32 @@ ClubManagementApp.controllers.controller('detailedMatchCtrl', function ($scope, 
         angular.element(document.querySelector('.navbar-collapse')).removeClass('in');
     };
 
-    $scope.deleteMatch = function (matchForm) {
+    $scope.deleteTraining = function (trainingForm) {
         var callback = function() {
             $scope.loading = true;
             $scope.submitted = true;
-            gapi.client.clubmanagement.deleteMatch({websafeMatchKey: $routeParams.websafeMatchKey})
+            gapi.client.clubmanagement.deleteTraining({websafeTrainingKey: $routeParams.websafeTrainingKey})
             .execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
                         var errorMessage = resp.error.message || '';
-                        $scope.messages = 'Failed to delete match : ' + errorMessage;
+                        $scope.messages = 'Failed to delete training : ' + errorMessage;
                         $scope.alertStatus = 'warning';
-                        $log.error($scope.messages + ' Match : ' + JSON.stringify($scope.match));
+                        $log.error($scope.messages + ' Training : ' + JSON.stringify($scope.training));
                         if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
                             oauth2Provider.signIn();//   showLoginModal();
                             return;
                         }
                         $route.reload();
                     } else {
-                        $scope.messages = 'The match has been deleted ';
+                        $scope.messages = 'The training has been deleted ';
                         $scope.alertStatus = 'success';
                         $scope.submitted = false;
-                        $scope.match = {};
+                        $scope.training = {};
                         $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
                         $timeout(function () {
-                            $location.path('/matches');
+                            $location.path('/trainings');
                             $route.reload();
                         });
                     }
@@ -216,21 +216,21 @@ ClubManagementApp.controllers.controller('detailedMatchCtrl', function ($scope, 
         var callback = function() {
             $scope.loading = true;
             $scope.submitted = true;
-            gapi.client.clubmanagement.getMatch({websafeMatchKey: $routeParams.websafeMatchKey}).execute(function (resp) {
+            gapi.client.clubmanagement.getTraining({websafeTrainingKey: $routeParams.websafeTrainingKey}).execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
                         var errorMessage = resp.error.message || '';
-                        $scope.messages = 'Failed to get the match : ' + $routeParams.websafeMatchKey  + ' ' + errorMessage;
+                        $scope.messages = 'Failed to get the training : ' + $routeParams.websafeTrainingKey  + ' ' + errorMessage;
                         $scope.alertStatus = 'warning';
                         $log.error($scope.messages);
                     } else {
                         $scope.submitted = false;
                         $scope.alertStatus = 'success';
-                        $scope.match = resp.result;
-                        parentProvider.match = $scope.match;
+                        $scope.training = resp.result;
+                        parentProvider.training = $scope.training;
 
-                        if ($scope.match == null) { $scope.match = []; }
+                        if ($scope.training == null) { $scope.training = []; }
                     }
                 });
             });
@@ -245,51 +245,48 @@ ClubManagementApp.controllers.controller('detailedMatchCtrl', function ($scope, 
 
 /**
  * @ngdoc controller
- * @name createMatchCtrl
+ * @name createTrainingCtrl
  *
- * @gegner
- * A controller used to save a match page.
+ * @description
+ * A controller used to save a training page.
  */
-ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('createTrainingCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
 
-    $scope.match = {};
+    $scope.training = {};
 
     document.getElementById("name").focus();
 
-    $scope.isValidMatch = function (matchForm) {
-        return !matchForm.$invalid;
+    $scope.isValidTraining = function (trainingForm) {
+        return !trainingForm.$invalid;
     }
 
-    $scope.createMatch = function (matchForm) {
-        if (!$scope.isValidMatch(matchForm)) {
+    $scope.createTraining = function (trainingForm) {
+        if (!$scope.isValidTraining(trainingForm)) {
             return;
         }
 
         var callback = function() {
             $scope.loading = true;
-            console.log("Match: ", $scope.match);
-            gapi.client.clubmanagement.createMatch($scope.match).
+            gapi.client.clubmanagement.createTraining($scope.training).
             execute(function (resp) {
-            console.log("Match1: ", $scope.match);
                 $scope.$apply(function () {
-                console.log("Match2: ", $scope.match);
                     $scope.loading = false;
                     if (resp.error) {
                         // The request has failed.
                         var errorMessage = resp.error.message || '';
-                        $scope.messages = 'Failed to save a match : ' + errorMessage;
+                        $scope.messages = 'Failed to save a training : ' + errorMessage;
                         $scope.alertStatus = 'warning';
-                        $log.error($scope.messages + ' Match : ' + JSON.stringify($scope.match));
+                        $log.error($scope.messages + ' Training : ' + JSON.stringify($scope.training));
                         if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
                             oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
                             return;
                         }
                     } else {
                         // The request has succeeded.
-                        $scope.messages = 'The match has been saved : ' + resp.result.name;
+                        $scope.messages = 'The training has been saved : ' + resp.result.name;
                         $scope.alertStatus = 'success';
                         $scope.submitted = false;
-                        $scope.match = {};
+                        $scope.training = {};
                         $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
                     }
                 });
@@ -313,32 +310,32 @@ ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $l
 
 /**
  * @ngdoc controller
- * @name saveMatchCtrl
+ * @name saveTrainingCtrl
  *
- * @gegner
- * A controller used to save a match page.
+ * @description
+ * A controller used to save a training page.
  */
-ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log, $location, $route, oauth2Provider, $routeParams, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('saveTrainingCtrl', function ($scope, $log, $location, $route, oauth2Provider, $routeParams, HTTP_ERRORS) {
 
-    $scope.match = {};
+    $scope.training = {};
 
     $scope.init = function () {
         var callback = function() {
             $scope.loading = true;
-            gapi.client.clubmanagement.getMatch({websafeMatchKey: $routeParams.websafeMatchKey
+            gapi.client.clubmanagement.getTraining({websafeTrainingKey: $routeParams.websafeTrainingKey
             }).execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
                         // The request has failed.
                         var errorMessage = resp.error.message || '';
-                        $scope.messages = 'Failed to get the match : ' + $routeParams.websafeMatchKey  + ' ' + errorMessage;
+                        $scope.messages = 'Failed to get the training : ' + $routeParams.websafeTrainingKey  + ' ' + errorMessage;
                         $scope.alertStatus = 'warning';
                         $log.error($scope.messages);
                     } else {
                         // The request has succeeded.
                         $scope.alertStatus = 'success';
-                        $scope.match = resp.result;
+                        $scope.training = resp.result;
                     }
                 });
             });
@@ -350,37 +347,37 @@ ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log
         }
     };
 
-    $scope.isValidMatch = function (matchForm) {
-        return !matchForm.$invalid;
+    $scope.isValidTraining = function (trainingForm) {
+        return !trainingForm.$invalid;
     }
 
-    $scope.saveMatch = function (matchForm) {
-         $scope.match.websafeMatchKey = $routeParams.websafematchKey;
-         if (!$scope.isValidMatch(matchForm)) {
+    $scope.saveTraining = function (trainingForm) {
+         $scope.training.websafeTrainingKey = $routeParams.websafetrainingKey;
+         if (!$scope.isValidTraining(trainingForm)) {
              return;
          }
 
          var callback = function() {
             $scope.loading = true;
-            gapi.client.clubmanagement.saveMatch({name: $scope.match.name, gegner: $scope.match.gegner, restTime: $scope.match.restTime, matchKey: $routeParams.websafeMatchKey})
+            gapi.client.clubmanagement.saveTraining({name: $scope.training.name, description: $scope.training.description, restTime: $scope.training.restTime, trainingKey: $routeParams.websafeTrainingKey})
              .execute(function (resp) {
                  $scope.$apply(function () {
                     $scope.loading = false;
                      if (resp.error) {
                          var errorMessage = resp.error.message || '';
-                         $scope.messages = 'Failed to save a match : ' + errorMessage;
+                         $scope.messages = 'Failed to save a training : ' + errorMessage;
                          $scope.alertStatus = 'warning';
-                         $log.error($scope.messages + ' Match : ' + JSON.stringify($scope.match));
+                         $log.error($scope.messages + ' Training : ' + JSON.stringify($scope.training));
                          if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
                              oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
                              return;
                          }
                          $route.reload();
                      } else {
-                         $scope.messages = 'The match has been saved : ' + resp.result.name;
+                         $scope.messages = 'The training has been saved : ' + resp.result.name;
                          $scope.alertStatus = 'success';
                          $scope.submitted = false;
-                         $scope.match = {};
+                         $scope.training = {};
                          $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
                          window.history.back();
                      }

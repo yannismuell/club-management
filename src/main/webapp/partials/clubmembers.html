@@ -50,7 +50,7 @@
 
                         <tr ng-repeat="clubmember in filteredClubmembers | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize | orderBy:'name'">
                             <td><a href="#!/clubmembers/detail/{{clubmember.websafeClubmemberKey}}">{{clubmember.name}}</a></td>
-                            <td>{{clubmember.description}}</td>
+                            <td>{{clubmember.description}}</td><td>{{clubmember.alter}}</td>
                             <td>
                                 <button ng-click="deleteClubmemberWithWebsafeClubmemberKey(clubmember.websafeClubmemberKey)" class="btn btn-outline-danger" ng-disabled="loading" title="Delete Clubmember">&#10008;</button>
                             </td>
