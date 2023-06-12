@@ -2,7 +2,7 @@
  * @ngdoc controller
  * @name getMatchCtrl
  *
- * @gegner
+ * @description
  * A controller used to save a match page.
  */
 ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
@@ -362,7 +362,7 @@ ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log
 
          var callback = function() {
             $scope.loading = true;
-            gapi.client.clubmanagement.saveMatch({name: $scope.match.name, gegner: $scope.match.gegner, restTime: $scope.match.restTime, matchKey: $routeParams.websafeMatchKey})
+            gapi.client.clubmanagement.saveMatch({name: $scope.match.name, description: $scope.match.gegner, restTime: $scope.match.restTime, matchKey: $routeParams.websafeMatchKey})
              .execute(function (resp) {
                  $scope.$apply(function () {
                     $scope.loading = false;

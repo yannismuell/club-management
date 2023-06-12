@@ -21,7 +21,7 @@ public class Match {
 
     private String name;
 
-    private String gegner;
+    private String description;
 
     @Parent
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
@@ -55,8 +55,8 @@ public class Match {
         return name;
     }
 
-    public String getGegner() {
-        return gegner;
+    public String getDescription() {
+        return description;
     }
 
     public float getRestTime() {
@@ -79,13 +79,13 @@ public class Match {
 
     public void updateWithMatchForm(MatchForm matchForm) {
         this.name = matchForm.getName();
-        this.gegner = matchForm.getGegner();
+        this.description = matchForm.getDescription();
         this.restTime = matchForm.getRestTime();
     }
 
-    public void update(String name, String gegner, float restTime) {
+    public void update(String name, String description, float restTime) {
         this.name = name;
-        this.gegner = gegner;
+        this.description = description;
         this.restTime = restTime;
     }
 
