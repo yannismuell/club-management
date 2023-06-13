@@ -300,17 +300,130 @@ public class ClubManagementAPI {
             httpMethod = HttpMethod.DELETE)
     public WrappedBoolean deleteMatch(final User user, @Named("websafeMatchKey") final String websafeMatchKey) throws Exception {
         checkUserOk(user);
-
-        // Caution! This will delete all Match entities
-        // Iterable<Key<Match>> allKeys = ofy().load().type(Match.class).keys();
-        // ofy().delete().keys(allKeys);
-
         Key<Match> matchKey = Key.create(websafeMatchKey);
         Match match = ofy().load().key(matchKey).now();
         TxResult<Boolean> result = ofy().transact(new Work<TxResult<Boolean>>() {
             @Override
             public TxResult<Boolean> run() {
                 ofy().delete().key(matchKey).now();
+                return new TxResult<>(true);
+            }
+        });
+        return new WrappedBoolean(result.getResult());
+    }
+
+
+    /**
+     * Returns a list of Clubmembers
+     * In order to receive the websafeClubmemberKey via the JSON params, uses a POST method.
+     *
+     * @param user An user who invokes this method, null when the user is not signed in.
+     * @return a list of Clubmembers that the user created.
+     * @throws UnauthorizedException when the user is not signed in.
+     */
+    @ApiMethod(
+            name = "getClubmembers",
+            path = "clubmember/all",
+            httpMethod = HttpMethod.POST
+    )
+    public List<Clubmember> getClubmembers(final User user) throws Exception {
+        checkUserOk(user);
+        List<Clubmember> clubmembers = ofy().load().type(Clubmember.class).list();
+        return clubmembers;
+    }
+    /**
+     * Returns a Clubmember object with the given clubmemberID.
+     *
+     * @param websafeClubmemberKey The String representation of the Clubmember Key.
+     * @return a Clubmember object with the given clubmemberID.
+     * @throws NotFoundException when there is no Clubmember with the given clubmemberID.
+     */
+    @ApiMethod(
+            name = "getClubmember",
+            path = "clubmember/{websafeClubmemberKey}",
+            httpMethod = HttpMethod.GET
+    )
+    public Clubmember getClubmember(final User user, @Named("websafeClubmemberKey") final String websafeClubmemberKey)
+            throws Exception {
+        checkUserOk(user);
+        Key<Clubmember> clubmemberKey = Key.create(websafeClubmemberKey);
+        Clubmember clubmember = ofy().load().key(clubmemberKey).now();
+        if (clubmember == null) {
+            throw new NotFoundException("No clubmember found with key: " + websafeClubmemberKey);
+        }
+        return clubmember;
+    }
+
+    /**
+     * Creates a new Clubmember object and stores it to the datastore.
+     *
+     * @param user A user who invokes this method, null when the user is not signed in.
+     * @param clubmemberForm A ClubmemberForm object representing user's inputs.
+     * @return A newly created Clubmember Object.
+     * @throws UnauthorizedException when the user is not signed in.
+     */
+    @ApiMethod(name = "createClubmember",
+            path = "clubmember/create",
+            httpMethod = HttpMethod.POST)
+    public Clubmember createClubmember(final User user, final ClubmemberForm clubmemberForm) throws Exception {
+        checkUserOk(user);
+        final Key<Clubmember> clubmemberKey = factory().allocateId(Clubmember.class);
+        final long clubmemberId = clubmemberKey.getId();
+        Clubmember clubmember = new Clubmember(clubmemberId, clubmemberForm);
+        ofy().save().entities(clubmember).now();
+        return clubmember;
+    }
+    /**
+     * Saves a Clubmember object and stores it to the datastore.
+     *
+     * @param user A user who invokes this method, null when the user is not signed in.
+     * @param name The clubmember name
+     * @param description The clubmember description
+     * @return An updated clubmember object.
+     * @throws UnauthorizedException when the user is not signed in.
+     */
+    @ApiMethod(name = "saveClubmember",
+            path = "clubmember/save/{clubmemberKey}",
+            httpMethod = HttpMethod.POST)
+    public Clubmember saveClubmember(final User user,
+                           @Named ("name") final String name,
+                           @Named ("description") final String description,
+                           @Named ("capacity") final int capacity,
+                           @Named ("clubmemberKey") final String websafeClubmemberKey)
+            throws Exception  {
+        checkUserOk(user);
+        Clubmember clubmember = ofy().transact(new Work<Clubmember>() {
+            @Override
+            public Clubmember run() {
+                Key<Clubmember> clubmemberKey = Key.create(websafeClubmemberKey);
+                Clubmember clubmember = ofy().load().key(clubmemberKey).now();
+                clubmember.update(name, description, capacity);
+                ofy().save().entity(clubmember).now();
+                return clubmember;
+            }
+        });
+        return (clubmember);
+    }
+
+    /**
+     * Deletes a Clubmember object and removes it from the datastore.
+     *
+     * @param user             A user who invokes this method, null when the user is not signed in.
+     * @param websafeClubmemberKey A Clubmember object representing user's inputs.
+     * @return A newly created Clubmember Object.
+     * @throws UnauthorizedException when the user is not signed in.
+     */
+    @ApiMethod(name = "deleteClubmember",
+            path = "clubmember/delete/{websafeClubmemberKey}",
+            httpMethod = HttpMethod.DELETE)
+    public WrappedBoolean deleteClubmember(final User user, @Named("websafeClubmemberKey") final String websafeClubmemberKey) throws Exception {
+        checkUserOk(user);
+        Key<Clubmember> clubmemberKey = Key.create(websafeClubmemberKey);
+        Clubmember clubmember = ofy().load().key(clubmemberKey).now();
+        TxResult<Boolean> result = ofy().transact(new Work<TxResult<Boolean>>() {
+            @Override
+            public TxResult<Boolean> run() {
+                ofy().delete().key(clubmemberKey).now();
                 return new TxResult<>(true);
             }
         });

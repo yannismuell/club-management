@@ -19,9 +19,11 @@ public class Match {
     @Id
     private Long id;
 
-    private String name;
-
-    private String description;
+    private String home;
+    private String away;
+    private int homegoals;
+    private int awaygoals;
+    private date date;
 
     @Parent
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
@@ -39,9 +41,6 @@ public class Match {
         LOG.info("Name: ." + matchForm.getName());
         Preconditions.checkNotNull(matchForm.getName(), "The name is required");
         this.id = id;
-        /*this.accountKey = Key.create(Account.class, accountID);
-        this.accountID = accountID;*/
-
         updateWithMatchForm(matchForm);
     }
 
@@ -51,18 +50,21 @@ public class Match {
 
     public String getAccountId() { return accountID; }
 
-    public String getName() {
-        return name;
+    public String getHome() {
+        return home;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAway() {
+        return away;
     }
 
-    public float getRestTime() {
-        return restTime;
+    public float getHomegoals() {
+        return homegoals;
     }
 
+    public float getAwaygoals() {
+        return awaygoals;
+    }
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     public Key<Account> getAccountKey() {
         return accountKey;
@@ -83,10 +85,12 @@ public class Match {
         this.restTime = matchForm.getRestTime();
     }
 
-    public void update(String name, String description, float restTime) {
-        this.name = name;
-        this.description = description;
-        this.restTime = restTime;
+    public void update(String home, String away, int homegoals, int awaygoals, date date) {
+        this.home = home;
+        this.away = away;
+        this.homegoals = homegoals;
+        this.awaygoals = awaygoals;
+        this.date = date;
     }
 
     @Override

@@ -9,7 +9,8 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Parent;
 import form.ClubmemberForm;
-
+import spi.ClubManagementAPI;
+import java.util.logging.Logger;
 @Entity
 @Cache
 public class Clubmember {
@@ -30,14 +31,13 @@ public class Clubmember {
 
     private float alter = 11;
 
+    private static final Logger LOG = Logger.getLogger(ClubManagementAPI.class.getName());
     private Clubmember() {}
 
-    public Clubmember(final long id, final String accountID, final ClubmemberForm clubmemberForm, final String email) {
+    public Clubmember(final long id, final ClubmemberForm clubmemberForm) {
+        LOG.info("Name: ." + clubmemberForm.getName());
         Preconditions.checkNotNull(clubmemberForm.getName(), "The name is required");
         this.id = id;
-        this.accountKey = Key.create(Account.class, accountID);
-        this.accountID = accountID;
-
         updateWithClubmemberForm(clubmemberForm);
     }
 
