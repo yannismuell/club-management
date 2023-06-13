@@ -279,7 +279,7 @@ public class ClubManagementAPI {
             public Match run() {
                 Key<Match> matchKey = Key.create(websafeMatchKey);
                 Match match = ofy().load().key(matchKey).now();
-                match.update(name, description, capacity);
+                match.update(home, away, homegoals, awaygoals);
                 ofy().save().entity(match).now();
                 return match;
             }
