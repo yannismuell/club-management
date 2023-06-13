@@ -259,8 +259,8 @@ public class ClubManagementAPI {
      * Saves a Match object and stores it to the datastore.
      *
      * @param user A user who invokes this method, null when the user is not signed in.
-     * @param name The match name
-     * @param description The match description
+     * @param home The match home
+     * @param away The match away
      * @return An updated match object.
      * @throws UnauthorizedException when the user is not signed in.
      */
@@ -268,9 +268,10 @@ public class ClubManagementAPI {
             path = "match/save/{matchKey}",
             httpMethod = HttpMethod.POST)
     public Match saveMatch(final User user,
-                                   @Named ("name") final String name,
-                                   @Named ("description") final String description,
-                                   @Named ("capacity") final int capacity,
+                                   @Named ("home") final String home,
+                                   @Named ("away") final String away,
+                                   @Named ("homegoals") final int homegoals,
+                                    @Named ("awaygoals") final int awaygoals,
                                    @Named ("matchKey") final String websafeMatchKey)
             throws Exception  {
         checkUserOk(user);
