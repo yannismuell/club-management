@@ -2,37 +2,41 @@ package form;
 
 public class MatchForm {
 
-    private String name;
+    private String home;
 
-    private String description;
+    private String away;
 
     private String websafeMatchKey;
 
-    private float restTime;
+    private int homegoals;
+
+    private int awaygoals;
 
     private MatchForm(){}
     /**
      * Public constructor is solely for Unit Test.
-     * @param name
-     * @param description
+     * @param home
+     * @param away
      * @param websafeMatchKey
      */
-    public MatchForm(String name, String description, String websafeMatchKey, float restTime) {
-        this.name = name;
-        this.description = description;
+    public MatchForm(String home, String away, String websafeMatchKey, int homegoals, int awaygoals) {
+        this.home = home;
+        this.away = away;
         this.websafeMatchKey = websafeMatchKey;
-        this.restTime = restTime;
+        this.homegoals = homegoals;
+        this.awaygoals = awaygoals;
     }
 
-    public String getName() {
-        return name;
+    public String getHome() {
+        return home;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAway() {
+        return away;
     }
 
     public String getWebsafeMatchKey() { return websafeMatchKey; }
 
-    public float getRestTime() { return restTime; }
+    public int getHomegoals() { return homegoals; }
+    public int getAwaygoals() { return awaygoals; }
 }

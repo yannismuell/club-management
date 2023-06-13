@@ -18,12 +18,10 @@ public class Match {
 
     @Id
     private Long id;
-
     private String home;
     private String away;
     private int homegoals;
     private int awaygoals;
-    private date date;
 
     @Parent
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
@@ -38,8 +36,8 @@ public class Match {
     private Match() {}
 
     public Match(final long id, final MatchForm matchForm) {
-        LOG.info("Name: ." + matchForm.getName());
-        Preconditions.checkNotNull(matchForm.getName(), "The name is required");
+        LOG.info("Home: ." + matchForm.getHome());
+        Preconditions.checkNotNull(matchForm.getHome(), "The home is required");
         this.id = id;
         updateWithMatchForm(matchForm);
     }
@@ -58,11 +56,11 @@ public class Match {
         return away;
     }
 
-    public float getHomegoals() {
+    public int getHomegoals() {
         return homegoals;
     }
 
-    public float getAwaygoals() {
+    public int getAwaygoals() {
         return awaygoals;
     }
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
@@ -80,22 +78,22 @@ public class Match {
 
 
     public void updateWithMatchForm(MatchForm matchForm) {
-        this.name = matchForm.getName();
-        this.description = matchForm.getDescription();
-        this.restTime = matchForm.getRestTime();
+        this.home = matchForm.getHome();
+        this.away = matchForm.getAway();
+        this.homegoals = matchForm.getHomegoals();
+        this.awaygoals = matchForm.getAwaygoals();
     }
 
-    public void update(String home, String away, int homegoals, int awaygoals, date date) {
+    public void update(String home, String away, int homegoals, int awaygoals) {
         this.home = home;
         this.away = away;
         this.homegoals = homegoals;
         this.awaygoals = awaygoals;
-        this.date = date;
     }
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder("Id: " + id + "\n").append("Name: ").append(name).append("\n");
+        StringBuilder stringBuilder = new StringBuilder("Id: " + id + "\n").append("Home: ").append(home).append("\n");
 
         return stringBuilder.toString();
     }
