@@ -41,6 +41,8 @@
                         <tr>
                             <th>Home</th>
                             <th>Away</th>
+                            <th>HomeGoals</th>
+                            <th>AwayGoals</th>
                             <th>Delete</th>
                         </tr>
                         </thead>
@@ -50,6 +52,8 @@
                         <tr ng-repeat="match in filteredMatches | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize | orderBy:'home'">
                             <td><a href="#!/matches/away/{{match.websafeMatchKey}}">{{match.home}}</a></td>
                             <td>{{match.away}}</td>
+                            <td>{{match.homegoals}}</td>
+                            <td>{{match.awaygoals}}</td>
                             <td>
                                 <button ng-click="deleteMatchWithWebsafeMatchKey(match.websafeMatchKey)" class="btn btn-outline-danger" ng-disabled="loading" title="Delete Match">&#10008;</button>
                             </td>
