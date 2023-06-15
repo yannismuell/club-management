@@ -22,6 +22,8 @@ public class Clubmember {
 
     private String description;
 
+    private int age;
+
     @Parent
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     private Key<Account> accountKey;
@@ -55,6 +57,11 @@ public class Clubmember {
         return description;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+
     public float getAlter() {
         return alter;
     }
@@ -76,13 +83,15 @@ public class Clubmember {
     public void updateWithClubmemberForm(ClubmemberForm clubmemberForm) {
         this.name = clubmemberForm.getName();
         this.description = clubmemberForm.getDescription();
+        this.age = clubmemberForm.getAge();
         this.alter = clubmemberForm.getAlter();
     }
 
-    public void update(String name, String description, float alter) {
+    public void update(String name, String description, float alter, int age) {
         this.name = name;
         this.description = description;
         this.alter = alter;
+        this.age = age;
     }
 
     @Override

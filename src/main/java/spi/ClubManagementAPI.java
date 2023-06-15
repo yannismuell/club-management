@@ -380,6 +380,7 @@ public class ClubManagementAPI {
      * @param user A user who invokes this method, null when the user is not signed in.
      * @param name The clubmember name
      * @param description The clubmember description
+     * @param age The clubmember age
      * @return An updated clubmember object.
      * @throws UnauthorizedException when the user is not signed in.
      */
@@ -389,6 +390,7 @@ public class ClubManagementAPI {
     public Clubmember saveClubmember(final User user,
                            @Named ("name") final String name,
                            @Named ("description") final String description,
+                                     @Named ("age") final int age,
                            @Named ("capacity") final int capacity,
                            @Named ("clubmemberKey") final String websafeClubmemberKey)
             throws Exception  {
@@ -398,7 +400,7 @@ public class ClubManagementAPI {
             public Clubmember run() {
                 Key<Clubmember> clubmemberKey = Key.create(websafeClubmemberKey);
                 Clubmember clubmember = ofy().load().key(clubmemberKey).now();
-                clubmember.update(name, description, capacity);
+                clubmember.update(name, description, age, capacity);
                 ofy().save().entity(clubmember).now();
                 return clubmember;
             }
