@@ -1,27 +1,27 @@
 /**
  * @ngdoc controller
- * @name getTrainerCtrl
+ * @name getSquadCtrl
  *
  * @description
- * A controller used to save a trainer page.
+ * A controller used to save a squad page.
  */
-ClubManagementApp.controllers.controller('getTrainersCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('getSquadsCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
 
     document.getElementById("query-input").focus();
 
     $scope.submitted = false;
     $scope.loading = false;
-    /*activeURL = '#!/trainers';*/
+    /*activeURL = '#!/squads';*/
 
-    $scope.trainers = [];
-    $scope.filteredTrainers = [];
+    $scope.squads = [];
+    $scope.filteredSquads = [];
 
     $scope.pagination = $scope.pagination || {};
     $scope.pagination.currentPage = 0;
     $scope.pagination.pageSize = 25;
 
     $scope.pagination.numberOfPages = function () {
-        return Math.ceil($scope.filteredTrainers.length / $scope.pagination.pageSize);
+        return Math.ceil($scope.filteredSquads.length / $scope.pagination.pageSize);
     };
 
     $scope.pagination.pageArray = function () {
@@ -37,30 +37,30 @@ ClubManagementApp.controllers.controller('getTrainersCtrl', function ($scope, $l
         return angular.element(event.target).hasClass('disabled');
     }
 
-    $scope.queryTrainersByName = function (search_field) {
-        $scope.filteredTrainers = [];
-        $scope.trainers.forEach(function(element) {
+    $scope.querySquadsByName = function (search_field) {
+        $scope.filteredSquads = [];
+        $scope.squads.forEach(function(element) {
             let nameToSearch = element.name.toLowerCase();
             let descriptionToSearch = element.description.toLowerCase();
             let searchString = search_field.toLowerCase();
             if (nameToSearch.includes(searchString) || descriptionToSearch.includes(searchString)){
-                $scope.filteredTrainers.push(element);
+                $scope.filteredSquads.push(element);
             }
         });
         $scope.pagination.currentPage = 0;
     }
 
     $scope.init = function () {
-        var retrieveTrainersCallback = function () {
+        var retrieveSquadsCallback = function () {
             $scope.loading = true;
-            gapi.client.clubmanagement.getTrainersCreated().
+            gapi.client.clubmanagement.getSquadsCreated().
                 execute(function (resp) {
                     $scope.$apply(function () {
                         $scope.loading = false;
                         if (resp.error) {
                             // The request has failed.
                             var errorMessage = resp.error.message || '';
-                            $scope.messages = 'Failed to obtain trainers : ' + errorMessage;
+                            $scope.messages = 'Failed to obtain squads : ' + errorMessage;
                             $scope.alertStatus = 'warning';
                             $log.error($scope.messages );
                         } else {
@@ -69,9 +69,9 @@ ClubManagementApp.controllers.controller('getTrainersCtrl', function ($scope, $l
                             $scope.messages = 'Query succeeded';
                             $scope.alertStatus = 'success';
                             $log.info($scope.messages);
-                            $scope.trainers = resp.items;
-                            $scope.filteredTrainers = $scope.trainers;
-                            parentProvider.trainers = $scope.trainers;
+                            $scope.squads = resp.items;
+                            $scope.filteredSquads = $scope.squads;
+                            parentProvider.squads = $scope.squads;
                         }
                         $scope.submitted = true;
                     });
@@ -79,35 +79,35 @@ ClubManagementApp.controllers.controller('getTrainersCtrl', function ($scope, $l
             );
         };
         if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(retrieveTrainersCallback);
+            oauth2Provider.signIn(retrieveSquadsCallback);
         } else {
-            retrieveTrainersCallback();
+            retrieveSquadsCallback();
         }
     };
 
-    $scope.deleteTrainerWithWebsafeTrainerKey = function (websafeTrainerKey) {
+    $scope.deleteSquadWithWebsafeSquadKey = function (websafeSquadKey) {
         var callback = function() {
             $scope.loading = true;
-            gapi.client.clubmanagement.deleteTrainer({websafeTrainerKey: websafeTrainerKey})
+            gapi.client.clubmanagement.deleteSquad({websafeSquadKey: websafeSquadKey})
             .execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
                         // The request has failed.
                         var errorMessage = resp.error.message || '';
-                        $scope.messages = 'Failed to delete trainer : ' + errorMessage;
+                        $scope.messages = 'Failed to delete squad : ' + errorMessage;
                         $scope.alertStatus = 'warning';
-                        $log.error($scope.messages + ' Trainer : ' + JSON.stringify($scope.trainer));
+                        $log.error($scope.messages + ' Squad : ' + JSON.stringify($scope.squad));
                         if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
                             oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
                             return;
                         }
                     } else {
                         // The request has succeeded.
-                        $scope.messages = 'The trainer has been deleted ';
+                        $scope.messages = 'The squad has been deleted ';
                         $scope.alertStatus = 'success';
                         $scope.submitted = false;
-                        $scope.trainer = {};
+                        $scope.squad = {};
                         $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
                         $route.reload();
                     }
@@ -124,14 +124,14 @@ ClubManagementApp.controllers.controller('getTrainersCtrl', function ($scope, $l
 
 /**
  * @ngdoc controller
-     * @name detailedTrainerCtrl
+     * @name detailedSquadCtrl
  *
  * @description
- * A controller used to save a trainer page.
+ * A controller used to save a squad page.
  */
-ClubManagementApp.controllers.controller('detailedTrainerCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('detailedSquadCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
 
-    $scope.trainer = {};
+    $scope.squad = {};
     $scope.submitted = false;
     $scope.length = 0;
 
@@ -172,32 +172,32 @@ ClubManagementApp.controllers.controller('detailedTrainerCtrl', function ($scope
         angular.element(document.querySelector('.navbar-collapse')).removeClass('in');
     };
 
-    $scope.deleteTrainer = function (trainerForm) {
+    $scope.deleteSquad = function (squadForm) {
         var callback = function() {
             $scope.loading = true;
             $scope.submitted = true;
-            gapi.client.clubmanagement.deleteTrainer({websafeTrainerKey: $routeParams.websafeTrainerKey})
+            gapi.client.clubmanagement.deleteSquad({websafeSquadKey: $routeParams.websafeSquadKey})
             .execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
                         var errorMessage = resp.error.message || '';
-                        $scope.messages = 'Failed to delete trainer : ' + errorMessage;
+                        $scope.messages = 'Failed to delete squad : ' + errorMessage;
                         $scope.alertStatus = 'warning';
-                        $log.error($scope.messages + ' Trainer : ' + JSON.stringify($scope.trainer));
+                        $log.error($scope.messages + ' Squad : ' + JSON.stringify($scope.squad));
                         if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
                             oauth2Provider.signIn();//   showLoginModal();
                             return;
                         }
                         $route.reload();
                     } else {
-                        $scope.messages = 'The trainer has been deleted ';
+                        $scope.messages = 'The squad has been deleted ';
                         $scope.alertStatus = 'success';
                         $scope.submitted = false;
-                        $scope.trainer = {};
+                        $scope.squad = {};
                         $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
                         $timeout(function () {
-                            $location.path('/trainer');
+                            $location.path('/squad');
                             $route.reload();
                         });
                     }
@@ -215,21 +215,21 @@ ClubManagementApp.controllers.controller('detailedTrainerCtrl', function ($scope
         var callback = function() {
             $scope.loading = true;
             $scope.submitted = true;
-            gapi.client.clubmanagement.getTrainer({websafeTrainerKey: $routeParams.websafeTrainerKey}).execute(function (resp) {
+            gapi.client.clubmanagement.getSquad({websafeSquadKey: $routeParams.websafeSquadKey}).execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
                         var errorMessage = resp.error.message || '';
-                        $scope.messages = 'Failed to get the trainer : ' + $routeParams.websafeTrainerKey  + ' ' + errorMessage;
+                        $scope.messages = 'Failed to get the squad : ' + $routeParams.websafeSquadKey  + ' ' + errorMessage;
                         $scope.alertStatus = 'warning';
                         $log.error($scope.messages);
                     } else {
                         $scope.submitted = false;
                         $scope.alertStatus = 'success';
-                        $scope.trainer = resp.result;
-                        parentProvider.trainer = $scope.trainer;
+                        $scope.squad = resp.result;
+                        parentProvider.squad = $scope.squad;
 
-                        if ($scope.trainer == null) { $scope.trainer = []; }
+                        if ($scope.squad == null) { $scope.squad = []; }
                     }
                 });
             });
@@ -244,48 +244,48 @@ ClubManagementApp.controllers.controller('detailedTrainerCtrl', function ($scope
 
 /**
  * @ngdoc controller
- * @name createTrainerCtrl
+ * @name createSquadCtrl
  *
  * @description
- * A controller used to save a trainer page.
+ * A controller used to save a squad page.
  */
-ClubManagementApp.controllers.controller('createTrainerCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('createSquadCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
 
-    $scope.trainer = {};
+    $scope.squad = {};
 
     document.getElementById("name").focus();
 
-    $scope.isValidTrainer = function (trainerForm) {
-        return !trainerForm.$invalid;
+    $scope.isValidSquad = function (squadForm) {
+        return !squadForm.$invalid;
     }
 
-    $scope.createTrainer = function (trainerForm) {
-        if (!$scope.isValidTrainer(trainerForm)) {
+    $scope.createSquad = function (squadForm) {
+        if (!$scope.isValidSquad(squadForm)) {
             return;
         }
 
         var callback = function() {
             $scope.loading = true;
-            gapi.client.clubmanagement.createTrainer($scope.trainer).
+            gapi.client.clubmanagement.createSquad($scope.squad).
             execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
                         // The request has failed.
                         var errorMessage = resp.error.message || '';
-                        $scope.messages = 'Failed to save a trainer : ' + errorMessage;
+                        $scope.messages = 'Failed to save a squad : ' + errorMessage;
                         $scope.alertStatus = 'warning';
-                        $log.error($scope.messages + ' Trainer : ' + JSON.stringify($scope.trainer));
+                        $log.error($scope.messages + ' Squad : ' + JSON.stringify($scope.squad));
                         if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
                             oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
                             return;
                         }
                     } else {
                         // The request has succeeded.
-                        $scope.messages = 'The trainer has been saved : ' + resp.result.name;
+                        $scope.messages = 'The squad has been saved : ' + resp.result.name;
                         $scope.alertStatus = 'success';
                         $scope.submitted = false;
-                        $scope.trainer = {};
+                        $scope.squad = {};
                         $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
                     }
                 });
@@ -309,32 +309,32 @@ ClubManagementApp.controllers.controller('createTrainerCtrl', function ($scope, 
 
 /**
  * @ngdoc controller
- * @name saveTrainerCtrl
+ * @name saveSquadCtrl
  *
  * @description
- * A controller used to save a trainer page.
+ * A controller used to save a squad page.
  */
-ClubManagementApp.controllers.controller('saveTrainerCtrl', function ($scope, $log, $location, $route, oauth2Provider, $routeParams, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('saveSquadCtrl', function ($scope, $log, $location, $route, oauth2Provider, $routeParams, HTTP_ERRORS) {
 
-    $scope.trainer = {};
+    $scope.squad = {};
 
     $scope.init = function () {
         var callback = function() {
             $scope.loading = true;
-            gapi.client.clubmanagement.getTrainer({websafeTrainerKey: $routeParams.websafeTrainerKey
+            gapi.client.clubmanagement.getSquad({websafeSquadKey: $routeParams.websafeSquadKey
             }).execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
                         // The request has failed.
                         var errorMessage = resp.error.message || '';
-                        $scope.messages = 'Failed to get the trainer : ' + $routeParams.websafeTrainerKey  + ' ' + errorMessage;
+                        $scope.messages = 'Failed to get the squad : ' + $routeParams.websafeSquadKey  + ' ' + errorMessage;
                         $scope.alertStatus = 'warning';
                         $log.error($scope.messages);
                     } else {
                         // The request has succeeded.
                         $scope.alertStatus = 'success';
-                        $scope.trainer = resp.result;
+                        $scope.squad = resp.result;
                     }
                 });
             });
@@ -346,37 +346,37 @@ ClubManagementApp.controllers.controller('saveTrainerCtrl', function ($scope, $l
         }
     };
 
-    $scope.isValidTrainer = function (trainerForm) {
-        return !trainerForm.$invalid;
+    $scope.isValidSquad = function (squadForm) {
+        return !squadForm.$invalid;
     }
 
-    $scope.saveTrainer = function (trainerForm) {
-         $scope.trainer.websafeTrainerKey = $routeParams.websafeTrainerKey;
-         if (!$scope.isValidTrainer(trainerForm)) {
+    $scope.saveSquad = function (squadForm) {
+         $scope.squad.websafeSquadKey = $routeParams.websafeSquadKey;
+         if (!$scope.isValidSquad(squadForm)) {
              return;
          }
 
          var callback = function() {
             $scope.loading = true;
-            gapi.client.trainer.saveTrainer({name: $scope.trainer.name, description: $scope.trainer.description, restTime: $scope.trainer.restTime, trainerKey: $routeParams.websafeTrainerKey})
+            gapi.client.squad.saveSquad({name: $scope.squad.name, description: $scope.squad.description, restTime: $scope.squad.restTime, squadKey: $routeParams.websafeSquadKey})
              .execute(function (resp) {
                  $scope.$apply(function () {
                     $scope.loading = false;
                      if (resp.error) {
                          var errorMessage = resp.error.message || '';
-                         $scope.messages = 'Failed to save a trainer : ' + errorMessage;
+                         $scope.messages = 'Failed to save a squad : ' + errorMessage;
                          $scope.alertStatus = 'warning';
-                         $log.error($scope.messages + ' Trainer : ' + JSON.stringify($scope.trainer));
+                         $log.error($scope.messages + ' Squad : ' + JSON.stringify($scope.squad));
                          if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
                              oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
                              return;
                          }
                          $route.reload();
                      } else {
-                         $scope.messages = 'The trainer has been saved : ' + resp.result.name;
+                         $scope.messages = 'The squad has been saved : ' + resp.result.name;
                          $scope.alertStatus = 'success';
                          $scope.submitted = false;
-                         $scope.trainer = {};
+                         $scope.squad = {};
                          $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
                          window.history.back();
                      }

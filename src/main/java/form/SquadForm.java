@@ -6,7 +6,7 @@ public class SquadForm {
 
     private String description;
 
-    private String websafeTrainerKey;
+    private String websafeSquadKey;
 
     private float restTime;
 
@@ -16,13 +16,13 @@ public class SquadForm {
      * Public constructor is solely for Unit Test.
      * @param name
      * @param description
-     * @param websafeTrainerKey
+     * @param websafeSquadKey
      */
 
-    public SquadForm(String name, String description, String websafeTrainerKey, float restTime) {
+    public SquadForm(String name, String description, String websafeSquadKey, float restTime) {
         this.name = name;
         this.description = description;
-        this.websafeTrainerKey = websafeTrainerKey;
+        this.websafeSquadKey = websafeSquadKey;
         this.restTime = restTime;
     }
 
@@ -34,7 +34,7 @@ public class SquadForm {
         return description;
     }
 
-    public String getWebsafeTrainerKey() { return websafeTrainerKey; }
+    public String getWebsafeSquadKey() { return websafeSquadKey; }
 
     public float getRestTime() { return restTime; }
 }

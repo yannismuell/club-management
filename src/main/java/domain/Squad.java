@@ -9,6 +9,8 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Parent;
 import form.SquadForm;
+import spi.ClubManagementAPI;
+import java.util.logging.Logger;
 
 @Entity
 @Cache
@@ -32,13 +34,13 @@ public class Squad {
 
     private Squad() {}
 
-    public Squad(final long id, final String accountID, final SquadForm trainerForm, final String email) {
-        Preconditions.checkNotNull(trainerForm.getName(), "The name is required");
+    public Squad(final long id, final String accountID, final SquadForm squadForm, final String email) {
+        Preconditions.checkNotNull(squadForm.getName(), "The name is required");
         this.id = id;
         this.accountKey = Key.create(Account.class, accountID);
         this.accountID = accountID;
 
-        updateWithTrainerForm(trainerForm);
+        updateWithSquadForm(squadForm);
     }
 
     public long getId() {
@@ -68,15 +70,15 @@ public class Squad {
         return Key.create(accountKey, Squad.class, id).toLegacyUrlSafe();
     }
 
-    public String getWebsafeTrainerKey() {
+    public String getWebsafeSquadKey() {
         return Key.create(accountKey, Squad.class, id).toLegacyUrlSafe();
     }
 
 
-    public void updateWithTrainerForm(SquadForm trainerForm) {
-        this.name = trainerForm.getName();
-        this.description = trainerForm.getDescription();
-        this.restTime = trainerForm.getRestTime();
+    public void updateWithSquadForm(SquadForm squadForm) {
+        this.name = squadForm.getName();
+        this.description = squadForm.getDescription();
+        this.restTime = squadForm.getRestTime();
     }
 
     public void update(String name, String description, float restTime) {
