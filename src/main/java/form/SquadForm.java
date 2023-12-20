@@ -1,6 +1,6 @@
 package form;
 
-public class TrainerForm {
+public class SquadForm {
 
     private String name;
 
@@ -10,7 +10,7 @@ public class TrainerForm {
 
     private float restTime;
 
-    private TrainerForm() {}
+    private SquadForm() {}
 
     /**
      * Public constructor is solely for Unit Test.
@@ -19,7 +19,7 @@ public class TrainerForm {
      * @param websafeTrainerKey
      */
 
-    public TrainerForm(String name, String description, String websafeTrainerKey, float restTime) {
+    public SquadForm(String name, String description, String websafeTrainerKey, float restTime) {
         this.name = name;
         this.description = description;
         this.websafeTrainerKey = websafeTrainerKey;

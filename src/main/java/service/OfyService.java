@@ -1,7 +1,6 @@
 package service;
 
 import com.google.cloud.datastore.DatastoreOptions;
-import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
@@ -32,7 +31,7 @@ public class OfyService implements ServletContextListener {
         ObjectifyService.register(Account.class);
         ObjectifyService.register(Match.class);
         ObjectifyService.register(Clubmember.class);
-        ObjectifyService.register(Trainer.class);
+        ObjectifyService.register(Squad.class);
     }
 
     public void contextDestroyed(ServletContextEvent event) {

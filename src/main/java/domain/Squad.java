@@ -8,11 +8,11 @@ import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Parent;
-import form.TrainerForm;
+import form.SquadForm;
 
 @Entity
 @Cache
-public class Trainer {
+public class Squad {
 
     @Id
     private Long id;
@@ -30,9 +30,9 @@ public class Trainer {
 
     private float restTime = 11;
 
-    private Trainer() {}
+    private Squad() {}
 
-    public Trainer(final long id, final String accountID, final TrainerForm trainerForm, final String email) {
+    public Squad(final long id, final String accountID, final SquadForm trainerForm, final String email) {
         Preconditions.checkNotNull(trainerForm.getName(), "The name is required");
         this.id = id;
         this.accountKey = Key.create(Account.class, accountID);
@@ -65,15 +65,15 @@ public class Trainer {
     }
 
     public String getWebsafeAccountKey() {
-        return Key.create(accountKey, Trainer.class, id).toLegacyUrlSafe();
+        return Key.create(accountKey, Squad.class, id).toLegacyUrlSafe();
     }
 
     public String getWebsafeTrainerKey() {
-        return Key.create(accountKey, Trainer.class, id).toLegacyUrlSafe();
+        return Key.create(accountKey, Squad.class, id).toLegacyUrlSafe();
     }
 
 
-    public void updateWithTrainerForm(TrainerForm trainerForm) {
+    public void updateWithTrainerForm(SquadForm trainerForm) {
         this.name = trainerForm.getName();
         this.description = trainerForm.getDescription();
         this.restTime = trainerForm.getRestTime();
