@@ -1,4 +1,4 @@
-<div class="container-fluid" ng-show="getSignedInState()">
+<div ng-init="init()" class="container-fluid" ng-show="getSignedInState()">
     <div class="row">
         <div ng-include src="'partials/management_nav.html'"></div>
 
@@ -16,23 +16,23 @@
                 </div>
                 <div class="row">
                     <div class="col-md-8">
-                        <h3>Add a Trainer</h3>
-                        <form name="trainerForm" novalidate role="form">
+                        <h3>Edit Squad</h3>
+                        <form name="squadForm" novalidate role="form">
                             <div class="form-group">
-                                <label for="name">Trainer Name <span class="required">*</span></label>
-                                <span class="required-label-red label label-danger" ng-show="trainerForm.name.$error.required">Required!</span>
-                                <input id="name" type="text" name="name" ng-model="trainer.name" class="form-control" ng-required="true"/>
+                                <label for="name">Squad Name <span class="required">*</span></label>
+                                <span class="required-label-red label label-danger" ng-show="squadForm.name.$error.required">Required!</span>
+                                <input id="name" type="text" name="name" ng-model="squad.name" class="form-control" ng-required="true"/>
                             </div>
                             <div class="form-group">
                                 <label for="description">Description <span class="required">*</span></label>
-                                <span class="required-label-red label label-danger" ng-show="trainerForm.description.$error.required">Required!</span>
-                                <input id="description" type="text" name="description" ng-model="trainer.description" class="form-control" ng-required="true"/>
+                                <span class="required-label-red label label-danger" ng-show="squadForm.description.$error.required">Required!</span>
+                                <input id="description" type="text" name="description" ng-model="squad.description" class="form-control" ng-required="true"/>
                             </div>
                             <div class="form-group">
                                 <label for="description">Minimum RestTime <span class="required">*</span></label>
-                                <input id="restTime" type="number" name="restTime" name="restTime" onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="trainer.restTime"class="form-control"/>
+                                <input id="restTime" type="number" name="restTime" name="restTime" onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="squad.restTime"class="form-control"/>
                             </div>
-                            <button ng-click="createTrainer(trainerForm)" class="btn btn-add-custom" ng-disabled="!isValidTrainer(trainerForm) || loading">Add</button>
+                            <button ng-click="saveSquad(squadForm)" class="btn btn-add-custom" ng-disabled="!isValidSquad(squadForm) || loading">Save</button>
                         </form>
                         <p><a class="nav-link" onclick="window.history.back();" href="">« Back</a></p>
                     </div>
@@ -41,13 +41,3 @@
         </main>
     </div>
 </div>
-<script type="text/javascript">
-function isNumber(evt) {
-    evt = (evt) ? evt : window.event;
-    var charCode = (evt.which) ? evt.which : evt.keyCode;
-    if ( (charCode > 31 && charCode < 48) || charCode > 57) {
-        return false;
-    }
-    return true;
-    }
-</script>

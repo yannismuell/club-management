@@ -432,6 +432,124 @@ public class ClubManagementAPI {
         });
         return new WrappedBoolean(result.getResult());
     }
+    /**
+     * Returns a list of Squads
+     * In order to receive the websafeSquadKey via the JSON params, uses a POST method.
+     *
+     * @param user An user who invokes this method, null when the user is not signed in.
+     * @return a list of Squads that the user created.
+     * @throws UnauthorizedException when the user is not signed in.
+     */
+    @ApiMethod(
+            name = "getSquads",
+            path = "squad/all",
+            httpMethod = HttpMethod.POST
+    )
+    public List<Squad> getSquads(final User user) throws Exception {
+        checkUserOk(user);
+        List<Squad> squads = ofy().load().type(Squad.class).list();
+        return squads;
+    }
+    /**
+     * Returns a Squad object with the given squadID.
+     *
+     * @param websafeSquadKey The String representation of the Squad Key.
+     * @return a Squad object with the given squadID.
+     * @throws NotFoundException when there is no Squad with the given squadID.
+     */
+    @ApiMethod(
+            name = "getSquad",
+            path = "squad/{websafeSquadKey}",
+            httpMethod = HttpMethod.GET
+    )
+    public Squad getSquad(final User user, @Named("websafeSquadKey") final String websafeSquadKey)
+            throws Exception {
+        checkUserOk(user);
+        Key<Squad> squadKey = Key.create(websafeSquadKey);
+        Squad squad = ofy().load().key(squadKey).now();
+        if (squad == null) {
+            throw new NotFoundException("No squad found with key: " + websafeSquadKey);
+        }
+        return squad;
+    }
+
+    /**
+     * Creates a new Squad object and stores it to the datastore.
+     *
+     * @param user A user who invokes this method, null when the user is not signed in.
+     * @param squadForm A SquadForm object representing user's inputs.
+     * @return A newly created Squad Object.
+     * @throws UnauthorizedException when the user is not signed in.
+     */
+    @ApiMethod(name = "createSquad",
+            path = "squad/create",
+            httpMethod = HttpMethod.POST)
+    public Squad createSquad(final User user, final SquadForm squadForm) throws Exception {
+        checkUserOk(user);
+        final Key<Squad> squadKey = factory().allocateId(Squad.class);
+        final long squadId = squadKey.getId();
+        Squad squad = new Squad(squadId, squadForm);
+        ofy().save().entities(squad).now();
+        return squad;
+    }
+    /**
+     * Saves a Squad object and stores it to the datastore.
+     *
+     * @param user A user who invokes this method, null when the user is not signed in.
+     * @param name The squad name
+     * @param description The squad description
+     * @param age The squad age
+     * @return An updated squad object.
+     * @throws UnauthorizedException when the user is not signed in.
+     */
+    @ApiMethod(name = "saveSquad",
+            path = "squad/save/{squadKey}",
+            httpMethod = HttpMethod.POST)
+    public Squad saveSquad(final User user,
+                                     @Named ("name") final String name,
+                                     @Named ("description") final String description,
+                                     @Named ("age") final int age,
+                                     @Named ("capacity") final int capacity,
+                                     @Named ("squadKey") final String websafeSquadKey)
+            throws Exception  {
+        checkUserOk(user);
+        Squad squad = ofy().transact(new Work<Squad>() {
+            @Override
+            public Squad run() {
+                Key<Squad> squadKey = Key.create(websafeSquadKey);
+                Squad squad = ofy().load().key(squadKey).now();
+                squad.update(name, description, age, capacity);
+                ofy().save().entity(squad).now();
+                return squad;
+            }
+        });
+        return (squad);
+    }
+
+    /**
+     * Deletes a Squad object and removes it from the datastore.
+     *
+     * @param user             A user who invokes this method, null when the user is not signed in.
+     * @param websafeSquadKey A Squad object representing user's inputs.
+     * @return A newly created Squad Object.
+     * @throws UnauthorizedException when the user is not signed in.
+     */
+    @ApiMethod(name = "deleteSquad",
+            path = "squad/delete/{websafeSquadKey}",
+            httpMethod = HttpMethod.DELETE)
+    public WrappedBoolean deleteSquad(final User user, @Named("websafeSquadKey") final String websafeSquadKey) throws Exception {
+        checkUserOk(user);
+        Key<Squad> squadKey = Key.create(websafeSquadKey);
+        Squad squad = ofy().load().key(squadKey).now();
+        TxResult<Boolean> result = ofy().transact(new Work<TxResult<Boolean>>() {
+            @Override
+            public TxResult<Boolean> run() {
+                ofy().delete().key(squadKey).now();
+                return new TxResult<>(true);
+            }
+        });
+        return new WrappedBoolean(result.getResult());
+    }
 
     private static String getUserId(User user) {
         String userId = user.getUserId();
