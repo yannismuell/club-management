@@ -378,9 +378,13 @@ public class ClubManagementAPI {
      * Saves a Clubmember object and stores it to the datastore.
      *
      * @param user A user who invokes this method, null when the user is not signed in.
+     * @param id The clubmember ID
      * @param name The clubmember name
-     * @param description The clubmember description
-     * @param age The clubmember age
+     * @param surname The clubmember surname
+     * @param birthDate The clubmember birthDate
+     * @param telephoneNumber The clubmember telephoneNumber
+     * @param address The clubmember address
+     * @param role The clubmember role
      * @return An updated clubmember object.
      * @throws UnauthorizedException when the user is not signed in.
      */
@@ -388,10 +392,13 @@ public class ClubManagementAPI {
             path = "clubmember/save/{clubmemberKey}",
             httpMethod = HttpMethod.POST)
     public Clubmember saveClubmember(final User user,
+                           @Named ("id") final int id,
                            @Named ("name") final String name,
-                           @Named ("description") final String description,
-                                     @Named ("age") final int age,
-                           @Named ("capacity") final int capacity,
+                           @Named ("surname") final String surname,
+                           @Named ("birthDate") final String birthDate,
+                           @Named ("telephoneNumber") final String telephoneNumber,
+                           @Named ("address") final String address,
+                           @Named ("role") final String role,
                            @Named ("clubmemberKey") final String websafeClubmemberKey)
             throws Exception  {
         checkUserOk(user);
@@ -400,7 +407,7 @@ public class ClubManagementAPI {
             public Clubmember run() {
                 Key<Clubmember> clubmemberKey = Key.create(websafeClubmemberKey);
                 Clubmember clubmember = ofy().load().key(clubmemberKey).now();
-                clubmember.update(name, description, age, capacity);
+                clubmember.update(id, name, surname, birthDate, telephoneNumber, address, role);
                 ofy().save().entity(clubmember).now();
                 return clubmember;
             }
