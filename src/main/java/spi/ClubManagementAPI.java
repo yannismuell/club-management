@@ -498,7 +498,6 @@ public class ClubManagementAPI {
      * @param user A user who invokes this method, null when the user is not signed in.
      * @param name The squad name
      * @param description The squad description
-     * @param age The squad age
      * @return An updated squad object.
      * @throws UnauthorizedException when the user is not signed in.
      */
@@ -508,8 +507,7 @@ public class ClubManagementAPI {
     public Squad saveSquad(final User user,
                                      @Named ("name") final String name,
                                      @Named ("description") final String description,
-                                     @Named ("age") final int age,
-                                     @Named ("capacity") final int capacity,
+                                     @Named ("restTime") final float restTime,
                                      @Named ("squadKey") final String websafeSquadKey)
             throws Exception  {
         checkUserOk(user);
@@ -518,7 +516,7 @@ public class ClubManagementAPI {
             public Squad run() {
                 Key<Squad> squadKey = Key.create(websafeSquadKey);
                 Squad squad = ofy().load().key(squadKey).now();
-                squad.update(name, description, age, capacity);
+                squad.update(name, description, restTime);
                 ofy().save().entity(squad).now();
                 return squad;
             }

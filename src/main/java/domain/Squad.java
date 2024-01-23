@@ -9,8 +9,6 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Parent;
 import form.SquadForm;
-import spi.ClubManagementAPI;
-import java.util.logging.Logger;
 
 @Entity
 @Cache
@@ -32,9 +30,9 @@ public class Squad {
 
     private float restTime = 11;
 
-    private Squad() {}
+    public Squad(long squadId, SquadForm squadForm) {}
 
-    public Squad(final long id, final String accountID, final SquadForm squadForm, final String email) {
+    public Squad(final long id, final String accountID,final SquadForm squadForm, final String email) {
         Preconditions.checkNotNull(squadForm.getName(), "The name is required");
         this.id = id;
         this.accountKey = Key.create(Account.class, accountID);
