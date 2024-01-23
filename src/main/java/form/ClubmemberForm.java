@@ -5,7 +5,7 @@ public class ClubmemberForm {
     private long id;
     private String name;
     private String surname;
-    private String birthdate;
+    private String birthDate;
     private String telephoneNumber;
     private String address;
     private String role;
@@ -17,14 +17,13 @@ public class ClubmemberForm {
     /**
      * Public constructor is solely for Unit Test.
      * @param name
-     * @param age
      * @param websafeClubmemberKey
      */
 
-    public ClubmemberForm(String name, String surname, String birthdate, String telephoneNumber, String address, String role, String websafeClubmemberKey) {
+    public ClubmemberForm(String name, String surname, String birthDate, String telephoneNumber, String address, String role, String websafeClubmemberKey) {
         this.name = name;
         this.surname = surname;
-        this.birthdate = birthdate;
+        this.birthDate = birthDate;
         this.telephoneNumber = telephoneNumber;
         this.address = address;
         this.role = role;
@@ -43,8 +42,8 @@ public class ClubmemberForm {
         return surname;
     }
 
-    public String getBirthdate() {
-        return birthdate;
+    public String getBirthDate() {
+        return birthDate;
     }
 
     public String getTelephoneNumber() {
