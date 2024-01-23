@@ -20,9 +20,15 @@ public class Clubmember {
 
     private String name;
 
-    private String description;
+    private String surname;
 
-    private int age;
+    private String birthDate;
+
+    private String telephoneNumber;
+
+    private String address;
+
+    private String role;
 
     @Parent
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
@@ -31,7 +37,7 @@ public class Clubmember {
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     private String accountID;
 
-    private float alter = 11;
+//    private float alter = 11;
 
     private static final Logger LOG = Logger.getLogger(ClubManagementAPI.class.getName());
     private Clubmember() {}
@@ -53,18 +59,26 @@ public class Clubmember {
         return name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getSurname() {
+        return surname;
     }
 
-    public int getAge() {
-        return age;
+    public String getBirthDate() {
+        return birthDate;
     }
 
-
-    public float getAlter() {
-        return alter;
+    public String getTelephoneNumber() {
+        return telephoneNumber;
     }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
 
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     public Key<Account> getAccountKey() {
@@ -82,16 +96,21 @@ public class Clubmember {
 
     public void updateWithClubmemberForm(ClubmemberForm clubmemberForm) {
         this.name = clubmemberForm.getName();
-        this.description = clubmemberForm.getDescription();
-        this.age = clubmemberForm.getAge();
-        this.alter = clubmemberForm.getAlter();
+        this.surname = clubmemberForm.getSurname();
+        this.birthDate = clubmemberForm.getBirthDate();
+        this.telephoneNumber = clubmemberForm.getTelephoneNumber();
+        this.address = clubmemberForm.getAddress();
+        this.role = clubmemberForm.getRole();
+
     }
 
-    public void update(String name, String description, float alter, int age) {
-        this.name = name;
-        this.description = description;
-        this.alter = alter;
-        this.age = age;
+    public void update(String name, String surname, String birthDate, String telephoneNumber, String address, String role) {
+        this.name = getName();
+        this.surname = getSurname();
+        this.birthDate = getBirthDate();
+        this.telephoneNumber = getTelephoneNumber();
+        this.address = getAddress();
+        this.role = getRole();
     }
 
     @Override
