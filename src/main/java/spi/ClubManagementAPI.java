@@ -378,7 +378,6 @@ public class ClubManagementAPI {
      * Saves a Clubmember object and stores it to the datastore.
      *
      * @param user A user who invokes this method, null when the user is not signed in.
-     * @param id The clubmember ID
      * @param name The clubmember name
      * @param surname The clubmember surname
      * @param birthDate The clubmember birthDate
@@ -392,7 +391,6 @@ public class ClubManagementAPI {
             path = "clubmember/save/{clubmemberKey}",
             httpMethod = HttpMethod.POST)
     public Clubmember saveClubmember(final User user,
-                           @Named ("id") final int id,
                            @Named ("name") final String name,
                            @Named ("surname") final String surname,
                            @Named ("birthDate") final String birthDate,
@@ -407,7 +405,7 @@ public class ClubManagementAPI {
             public Clubmember run() {
                 Key<Clubmember> clubmemberKey = Key.create(websafeClubmemberKey);
                 Clubmember clubmember = ofy().load().key(clubmemberKey).now();
-                clubmember.update(id, name, surname, birthDate, telephoneNumber, address, role);
+                clubmember.update(name, surname, birthDate, telephoneNumber, address, role);
                 ofy().save().entity(clubmember).now();
                 return clubmember;
             }
