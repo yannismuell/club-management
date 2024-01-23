@@ -5,7 +5,7 @@ public class ClubmemberForm {
     private long id;
     private String name;
     private String surname;
-    private int age;
+    private String birthdate;
     private String telephoneNumber;
     private String address;
     private String role;
@@ -21,10 +21,10 @@ public class ClubmemberForm {
      * @param websafeClubmemberKey
      */
 
-    public ClubmemberForm(String name, String surname, int age, String telephoneNumber, String address, String role, String websafeClubmemberKey) {
+    public ClubmemberForm(String name, String surname, String birthdate, String telephoneNumber, String address, String role, String websafeClubmemberKey) {
         this.name = name;
         this.surname = surname;
-        this.age = age;
+        this.birthdate = birthdate;
         this.telephoneNumber = telephoneNumber;
         this.address = address;
         this.role = role;
@@ -43,8 +43,8 @@ public class ClubmemberForm {
         return surname;
     }
 
-    public int getAge() {
-        return age;
+    public String getBirthdate() {
+        return birthdate;
     }
 
     public String getTelephoneNumber() {
