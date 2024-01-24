@@ -40,8 +40,8 @@ public class Match {
     private Match() {}
 
     public Match(final long id, final MatchForm matchForm) {
-        LOG.info("Home: ." + matchForm.getHome());
-        Preconditions.checkNotNull(matchForm.getHome(), "The home is required");
+        LOG.info("Home: ." + matchForm.getMatchTeam());
+        Preconditions.checkNotNull(matchForm.getMatchTeam(), "The home is required");
         this.id = id;
         updateWithMatchForm(matchForm);
     }
@@ -109,7 +109,7 @@ public class Match {
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder("Id: " + id + "\n").append("Home: ").append(home).append("\n");
+        StringBuilder stringBuilder = new StringBuilder("Id: " + id + "\n").append("Home: ").append(matchTeam).append("\n");
 
         return stringBuilder.toString();
     }
