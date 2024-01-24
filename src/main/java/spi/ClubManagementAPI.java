@@ -259,8 +259,12 @@ public class ClubManagementAPI {
      * Saves a Match object and stores it to the datastore.
      *
      * @param user A user who invokes this method, null when the user is not signed in.
-     * @param home The match home
-     * @param away The match away
+     * @param matchDate The match matchDate
+     * @param matchTime The match matchTime
+     * @param matchTeam The match matchTeam
+     * @param opponent The match opponent
+     * @param homeGoals The match homeGoals
+     * @param guestGoals The match guestGoals
      * @return An updated match object.
      * @throws UnauthorizedException when the user is not signed in.
      */
@@ -268,11 +272,12 @@ public class ClubManagementAPI {
             path = "match/save/{matchKey}",
             httpMethod = HttpMethod.POST)
     public Match saveMatch(final User user,
-                                   @Named ("home") final String home,
-                                   @Named ("away") final String away,
-                                   @Named ("homegoals") final int homegoals,
-                                    @Named ("awaygoals") final int awaygoals,
-                                   @Named ("matchKey") final String websafeMatchKey)
+                                   @Named ("matchDate") final String matchDate,
+                                   @Named ("matchTime") final String matchTime,
+                                   @Named ("matchTeam") final String matchTeam,
+                                   @Named ("opponent") final String opponent,
+                                   @Named ("homeGoals") final int homeGoals,
+                                   @Named ("guestGoals") final int guestGoals)
             throws Exception  {
         checkUserOk(user);
         Match match = ofy().transact(new Work<Match>() {
@@ -280,7 +285,7 @@ public class ClubManagementAPI {
             public Match run() {
                 Key<Match> matchKey = Key.create(websafeMatchKey);
                 Match match = ofy().load().key(matchKey).now();
-                match.update(home, away, homegoals, awaygoals);
+                match.update(matchDate, matchTime, matchTeam, opponent, homeGoals, guestGoals);
                 ofy().save().entity(match).now();
                 return match;
             }
