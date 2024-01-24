@@ -17,24 +17,32 @@
                 <div class="row">
                     <div class="col-md-8">
                         <h3>Edit Match</h3>
-                        <form home="matchForm" novalidate role="form">
+                        <form matchDate="matchForm" novalidate role="form">
                             <div class="form-group">
-                                <label for="home">Match home <span class="required">*</span></label>
-                                <span class="required-label-red label label-danger" ng-show="matchForm.home.$error.required">Required!</span>
-                                <input id="home" type="text" name="home" ng-model="match.home" class="form-control" ng-required="true"/>
+                                <label for="matchDate">MatchDate <span class="required">*</span></label>
+                                <span class="required-label-red label label-danger" ng-show="matchForm.matchDate.$error.required">Required!</span>
+                                <input id="matchDate" type="text" name="matchDate" ng-model="match.matchDate" class="form-control" ng-required="true"/>
                             </div>
                             <div class="form-group">
-                                <label for="away">Away <span class="required">*</span></label>
-                                <span class="required-label-red label label-danger" ng-show="matchForm.away.$error.required">Required!</span>
-                                <input id="away" type="text" name="away" ng-model="match.away" class="form-control" ng-required="true"/>
+                                <label for="matchTime">MatchTime <span class="required">*</span></label>
+                                <span class="required-label-red label label-danger" ng-show="matchForm.matchTime.$error.required">Required!</span>
+                                <input id="matchTime" type="text" name="matchTime" ng-model="match.matchTime" class="form-control" ng-required="true"/>
                             </div>
                             <div class="form-group">
-                                <label for="homegoals">Homegoals <span class="required">*</span></label>
-                                <input id="homegoals" type="number" name="homegoals" name="homegoals" onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="match.homegoals"class="form-control"/>
+                                <label for="matchTeam">MatchTeam <span class="required">*</span></label>
+                                <input id="matchTeam" type="number" name="matchTeam" name="matchTeam" onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="match.matchTeam"class="form-control"/>
                             </div>
                             <div class="form-group">
-                                <label for="awaygoals">Awaygoals <span class="required">*</span></label>
-                                <input id="awaygoals" type="number" name="awaygoals" name="awaygoals" onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="match.awaygoals"class="form-control"/>
+                                <label for="opponent">Opponent <span class="required">*</span></label>
+                                <input id="opponent" type="number" name="opponent" name="opponent" onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="match.opponent"class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="homeGoals">HomeGoals <span class="required">*</span></label>
+                                <input id="homeGoals" type="number" name="homeGoals" name="homeGoals" onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="match.homeGoals"class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="guestGoals">GuestGoals <span class="required">*</span></label>
+                                <input id="guestGoals" type="number" name="guestGoals" name="guestGoals" onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="match.guestGoals"class="form-control"/>
                             </div>
                             <button ng-click="saveMatch(matchForm)" class="btn btn-add-custom" ng-disabled="!isValidMatch(matchForm) || loading">Save</button>
                         </form>

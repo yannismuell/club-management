@@ -1,8 +1,8 @@
 /**
  * @ngdoc controller
- * @home getMatchCtrl
+ * @matchDate getMatchCtrl
  *
- * @away
+ * @matchTime
  * A controller used to save a match page.
  */
 ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
@@ -37,13 +37,13 @@ ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $lo
         return angular.element(event.target).hasClass('disabled');
     }
 
-    $scope.queryMatchesByHome = function (search_field) {
+    $scope.queryMatchesByMatchDate = function (search_field) {
         $scope.filteredMatches = [];
         $scope.matches.forEach(function(element) {
-            let homeToSearch = element.home.toLowerCase();
-            let awayToSearch = element.away.toLowerCase();
+            let matchDateToSearch = element.matchDate.toLowerCase();
+            let matchTimeToSearch = element.matchTime.toLowerCase();
             let searchString = search_field.toLowerCase();
-            if (homeToSearch.includes(searchString) || awayToSearch.includes(searchString)){
+            if (matchDateToSearch.includes(searchString) || matchTimeToSearch.includes(searchString)){
                 $scope.filteredMatches.push(element);
             }
         });
@@ -124,9 +124,9 @@ ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $lo
 
 /**
  * @ngdoc controller
- * @home detailedMatchCtrl
+ * @matchDate detailedMatchCtrl
  *
- * @away
+ * @matchTime
  * A controller used to save a match page.
  */
 ClubManagementApp.controllers.controller('detailedMatchCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
@@ -245,16 +245,16 @@ ClubManagementApp.controllers.controller('detailedMatchCtrl', function ($scope, 
 
 /**
  * @ngdoc controller
- * @home createMatchCtrl
+ * @matchDate createMatchCtrl
  *
- * @away
+ * @matchTime
  * A controller used to save a match page.
  */
 ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
 
     $scope.match = {};
 
-    document.getElementById("home").focus();
+    document.getElementById("matchDate").focus();
 
     $scope.isValidMatch = function (matchForm) {
         return !matchForm.$invalid;
@@ -286,7 +286,7 @@ ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $l
                         }
                     } else {
                         // The request has succeeded.
-                        $scope.messages = 'The match has been saved : ' + resp.result.home;
+                        $scope.messages = 'The match has been saved : ' + resp.result.matchDate;
                         $scope.alertStatus = 'success';
                         $scope.submitted = false;
                         $scope.match = {};
@@ -301,7 +301,7 @@ ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $l
             callback();
         }
 
-        document.getElementById("home").focus();
+        document.getElementById("matchDate").focus();
     };
 
     $scope.init = function () {
@@ -313,9 +313,9 @@ ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $l
 
 /**
  * @ngdoc controller
- * @home saveMatchCtrl
+ * @matchDate saveMatchCtrl
  *
- * @away
+ * @matchTime
  * A controller used to save a match page.
  */
 ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log, $location, $route, oauth2Provider, $routeParams, HTTP_ERRORS) {
@@ -362,7 +362,7 @@ ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log
 
          var callback = function() {
             $scope.loading = true;
-            gapi.client.clubmanagement.saveMatch({home: $scope.match.home, away: $scope.match.away, homegoals: $scope.match.homegoals, awaygoals: $scope.match.awaygoals,matchKey: $routeParams.websafeMatchKey})
+            gapi.client.clubmanagement.saveMatch({matchDate: $scope.match.matchDate, matchTime: $scope.match.matchTime, matchTeam: $scope.match.matchTeam, opponent: $scope.match.opponent, homeGoals: $scope.match.homeGoals, guestGoals: $scope.match.guestGoals, opponent: $scope.match.opponent, matchKey: $routeParams.websafeMatchKey})
              .execute(function (resp) {
                  $scope.$apply(function () {
                     $scope.loading = false;
@@ -377,7 +377,7 @@ ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log
                          }
                          $route.reload();
                      } else {
-                         $scope.messages = 'The match has been saved : ' + resp.result.home;
+                         $scope.messages = 'The match has been saved : ' + resp.result.matchDate;
                          $scope.alertStatus = 'success';
                          $scope.submitted = false;
                          $scope.match = {};
