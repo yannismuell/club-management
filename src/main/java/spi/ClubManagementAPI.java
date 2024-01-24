@@ -277,7 +277,8 @@ public class ClubManagementAPI {
                                    @Named ("matchTeam") final String matchTeam,
                                    @Named ("opponent") final String opponent,
                                    @Named ("homeGoals") final int homeGoals,
-                                   @Named ("guestGoals") final int guestGoals)
+                                   @Named ("guestGoals") final int guestGoals,
+                                   @Named ("matchKey") final String websafeMatchKey)
             throws Exception  {
         checkUserOk(user);
         Match match = ofy().transact(new Work<Match>() {
@@ -451,108 +452,110 @@ public class ClubManagementAPI {
      * @throws UnauthorizedException when the user is not signed in.
      */
     @ApiMethod(
-            name = "getSquads",
-            path = "squad/all",
+            name = "getTeam",
+            path = "team/all",
             httpMethod = HttpMethod.POST
     )
-    public List<Squad> getSquads(final User user) throws Exception {
+    public List<Team> getTeams(final User user) throws Exception {
         checkUserOk(user);
-        List<Squad> squads = ofy().load().type(Squad.class).list();
-        return squads;
+        List<Team> teams = ofy().load().type(Team.class).list();
+        return teams;
     }
     /**
-     * Returns a Squad object with the given squadID.
+     * Returns a Team object with the given teamID.
      *
-     * @param websafeSquadKey The String representation of the Squad Key.
-     * @return a Squad object with the given squadID.
-     * @throws NotFoundException when there is no Squad with the given squadID.
+     * @param websafeTeamKey The String representation of the Team Key.
+     * @return a Team object with the given teamID.
+     * @throws NotFoundException when there is no Team with the given teamID.
      */
     @ApiMethod(
-            name = "getSquad",
-            path = "squad/{websafeSquadKey}",
+            name = "getTeams", //eigentlich nicht in der Mehrzahl also Team
+            path = "team/{websafeTeamKey}",
             httpMethod = HttpMethod.GET
     )
-    public Squad getSquad(final User user, @Named("websafeSquadKey") final String websafeSquadKey)
+    public Team getTeam(final User user, @Named("websafeTeamKey") final String websafeTeamKey)
             throws Exception {
         checkUserOk(user);
-        Key<Squad> squadKey = Key.create(websafeSquadKey);
-        Squad squad = ofy().load().key(squadKey).now();
-        if (squad == null) {
-            throw new NotFoundException("No squad found with key: " + websafeSquadKey);
+        Key<Team> teamKey = Key.create(websafeTeamKey);
+        Team team = ofy().load().key(teamKey).now();
+        if (team == null) {
+            throw new NotFoundException("No team found with key: " + websafeTeamKey);
         }
-        return squad;
+        return team;
     }
 
     /**
-     * Creates a new Squad object and stores it to the datastore.
+     * Creates a new Team object and stores it to the datastore.
      *
      * @param user A user who invokes this method, null when the user is not signed in.
-     * @param squadForm A SquadForm object representing user's inputs.
-     * @return A newly created Squad Object.
+     * @param teamForm A TeamForm object representing user's inputs.
+     * @return A newly created Team Object.
      * @throws UnauthorizedException when the user is not signed in.
      */
-    @ApiMethod(name = "createSquad",
-            path = "squad/create",
+    @ApiMethod(name = "createTeam",
+            path = "team/create",
             httpMethod = HttpMethod.POST)
-    public Squad createSquad(final User user, final SquadForm squadForm) throws Exception {
+    public Team createTeam(final User user, final TeamForm teamForm) throws Exception {
         checkUserOk(user);
-        final Key<Squad> squadKey = factory().allocateId(Squad.class);
-        final long squadId = squadKey.getId();
-        Squad squad = new Squad(squadId, squadForm);
-        ofy().save().entities(squad).now();
-        return squad;
+        final Key<Team> teamKey = factory().allocateId(Team.class);
+        final long teamId = teamKey.getId();
+        Team team = new Team(teamId, teamForm);
+        ofy().save().entities(team).now();
+        return team;
     }
     /**
-     * Saves a Squad object and stores it to the datastore.
+     * Saves a Team object and stores it to the datastore.
      *
      * @param user A user who invokes this method, null when the user is not signed in.
-     * @param name The squad name
-     * @param description The squad description
-     * @return An updated squad object.
+     * @param name The team name
+     * @param players The team players
+     * @param coach The team coach
+     * @return An updated team object.
      * @throws UnauthorizedException when the user is not signed in.
      */
-    @ApiMethod(name = "saveSquad",
-            path = "squad/save/{squadKey}",
+    @ApiMethod(name = "saveTeam",
+            path = "team/save/{teamKey}",
             httpMethod = HttpMethod.POST)
-    public Squad saveSquad(final User user,
+    public Team saveTeam(final User user,
                                      @Named ("name") final String name,
-                                     @Named ("description") final String description,
+                                     @Named ("players") final String players,
+                                     @Named ("coach") final String coach,
                                      @Named ("restTime") final float restTime,
-                                     @Named ("squadKey") final String websafeSquadKey)
+                                     @Named ("teamKey") final String websafeTeamKey)
             throws Exception  {
         checkUserOk(user);
-        Squad squad = ofy().transact(new Work<Squad>() {
+        Team team = ofy().transact(new Work<Team>() {
             @Override
-            public Squad run() {
-                Key<Squad> squadKey = Key.create(websafeSquadKey);
-                Squad squad = ofy().load().key(squadKey).now();
-                squad.update(name, description, restTime);
-                ofy().save().entity(squad).now();
-                return squad;
+            public Team run() {
+                Key<Team> teamKey = Key.create(websafeTeamKey);
+                Team team = ofy().load().key(teamKey).now();
+                team.update(name, players, coach, restTime);
+                ofy().save().entity(team).now();
+                return team;
             }
         });
-        return (squad);
+        return (team);
     }
 
     /**
      * Deletes a Squad object and removes it from the datastore.
      *
      * @param user             A user who invokes this method, null when the user is not signed in.
-     * @param websafeSquadKey A Squad object representing user's inputs.
-     * @return A newly created Squad Object.
+     * @param websafeTeamKey A Team object representing user's inputs.
+     * @return A newly created Team Object.
      * @throws UnauthorizedException when the user is not signed in.
      */
-    @ApiMethod(name = "deleteSquad",
-            path = "squad/delete/{websafeSquadKey}",
+    @ApiMethod(name = "deleteTeam",
+            path = "team/delete/{websafeTeamKey}",
             httpMethod = HttpMethod.DELETE)
-    public WrappedBoolean deleteSquad(final User user, @Named("websafeSquadKey") final String websafeSquadKey) throws Exception {
+    public WrappedBoolean deleteTeam(final User user, @Named("websafeTeamKey") final String websafeTeamKey) throws Exception {
         checkUserOk(user);
-        Key<Squad> squadKey = Key.create(websafeSquadKey);
-        Squad squad = ofy().load().key(squadKey).now();
+        Key<Team> teamKey = Key.create(websafeTeamKey);
+        Team team = ofy().load().key(teamKey).now();
         TxResult<Boolean> result = ofy().transact(new Work<TxResult<Boolean>>() {
             @Override
             public TxResult<Boolean> run() {
-                ofy().delete().key(squadKey).now();
+                ofy().delete().key(teamKey).now();
                 return new TxResult<>(true);
             }
         });
