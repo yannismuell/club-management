@@ -8,18 +8,20 @@ import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Parent;
-import form.SquadForm;
+import form.TeamForm;
 
 @Entity
 @Cache
-public class Squad {
+public class Team {
 
     @Id
     private Long id;
 
     private String name;
 
-    private String description;
+    private String players;
+
+    private String coach;
 
     @Parent
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
@@ -30,15 +32,15 @@ public class Squad {
 
     private float restTime = 11;
 
-    public Squad(long squadId, SquadForm squadForm) {}
+    public Team(long teamId, TeamForm teamForm) {}
 
-    public Squad(final long id, final String accountID,final SquadForm squadForm, final String email) {
-        Preconditions.checkNotNull(squadForm.getName(), "The name is required");
+    public Team(final long id, final String accountID,final TeamForm teamForm, final String email) {
+        Preconditions.checkNotNull(teamForm.getName(), "The name is required");
         this.id = id;
         this.accountKey = Key.create(Account.class, accountID);
         this.accountID = accountID;
 
-        updateWithSquadForm(squadForm);
+        updateWithTeamForm(teamForm);
     }
 
     public long getId() {
@@ -51,8 +53,12 @@ public class Squad {
         return name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getPlayers() {
+        return players;
+    }
+
+    public String getCoach() {
+        return coach;
     }
 
     public float getRestTime() {
@@ -65,23 +71,25 @@ public class Squad {
     }
 
     public String getWebsafeAccountKey() {
-        return Key.create(accountKey, Squad.class, id).toLegacyUrlSafe();
+        return Key.create(accountKey, Team.class, id).toLegacyUrlSafe();
     }
 
-    public String getWebsafeSquadKey() {
-        return Key.create(accountKey, Squad.class, id).toLegacyUrlSafe();
+    public String getWebsafeTeamKey() {
+        return Key.create(accountKey, Team.class, id).toLegacyUrlSafe();
     }
 
 
-    public void updateWithSquadForm(SquadForm squadForm) {
-        this.name = squadForm.getName();
-        this.description = squadForm.getDescription();
-        this.restTime = squadForm.getRestTime();
+    public void updateWithTeamForm(TeamForm teamForm) {
+        this.name = teamForm.getName();
+        this.players = teamForm.getPlayers();
+        this.coach = teamForm.getCoach();
+        this.restTime = teamForm.getRestTime();
     }
 
-    public void update(String name, String description, float restTime) {
+    public void update(String name, String players, String coach, float restTime) {
         this.name = name;
-        this.description = description;
+        this.players = players;
+        this.coach = coach;
         this.restTime = restTime;
     }
 
