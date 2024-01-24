@@ -2,41 +2,57 @@ package form;
 
 public class MatchForm {
 
-    private String home;
-
-    private String away;
-
+    private String matchDate;
+    private String matchTime;
+    private String matchTeam;
+    private String opponent;
+    private int homeGoals;
+    private int guestGoals;
     private String websafeMatchKey;
 
-    private int homegoals;
-
-    private int awaygoals;
 
     private MatchForm(){}
     /**
      * Public constructor is solely for Unit Test.
-     * @param home
-     * @param away
+     * @param matchTeam
+     * @param opponent
      * @param websafeMatchKey
      */
-    public MatchForm(String home, String away, String websafeMatchKey, int homegoals, int awaygoals) {
-        this.home = home;
-        this.away = away;
+    public MatchForm(String matchDate, String matchTime, String matchTeam, String opponent, int homeGoals, int guestGoals, String websafeMatchKey) {
+        this.matchDate = matchDate;
+        this.matchTime = matchTime;
+        this.matchTeam = matchTeam;
+        this.opponent = opponent;
+        this.homeGoals = homeGoals;
+        this.guestGoals = guestGoals;
         this.websafeMatchKey = websafeMatchKey;
-        this.homegoals = homegoals;
-        this.awaygoals = awaygoals;
-    }
 
-    public String getHome() {
-        return home;
-    }
-
-    public String getAway() {
-        return away;
     }
 
     public String getWebsafeMatchKey() { return websafeMatchKey; }
 
-    public int getHomegoals() { return homegoals; }
-    public int getAwaygoals() { return awaygoals; }
+    public String getMatchDate() {
+        return matchDate;
+    }
+
+    public String getMatchTime() {
+        return matchTime;
+    }
+
+    public String getMatchTeam() {
+        return matchTeam;
+    }
+
+    public String getOpponent() {
+        return opponent;
+    }
+
+    public int getHomeGoals() {
+        return homeGoals;
+    }
+
+    public int getGuestGoals() {
+        return guestGoals;
+    }
 }
+
