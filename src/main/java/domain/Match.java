@@ -18,10 +18,14 @@ public class Match {
 
     @Id
     private Long id;
-    private String home;
-    private String away;
-    private int homegoals;
-    private int awaygoals;
+    private String matchDate;
+    private String matchTime;
+
+    private String matchTeam;
+    private String opponent;
+
+    private int homeGoals;
+    private int guestGoals;
 
     @Parent
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
@@ -48,21 +52,28 @@ public class Match {
 
     public String getAccountId() { return accountID; }
 
-    public String getHome() {
-        return home;
+    public String getMatchDate() {
+        return matchDate;
     }
 
-    public String getAway() {
-        return away;
+    public String getMatchTime() {
+        return matchTime;
     }
 
-    public int getHomegoals() {
-        return homegoals;
+    public String getMatchTeam() {
+        return matchTeam;
     }
 
-    public int getAwaygoals() {
-        return awaygoals;
+    public String getOpponent(){return opponent;}
+
+    public int getHomeGoals() {
+        return homeGoals;
     }
+
+    public int getGuestGoals() {
+        return guestGoals;
+    }
+
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     public Key<Account> getAccountKey() {
         return accountKey;
@@ -78,17 +89,22 @@ public class Match {
 
 
     public void updateWithMatchForm(MatchForm matchForm) {
-        this.home = matchForm.getHome();
-        this.away = matchForm.getAway();
-        this.homegoals = matchForm.getHomegoals();
-        this.awaygoals = matchForm.getAwaygoals();
+        this.matchDate = matchForm.getMatchDate();
+        this.matchTime = matchForm.getMatchTime();
+        this.matchTeam = matchForm.getMatchTeam();
+        this.opponent = matchForm.getOpponent();
+        this.homeGoals = matchForm.getHomeGoals();
+        this.guestGoals = matchForm.getGuestGoals();
+
     }
 
-    public void update(String home, String away, int homegoals, int awaygoals) {
-        this.home = home;
-        this.away = away;
-        this.homegoals = homegoals;
-        this.awaygoals = awaygoals;
+    public void update(String matchDate, String matchTime, String matchTeam, String opponent, int homeGoals, int guestGoals) {
+        this.matchDate = getMatchDate();
+        this.matchTime = getMatchTime();
+        this.matchTeam = getMatchTeam();
+        this.opponent = getOpponent();
+        this.homeGoals = getHomeGoals();
+        this.guestGoals = getGuestGoals();
     }
 
     @Override
