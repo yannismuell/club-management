@@ -16,27 +16,27 @@
                 </div>
                 <div class="row">
                     <div class="col-md-8">
-                        <h3>Add a Match</h3>
-                        <form name="matchForm" novalidate role="form">
+                        <h3>Add a Team</h3>
+                        <form name="teamForm" novalidate role="form">
                             <div class="form-group">
-                                <label for="home">Match Home <span class="required">*</span></label>
-                                <span class="required-label-red label label-danger" ng-show="matchForm.name.$error.required">Required!</span>
-                                <input id="home" type="text" name="home" ng-model="match.home" class="form-control" ng-required="true"/>
+                                <label for="home">Team Home <span class="required">*</span></label>
+                                <span class="required-label-red label label-danger" ng-show="teamForm.name.$error.required">Required!</span>
+                                <input id="home" type="text" name="home" ng-model="team.home" class="form-control" ng-required="true"/>
                             </div>
                             <div class="form-group">
                                 <label for="away">Away <span class="required">*</span></label>
-                                <span class="required-label-red label label-danger" ng-show="matchForm.away.$error.required">Required!</span>
-                                <input id="away" type="text" name="away" ng-model="match.away" class="form-control" ng-required="true"/>
+                                <span class="required-label-red label label-danger" ng-show="teamForm.away.$error.required">Required!</span>
+                                <input id="away" type="text" name="away" ng-model="team.away" class="form-control" ng-required="true"/>
                             </div>
                             <div class="form-group">
                                 <label for="homegoals">Homegoals <span class="required">*</span></label>
-                                <input id="homegoals" type="number" name="homegoals" name="homegoals" onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="match.homegoals"class="form-control"/>
+                                <input id="homegoals" type="number" name="homegoals" name="homegoals" onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="team.homegoals"class="form-control"/>
                             </div>
                             <div class="form-group">
                                 <label for="awaygoals">Awaygoals <span class="required">*</span></label>
-                                <input id="awaygoals" type="number" name="awaygoals" name="awaygoals" onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="match.awaygoals"class="form-control"/>
+                                <input id="awaygoals" type="number" name="awaygoals" name="awaygoals" onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="team.awaygoals"class="form-control"/>
                             </div>
-                            <button ng-click="createMatch(matchForm)" class="btnCreateMatches" ng-disabled="!isValidMatch(matchForm) || loading">Add</button>
+                            <button ng-click="createTeam(teamForm)" class="btnCreateTeams" ng-disabled="!isValidTeam(teamForm) || loading">Add</button>
                         </form>
                         <p><a class="nav-link" onclick="window.history.back();" href="">« Back</a></p>
                     </div>
