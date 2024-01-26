@@ -15,7 +15,7 @@ public class MatchForm {
     /**
      * Public constructor is solely for Unit Test.
      * @param matchTeam
-     * @param opponent
+     * @param matchTime
      * @param websafeMatchKey
      */
     public MatchForm(String matchDate, String matchTime, String matchTeam, String opponent, int homeGoals, int guestGoals, String websafeMatchKey) {
