@@ -37,7 +37,6 @@ public class Clubmember {
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     private String accountID;
 
-//    private float alter = 11;
 
     private static final Logger LOG = Logger.getLogger(ClubManagementAPI.class.getName());
     private Clubmember() {}
