@@ -34,14 +34,13 @@ public class Match {
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     private String accountID;
 
-    private float restTime = 11;
 
     private static final Logger LOG = Logger.getLogger(ClubManagementAPI.class.getName());
     private Match() {}
 
     public Match(final long id, final MatchForm matchForm) {
         LOG.info("Home: ." + matchForm.getMatchTeam());
-        Preconditions.checkNotNull(matchForm.getMatchTeam(), "The home is required");
+        Preconditions.checkNotNull(matchForm.getMatchTeam(), "The date is required");
         this.id = id;
         updateWithMatchForm(matchForm);
     }
@@ -109,7 +108,7 @@ public class Match {
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder("Id: " + id + "\n").append("Home: ").append(matchTeam).append("\n");
+        StringBuilder stringBuilder = new StringBuilder("Id: " + id + "\n").append("Date: ").append(matchTeam).append("\n");
 
         return stringBuilder.toString();
     }
