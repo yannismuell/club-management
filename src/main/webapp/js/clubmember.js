@@ -53,7 +53,7 @@ ClubManagementApp.controllers.controller('getClubmembersCtrl', function ($scope,
     $scope.init = function () {
         var retrieveClubmembersCallback = function () {
             $scope.loading = true;
-            gapi.client.clubmanagement.getClubmembersCreated().
+            gapi.client.clubmanagement.getClubmembers().
                 execute(function (resp) {
                     $scope.$apply(function () {
                         $scope.loading = false;
