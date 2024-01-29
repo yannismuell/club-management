@@ -19,18 +19,30 @@
                         <h3>Edit Clubmember</h3>
                         <form name="clubmemberForm" novalidate role="form">
                             <div class="form-group">
-                                <label for="name">Clubmember Name <span class="required">*</span></label>
+                                <label for="name">Name <span class="required">*</span></label>
                                 <span class="required-label-red label label-danger" ng-show="clubmemberForm.name.$error.required">Required!</span>
                                 <input id="name" type="text" name="name" ng-model="clubmember.name" class="form-control" ng-required="true"/>
                             </div>
                             <div class="form-group">
-                                <label for="description">Description <span class="required">*</span></label>
+                                <label for="surname">Surname <span class="required">*</span></label>
                                 <span class="required-label-red label label-danger" ng-show="clubmemberForm.description.$error.required">Required!</span>
-                                <input id="description" type="text" name="description" ng-model="clubmember.description" class="form-control" ng-required="true"/>
+                                <input id="surname" type="text" name="surname" ng-model="clubmember.surname" class="form-control" ng-required="true"/>
                             </div>
                             <div class="form-group">
-                                <label for="age">Age <span class="required">*</span></label>
-                                <input id="age" type="number" name="age" name="age" onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="clubmember.age"class="form-control"/>
+                                <label for="birthDate">Birthdate <span class="required">*</span></label>
+                                <input id="birthDate" type="number" name="birthDate" name="birthDate" onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="clubmember.birthDate"class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="telephoneNumber ">Telephone Number <span class="required">*</span></label>
+                                <input id="telephoneNumber " type="number" name="telephoneNumber " name="telephoneNumber " onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="clubmember.telephoneNumber"class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="address ">Address <span class="required">*</span></label>
+                                <input id="address " type="number" name="address " name="address " onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="clubmember.address"class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="role ">Role <span class="required">*</span></label>
+                                <input id="role " type="number" name="role " name="role " onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="clubmember.role"class="form-control"/>
                             </div>
                             <button ng-click="saveClubmember(clubmemberForm)" class="btn btn-add-custom" ng-disabled="!isValidClubmember(clubmemberForm) || loading">Save</button>
                         </form>
