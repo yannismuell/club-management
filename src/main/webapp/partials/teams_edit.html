@@ -19,22 +19,18 @@
                         <h3>Edit Team</h3>
                         <form home="teamForm" novalidate role="form">
                             <div class="form-group">
-                                <label for="home">Team home <span class="required">*</span></label>
-                                <span class="required-label-red label label-danger" ng-show="teamForm.home.$error.required">Required!</span>
-                                <input id="home" type="text" name="home" ng-model="team.home" class="form-control" ng-required="true"/>
+                                <label for="name">Team name <span class="required">*</span></label>
+                                <span class="required-label-red label label-danger" ng-show="teamForm.name.$error.required">Required!</span>
+                                <input id="name" type="text" name="name" ng-model="team.name" class="form-control" ng-required="true"/>
                             </div>
                             <div class="form-group">
-                                <label for="away">Away <span class="required">*</span></label>
-                                <span class="required-label-red label label-danger" ng-show="teamForm.away.$error.required">Required!</span>
-                                <input id="away" type="text" name="away" ng-model="team.away" class="form-control" ng-required="true"/>
+                                <label for="Players">Players <span class="required">*</span></label>
+                                <span class="required-label-red label label-danger" ng-show="teamForm.Players.$error.required">Required!</span>
+                                <input id="Players" type="text" name="Players" ng-model="Players.away" class="form-control" ng-required="true"/>
                             </div>
                             <div class="form-group">
-                                <label for="homegoals">Homegoals <span class="required">*</span></label>
-                                <input id="homegoals" type="number" name="homegoals" name="homegoals" onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="team.homegoals"class="form-control"/>
-                            </div>
-                            <div class="form-group">
-                                <label for="awaygoals">Awaygoals <span class="required">*</span></label>
-                                <input id="awaygoals" type="number" name="awaygoals" name="awaygoals" onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="team.awaygoals"class="form-control"/>
+                                <label for="coach">Coach <span class="required">*</span></label>
+                                <input id="coach" type="text" name="coach" name="coach" onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="team.coach"class="form-control"/>
                             </div>
                             <button ng-click="Team(teamForm)" class="btn btn-add-custom" ng-disabled="!isValidTeam(teamForm) || loading">Save</button>
                         </form>

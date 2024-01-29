@@ -28,7 +28,7 @@
                               <span class="input-group-btn">
                                   <button type="submit" ng-click="queryTeamsByName(search_field)" class="modal-action btn btn-secondary" type="button">Search</button>
                               </span>
-                            <input id="query-input" type="text" class="form-control" placeholder="Search Team Home/Away" ng-model="search_field" autofocus>
+                            <input id="query-input" type="text" class="form-control" placeholder="Search Team Players" ng-model="search_field" autofocus>
                         </div>
                     </div>
                 </form>
@@ -39,10 +39,9 @@
                     <table id="team-table" class="table table-striped table-hover">
                         <thead>
                         <tr>
-                            <th>Home</th>
-                            <th>Away</th>
-                            <th>HomeGoals</th>
-                            <th>AwayGoals</th>
+                            <th>name</th>
+                            <th>Players</th>
+                            <th>coach</th>
                             <th>Delete</th>
                         </tr>
                         </thead>
@@ -50,10 +49,9 @@
                         <tbody>
 
                         <tr ng-repeat="team in filteredTeams | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize | orderBy:'home'">
-                            <td><a href="#!/team/away/{{team.websafeTeamKey}}">{{team.home}}</a></td>
-                            <td>{{team.away}}</td>
-                            <td>{{team.homegoals}}</td>
-                            <td>{{team.awaygoals}}</td>
+                            <td><a href="#!/team/away/{{team.websafeTeamKey}}">{{team.name}}</a></td>
+                            <td>{{team.players}}</td>
+                            <td>{{team.coach}}</td>
                             <td>
                                 <button ng-click="deleteTeamWithWebsafeTeamKey(team.websafeTeamKey)" class="btn btn-outline-danger" ng-disabled="loading" title="Delete Team">&#10008;</button>
                             </td>
