@@ -26,7 +26,7 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
               templateUrl: 'partials/matches_create.html',
               controller: 'createMatchCtrl'
         }).
-        when('/matches/edit/:websafeMatchKey', {
+        when('/matches/edit/:websafeMatchey', {
               templateUrl: 'partials/matches_edit.html',
               controller: 'saveMatchCtrl'
         }).
@@ -46,7 +46,7 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
                       templateUrl: 'partials/clubmembers_create.html',
                       controller: 'createClubmemberCtrl'
                 }).
-
+/*
                 when('/clubmembers/edit/:websafeClubmemberKey', {
                       templateUrl: 'partials/clubmembers_edit.html',
                       controller: 'saveClubmemberCtrl'.
@@ -61,30 +61,29 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
                         templateUrl: 'partials/clubmember_details.html',
                         controller: 'detailedClubmemberCtrl'
 
-
-                                when('/teams', {
-                                     templateUrl: 'partials/team.html',
-                                     controller: 'getTeamCtrl'
+                                when('/trainers', {
+                                     templateUrl: 'partials/trainers.html',
+                                     controller: 'getTrainersCtrl'
                                 }).
-                                when('/teams/create', {
-                                      templateUrl: 'partials/team_create.html',
-                                      controller: 'createTeamCtrl'
-
-                                }).
-                                when('/teams/edit/:websafeTeamKey', {
-                                      templateUrl: 'partials/team_edit.html',
-                                      controller: 'saveTeamCtrl'.
+                                when('/trainers/create', {
+                                      templateUrl: 'partials/trainers_create.html',
+                                      controller: 'createTrainerCtrl'
 
                                 }).
-                                when('/teams/delete/:websafeTeamKey', {
-                                      templateUrl: 'partials/team.html',
-                                      controller: 'getTeamCtrl'
+                                when('/trainers/edit/:websafeTrainerKey', {
+                                      templateUrl: 'partials/trainers_edit.html',
+                                      controller: 'saveTrainerCtrl'.
+
+                                }).
+                                when('/trainers/delete/:websafeTrainerKey', {
+                                      templateUrl: 'partials/trainers.html',
+                                      controller: 'getTrainerCtrl'
                                 }).
 
-                                when('/teams/detail/:websafeTeamKey', {
-                                        templateUrl: 'partials/team_details.html',
-                                        controller: 'detailedTeamCtrl'
-
+                                when('/trainers/detail/:websafeTrainerKey', {
+                                        templateUrl: 'partials/trainer_details.html',
+                                        controller: 'detailedTrainerCtrl'
+                                        */
         when('/impressum', {
             templateUrl: 'partials/impressum.html'
         }).
@@ -119,9 +118,9 @@ app.factory('parentProvider', function ($uibModal) {
 
     parentProvider.clubmember = {};
 
-    parentProvider.teams = [];
+    parentProvider.trainers = [];
 
-    parentProvider.team = {}; */
+    parentProvider.trainer = {};
 
     return parentProvider;
 
