@@ -58,7 +58,7 @@
                             <ul class="navbar-nav text-md-center nav-justified w-100 ">
                                 <li class="nav-item " ng-class="{ active: isActive('/matches')  || isActive('/clubmembers') || isActive('/teams') }" ng-show="getSignedInState()" ng-click="collapseNavbar()"><a class="Navbar_ClubManagement_Item colour_CM_Blue" ng-href="{{getActiveURL()}}">Your Club</a></li>
 
-                                <li class="nav-item " ng-class="{ active: isActive('/documentation')}" ng-click="collapseNavbar()"><a class="Navbar_ClubManagement_Item colour_CM_Blue" href="#!/documentation">Squads</a></li>
+                                <li class="nav-item " ng-class="{ active: isActive('/matchesPage')}" ng-click="collapseNavbar()"><a class="Navbar_ClubManagement_Item colour_CM_Blue" href="#!/matchesPage">Teams</a></li>
                                 <li class="nav-item">
                                     <a class="Navbar_ClubManagement_Item colour_CM_Blue" href="#">Match</a>
                                 </li>
@@ -133,11 +133,5 @@
         </div>
     </div>
 </footer>
-
-
-
-
-
-
 </body>
 </html>

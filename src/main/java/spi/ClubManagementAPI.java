@@ -444,11 +444,11 @@ public class ClubManagementAPI {
         return new WrappedBoolean(result.getResult());
     }
     /**
-     * Returns a list of Squads
-     * In order to receive the websafeSquadKey via the JSON params, uses a POST method.
+     * Returns a list of Teams
+     * In order to receive the websafeTeamKey via the JSON params, uses a POST method.
      *
      * @param user An user who invokes this method, null when the user is not signed in.
-     * @return a list of Squads that the user created.
+     * @return a list of Teams that the user created.
      * @throws UnauthorizedException when the user is not signed in.
      */
     @ApiMethod(
@@ -538,7 +538,7 @@ public class ClubManagementAPI {
     }
 
     /**
-     * Deletes a Squad object and removes it from the datastore.
+     * Deletes a Team object and removes it from the datastore.
      *
      * @param user             A user who invokes this method, null when the user is not signed in.
      * @param websafeTeamKey A Team object representing user's inputs.

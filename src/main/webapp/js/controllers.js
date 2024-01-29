@@ -22,12 +22,12 @@ ClubManagementApp.controllers = angular.module('clubmanagementControllers', ['ui
 
 /**
  * @ngdoc controller
- * @name DocumentationCtrl
+ * @name MatchesPageCtrl
  *
  * @description
- * A controller used for the Documentation page.
+ * A controller used for the MatchesPage page.
  */
-ClubManagementApp.controllers.controller('DocumentationCtrl', function ($scope, $log, oauth2Provider, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('MatchesPageCtrl', function ($scope, $log, oauth2Provider, HTTP_ERRORS) {
 
 
 });

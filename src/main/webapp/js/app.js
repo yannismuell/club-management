@@ -14,9 +14,9 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
             templateUrl: 'partials/account_edit.html',
             controller: 'AccountCtrl'
         }).
-        when('/documentation', {
-            templateUrl: 'partials/documentation.html',
-            controller: 'DocumentationCtrl'
+        when('/matchesPage', {
+            templateUrl: 'partials/matchesPage.html',
+            controller: 'MatchesPageCtrl'
         }).
         when('/matches', {
              templateUrl: 'partials/matches.html',
