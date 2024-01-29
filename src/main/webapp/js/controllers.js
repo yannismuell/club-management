@@ -12,7 +12,7 @@ var activeURL = '#!/clubmembers';
  * @ngdoc module
  * @name clubmanagementControllers
  *
- * @description
+ * @surname
  * Angular module for controllers.
  *
  */

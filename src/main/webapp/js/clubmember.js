@@ -2,7 +2,7 @@
  * @ngdoc controller
  * @name getClubmemberCtrl
  *
- * @description
+ * @surname
  * A controller used to save a clubmember page.
  */
 ClubManagementApp.controllers.controller('getClubmembersCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
@@ -41,9 +41,9 @@ ClubManagementApp.controllers.controller('getClubmembersCtrl', function ($scope,
         $scope.filteredClubmembers = [];
         $scope.clubmembers.forEach(function(element) {
             let nameToSearch = element.name.toLowerCase();
-            let descriptionToSearch = element.description.toLowerCase();
+            let surnameToSearch = element.surname.toLowerCase();
             let searchString = search_field.toLowerCase();
-            if (nameToSearch.includes(searchString) || descriptionToSearch.includes(searchString)){
+            if (nameToSearch.includes(searchString) || surname.includes(searchString)){
                 $scope.filteredClubmembers.push(element);
             }
         });
@@ -126,7 +126,7 @@ ClubManagementApp.controllers.controller('getClubmembersCtrl', function ($scope,
  * @ngdoc controller
      * @name detailedClubmemberCtrl
  *
- * @description
+ * @surname
  * A controller used to save a clubmember page.
  */
 ClubManagementApp.controllers.controller('detailedClubmemberCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
@@ -246,7 +246,7 @@ ClubManagementApp.controllers.controller('detailedClubmemberCtrl', function ($sc
  * @ngdoc controller
  * @name createClubmemberCtrl
  *
- * @description
+ * @surname
  * A controller used to save a clubmember page.
  */
 ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
@@ -311,7 +311,7 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
  * @ngdoc controller
  * @name saveClubmemberCtrl
  *
- * @description
+ * @surname
  * A controller used to save a clubmember page.
  */
 ClubManagementApp.controllers.controller('saveClubmemberCtrl', function ($scope, $log, $location, $route, oauth2Provider, $routeParams, HTTP_ERRORS) {
@@ -358,7 +358,7 @@ ClubManagementApp.controllers.controller('saveClubmemberCtrl', function ($scope,
 
          var callback = function() {
             $scope.loading = true;
-            gapi.client.clubmanagement.saveClubmember({name: $scope.clubmember.name, description: $scope.clubmember.description, alter: $scope.clubmember.alter, clubmemberKey: $routeParams.websafeClubmemberKey})
+            gapi.client.clubmanagement.saveClubmember({name: $scope.clubmember.name, surname: $scope.clubmember.description, alter: $scope.clubmember.alter, clubmemberKey: $routeParams.websafeClubmemberKey})
              .execute(function (resp) {
                  $scope.$apply(function () {
                     $scope.loading = false;
