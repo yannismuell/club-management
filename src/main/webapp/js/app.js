@@ -18,6 +18,10 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
             templateUrl: 'partials/matchesPage.html',
             controller: 'MatchesPageCtrl'
         }).
+        when('/teamsPage', {
+                    templateUrl: 'partials/teamsPage.html',
+                    controller: 'TeamsPageCtrl'
+                }).
         when('/matches', {
              templateUrl: 'partials/matches.html',
              controller: 'getMatchesCtrl'
