@@ -427,3 +427,13 @@ a:hover {
     margin-right: 10px;
 }
 
+.jumbotron-bg {
+    background-size: cover;
+    background-position: center;
+    color: #fff; /* Set text color to white for better visibility */
+    padding-top: 100px; /* Adjust this value to move the text down from the top */
+    padding-bottom: 100px; /* Adjust this value to create space between the text and bottom */
+    /* You can adjust other styles as per your design requirements */
+}
+
+
