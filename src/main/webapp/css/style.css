@@ -127,6 +127,7 @@ h1 {
     padding-bottom: 9px;
     margin-bottom: 20px;
     border-bottom: 1px solid #eee;
+
 }
 
 /* Sidebar */
@@ -433,7 +434,12 @@ a:hover {
     color: #fff; /* Set text color to white for better visibility */
     padding-top: 100px; /* Adjust this value to move the text down from the top */
     padding-bottom: 100px; /* Adjust this value to create space between the text and bottom */
-    /* You can adjust other styles as per your design requirements */
+     text-shadow:
+            -1px -1px 0 #000,
+            1px -1px 0 #000,
+            -1px 1px 0 #000,
+            1px 1px 0 #000;
 }
+
 
 
