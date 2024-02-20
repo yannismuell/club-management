@@ -1,6 +1,3 @@
-<!-- Jumbotron -->
-<div class="jumbotron background-color-beige">
-</div>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,11 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teams</title>
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
         .team-button {
-            display: block;
-            width: 250px;
-            padding: 10px;
-            margin: 10px;
+            width: 200px;
+            height: 50px;
             background-color: #f0f0f0;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -21,25 +32,42 @@
             color: #333;
             font-weight: bold;
             cursor: pointer;
+            font-size: 16px;
+            line-height: 50px;
+            margin: 10px; /* Anpassung des Abstands zwischen den Buttons */
+            box-sizing: border-box; /* Hinzufügen, um sicherzustellen, dass die Größe der Buttons inklusive des Rands ist */
+        }
+
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: auto;
+            width: 100%;
         }
     </style>
 </head>
 <body>
 
-<button class="team-button" onclick="showDetails('U12')">U12 Team</button>
-<button class="team-button" onclick="showDetails('U15')">U15 Team</button>
-<button class="team-button" onclick="showDetails('U16')">U16 Team</button>
-<button class="team-button" onclick="showDetails('Reserve')">Reserve</button>
-<button class="team-button" onclick="showDetails('Kampfmannschaft')">Kampfmannschaft</button>
+<div class="button-container">
+    <button class="team-button" onclick="showDetails('U12')">U12 Team</button>
+    <button class="team-button" onclick="showDetails('U15')">U15 Team</button>
+    <button class="team-button" onclick="showDetails('U16')">U16 Team</button>
+    <button class="team-button" onclick="showDetails('U23')">U23 Team</button>
+    <button class="team-button" onclick="showDetails('MainTeam')">Main Team</button>
+</div>
 
 <div id="team-details"></div>
 
+
+
 <script>
-        function showDetails(teamName) {
-            var detailsDiv = document.getElementById('team-details');
-            detailsDiv.innerHTML = "<h3>Details zu " + teamName + "</h3><p>Hier könnten die Details zum " + teamName + " Team stehen.</p>";
-        }
-    </script>
+    function showDetails(teamName) {
+        var detailsDiv = document.getElementById('team-details');
+        detailsDiv.innerHTML = "<h3>Players " + teamName + "</h3><p>Here you can see the players of " + teamName + " .</p>";
+    }
+</script>
 
 </body>
 </html>
