@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teams</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 35vh; /* Änderung: 50% des Viewports von oben */
+            transform: translateY(-50%); /* Änderung: Vertikales Zentrieren */
+        }
+
+        .team-button {
+            width: 200px;
+            height: 50px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 50px;
+            margin: 10px;
+            box-sizing: border-box;
+        }
+
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: auto;
+            width: 100%;
+            height: 50%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="button-container">
+    <button class="team-button" onclick="showDetails('U12')">U12 Team</button>
+    <button class="team-button" onclick="showDetails('U15')">U15 Team</button>
+    <button class="team-button" onclick="showDetails('U16')">U16 Team</button>
+    <button class="team-button" onclick="showDetails('U18')">U18 Team</button>
+    <button class="team-button" onclick="showDetails('U23')">U23 Team</button>
+    <button class="team-button" onclick="showDetails('MainTeam')">Main Team</button>
+</div>
+
+<div id="team-details"></div>
+
+<script>
+    function showDetails(teamName) {
+        var detailsDiv = document.getElementById('team-details');
+        detailsDiv.innerHTML = "<h3>Players " + teamName + "</h3><p>Here you can see the players of " + teamName + " .</p>";
+    }
+</script>
+
+</body>
+</html>
