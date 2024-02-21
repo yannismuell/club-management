@@ -520,7 +520,6 @@ public class ClubManagementAPI {
                                      @Named ("name") final String name,
                                      @Named ("players") final String players,
                                      @Named ("coach") final String coach,
-                                     @Named ("restTime") final float restTime,
                                      @Named ("teamKey") final String websafeTeamKey)
             throws Exception  {
         checkUserOk(user);
@@ -529,7 +528,7 @@ public class ClubManagementAPI {
             public Team run() {
                 Key<Team> teamKey = Key.create(websafeTeamKey);
                 Team team = ofy().load().key(teamKey).now();
-                team.update(name, players, coach, restTime);
+                team.update(name, players, coach);
                 ofy().save().entity(team).now();
                 return team;
             }

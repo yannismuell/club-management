@@ -355,7 +355,7 @@ ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log
     }
 
     $scope.saveMatch = function (matchForm) {
-         $scope.match.websafeMatchKey = $routeParams.websafematchKey;
+         $scope.match.websafeMatchKey = $routeParams.websafeMatchKey;
          if (!$scope.isValidMatch(matchForm)) {
              return;
          }

@@ -2,16 +2,16 @@
  * @ngdoc controller
  * @name getTeamCtrl
  *
- * @description
+ * @players
  * A controller used to save a team page.
  */
-ClubManagementApp.controllers.controller('getTeamCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('getTeamsCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
 
     document.getElementById("query-input").focus();
 
     $scope.submitted = false;
     $scope.loading = false;
-    /*activeURL = '#!/team';*/
+    activeURL = '#!/teams';
 
     $scope.team = [];
     $scope.filteredTeam = [];
@@ -21,7 +21,7 @@ ClubManagementApp.controllers.controller('getTeamCtrl', function ($scope, $log, 
     $scope.pagination.pageSize = 25;
 
     $scope.pagination.numberOfPages = function () {
-        return Math.ceil($scope.filteredTeam.length / $scope.pagination.pageSize);
+        return Math.ceil($scope.filteredTeams.length / $scope.pagination.pageSize);
     };
 
     $scope.pagination.pageArray = function () {
@@ -37,23 +37,23 @@ ClubManagementApp.controllers.controller('getTeamCtrl', function ($scope, $log, 
         return angular.element(event.target).hasClass('disabled');
     }
 
-    $scope.queryTeamByName = function (search_field) {
-        $scope.filteredTeam = [];
+    $scope.queryTeamsByName = function (search_field) {
+        $scope.filteredTeams = [];
         $scope.team.forEach(function(element) {
             let nameToSearch = element.name.toLowerCase();
-            let descriptionToSearch = element.description.toLowerCase();
+            let playersToSearch = element.players.toLowerCase();
             let searchString = search_field.toLowerCase();
             if (nameToSearch.includes(searchString) || descriptionToSearch.includes(searchString)){
-                $scope.filteredTeam.push(element);
+                $scope.filteredTeams.push(element);
             }
         });
         $scope.pagination.currentPage = 0;
     }
 
     $scope.init = function () {
-        var retrieveTeamCallback = function () {
+        var retrieveTeamsCallback = function () {
             $scope.loading = true;
-            gapi.client.clubmanagement.getTeamCreated().
+            gapi.client.clubmanagement.getTeams().
                 execute(function (resp) {
                     $scope.$apply(function () {
                         $scope.loading = false;
@@ -69,9 +69,9 @@ ClubManagementApp.controllers.controller('getTeamCtrl', function ($scope, $log, 
                             $scope.messages = 'Query succeeded';
                             $scope.alertStatus = 'success';
                             $log.info($scope.messages);
-                            $scope.team = resp.items;
-                            $scope.filteredTeam = $scope.team;
-                            parentProvider.team = $scope.team;
+                            $scope.teams = resp.items;
+                            $scope.filteredTeams = $scope.teams;
+                            parentProvider.teams = $scope.teams;
                         }
                         $scope.submitted = true;
                     });
@@ -79,9 +79,9 @@ ClubManagementApp.controllers.controller('getTeamCtrl', function ($scope, $log, 
             );
         };
         if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(retrieveTeamCallback);
+            oauth2Provider.signIn(retrieveTeamsCallback);
         } else {
-            retrieveTeamCallback();
+            retrieveTeamsCallback();
         }
     };
 
@@ -124,9 +124,9 @@ ClubManagementApp.controllers.controller('getTeamCtrl', function ($scope, $log, 
 
 /**
  * @ngdoc controller
-     * @name detailedTeamCtrl
+ * @name detailedTeamCtrl
  *
- * @description
+ * @players
  * A controller used to save a team page.
  */
 ClubManagementApp.controllers.controller('detailedTeamCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
@@ -197,7 +197,7 @@ ClubManagementApp.controllers.controller('detailedTeamCtrl', function ($scope, $
                         $scope.team = {};
                         $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
                         $timeout(function () {
-                            $location.path('/team');
+                            $location.path('/teams');
                             $route.reload();
                         });
                     }
@@ -266,7 +266,7 @@ ClubManagementApp.controllers.controller('createTeamCtrl', function ($scope, $lo
 
         var callback = function() {
             $scope.loading = true;
-            gapi.client.clubmanagement.createTeam($scope.teamm).
+            gapi.client.clubmanagement.createTeam($scope.team).
             execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
@@ -311,7 +311,7 @@ ClubManagementApp.controllers.controller('createTeamCtrl', function ($scope, $lo
  * @ngdoc controller
  * @name saveTeamCtrl
  *
- * @description
+ * @players
  * A controller used to save a team page.
  */
 ClubManagementApp.controllers.controller('saveTeamCtrl', function ($scope, $log, $location, $route, oauth2Provider, $routeParams, HTTP_ERRORS) {
@@ -352,13 +352,13 @@ ClubManagementApp.controllers.controller('saveTeamCtrl', function ($scope, $log,
 
     $scope.saveTeam = function (teamForm) {
          $scope.team.websafeTeamKey = $routeParams.websafeTeamKey;
-         if (!$scope.isValidTeam (teamForm)) {
+         if (!$scope.isValidTeam(teamForm)) {
              return;
          }
 
          var callback = function() {
             $scope.loading = true;
-            gapi.client.team.saveTeam({name: $scope.team.name, description: $scope.team.description, restTime: $scope.team.restTime, teamKey: $routeParams.websafeTeamKey})
+            gapi.client.clubmanagement.saveTeam({name: $scope.team.name, players: $scope.team.players, coach: $scope.team.coach, teamKey: $routeParams.websafeTeamKey})
              .execute(function (resp) {
                  $scope.$apply(function () {
                     $scope.loading = false;

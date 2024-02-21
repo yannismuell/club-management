@@ -10,8 +10,8 @@ public class MatchForm {
     private int guestGoals;
     private String websafeMatchKey;
 
+    private MatchForm() {}
 
-    private MatchForm(){}
     /**
      * Public constructor is solely for Unit Test.
      * @param matchTeam

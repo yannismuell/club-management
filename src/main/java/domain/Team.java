@@ -9,6 +9,8 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Parent;
 import form.TeamForm;
+import spi.ClubManagementAPI;
+import java.util.logging.Logger;
 
 @Entity
 @Cache
@@ -30,16 +32,15 @@ public class Team {
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     private String accountID;
 
-    private float restTime = 11;
+    //private static final Logger LOG = Logger.getLogger(ClubManagementAPI.class.getName());
 
-    public Team(long teamId, TeamForm teamForm) {}
-
-    public Team(final long id, final String accountID,final TeamForm teamForm, final String email) {
+    private Team() {}
+    public Team(final long id, final TeamForm teamForm) {
+        //LOG.info("Home: ." + teamForm.getName());
         Preconditions.checkNotNull(teamForm.getName(), "The name is required");
         this.id = id;
-        this.accountKey = Key.create(Account.class, accountID);
-        this.accountID = accountID;
-
+        //this.accountKey = Key.create(Account.class, accountID);
+        //this.accountID = accountID;
         updateWithTeamForm(teamForm);
     }
 
@@ -61,10 +62,6 @@ public class Team {
         return coach;
     }
 
-    public float getRestTime() {
-        return restTime;
-    }
-
     @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
     public Key<Account> getAccountKey() {
         return accountKey;
@@ -83,14 +80,12 @@ public class Team {
         this.name = teamForm.getName();
         this.players = teamForm.getPlayers();
         this.coach = teamForm.getCoach();
-        this.restTime = teamForm.getRestTime();
     }
 
-    public void update(String name, String players, String coach, float restTime) {
+    public void update(String name, String players, String coach) {
         this.name = name;
         this.players = players;
         this.coach = coach;
-        this.restTime = restTime;
     }
 
     @Override

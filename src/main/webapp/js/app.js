@@ -26,7 +26,7 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
               templateUrl: 'partials/matches_create.html',
               controller: 'createMatchCtrl'
         }).
-        when('/matches/edit/:websafeMatchey', {
+        when('/matches/edit/:websafeMatchKey', {
               templateUrl: 'partials/matches_edit.html',
               controller: 'saveMatchCtrl'
         }).
@@ -36,54 +36,56 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
         }).
         when('/matches/detail/:websafeMatchKey', {
                 templateUrl: 'partials/match_details.html',
-                controller: ''
+                controller: 'detailedMatchController'
         }).
-                when('/clubmembers', {
-                     templateUrl: 'partials/clubmembers.html',
-                     controller: 'getClubmembersCtrl'
-                }).
-                when('/clubmembers/create', {
-                      templateUrl: 'partials/clubmembers_create.html',
-                      controller: 'createClubmemberCtrl'
-                }).
-/*
-                when('/clubmembers/edit/:websafeClubmemberKey', {
-                      templateUrl: 'partials/clubmembers_edit.html',
-                      controller: 'saveClubmemberCtrl'.
 
-                }).
-                when('/clubmembers/delete/:websafeClubmemberKey', {
-                      templateUrl: 'partials/clubmembers.html',
-                      controller: 'getClubmemberCtrl'
-                }).
 
-                when('/clubmembers/detail/:websafeClubmemberKey', {
-                        templateUrl: 'partials/clubmember_details.html',
-                        controller: 'detailedClubmemberCtrl'
 
-                                when('/teams', {
-                                     templateUrl: 'partials/teams.html',
-                                     controller: 'getTeamsCtrl'
-                                }).
-                                when('/teams/create', {
-                                      templateUrl: 'partials/teams_create.html',
-                                      controller: 'createTeamCtrl'
 
-                                }).
-                                when('/teams/edit/:websafeTeamKey', {
-                                      templateUrl: 'partials/teams_edit.html',
-                                      controller: 'saveTeamCtrl'.
+        when('/clubmembers', {
+             templateUrl: 'partials/clubmembers.html',
+             controller: 'getClubmembersCtrl'
+        }).
+        when('/clubmembers/create', {
+              templateUrl: 'partials/clubmembers_create.html',
+              controller: 'createClubmemberCtrl'
+        }).
+        when('/clubmembers/edit/:websafeClubmemberKey', {
+              templateUrl: 'partials/clubmembers_edit.html',
+              controller: 'saveClubmemberCtrl'
+        }).
+        when('/clubmembers/delete/:websafeClubmemberKey', {
+              templateUrl: 'partials/clubmembers.html',
+              controller: 'getClubmemberCtrl'
+        }).
+        when('/clubmembers/detail/:websafeClubmemberKey', {
+                templateUrl: 'partials/clubmember_details.html',
+                controller: 'detailedClubmemberCtrl'
+        }).
+        when('/teams', {
+             templateUrl: 'partials/teams.html',
+             controller: 'getTeamsCtrl'
+        }).
+        when('/teams/create', {
+              templateUrl: 'partials/teams_create.html',
+              controller: 'createTeamCtrl'
+        }).
+        when('/teams/edit/:websafeTeamKey', {
+              templateUrl: 'partials/teams_edit.html',
+              controller: 'saveTeamCtrl'
+        }).
+        when('/teams/delete/:websafeTeamKey', {
+              templateUrl: 'partials/teams.html',
+              controller: 'getTeamCtrl'
+        }).
+        when('/teams/detail/:websafeTeamKey', {
+                templateUrl: 'partials/team_details.html',
+                controller: 'detailedTeamCtrl'
+        }).
 
-                                }).
-                                when('/teams/delete/:websafeTeamKey', {
-                                      templateUrl: 'partials/teams.html',
-                                      controller: 'getTeamCtrl'
-                                }).
 
-                                when('/teams/detail/:websafeTeamKey', {
-                                        templateUrl: 'partials/team_details.html',
-                                        controller: 'detailedTeamCtrl'
-                                        */
+
+
         when('/impressum', {
             templateUrl: 'partials/impressum.html'
         }).

@@ -10,8 +10,6 @@ public class TeamForm {
 
     private String websafeTeamKey;
 
-    private float restTime;
-
     private TeamForm() {}
 
     /**
@@ -27,7 +25,6 @@ public class TeamForm {
         this.players = players;
         this.coach = coach;
         this.websafeTeamKey = websafeTeamKey;
-        this.restTime = restTime;
     }
 
     public String getName() {
@@ -43,6 +40,4 @@ public class TeamForm {
     }
 
     public String getWebsafeTeamKey() { return websafeTeamKey; }
-
-    public float getRestTime() { return restTime; }
 }

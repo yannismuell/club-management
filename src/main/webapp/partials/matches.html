@@ -52,7 +52,7 @@
                         <tbody>
 
                         <tr ng-repeat="match in filteredMatches | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize | orderBy:'matchDate'">
-                            <td><a href="#!/matches/matchTime/{{match.websafeMatchKey}}">{{match.matchDate}}</a></td>
+                            <td><a href="#!/matches/matchDate/{{match.websafeMatchKey}}">{{match.matchDate}}</a></td>
                             <td>{{match.matchTime}}</td>
                             <td>{{match.matchTeam}}</td>
                             <td>{{match.opponent}}</td>

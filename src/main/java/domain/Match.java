@@ -35,13 +35,15 @@ public class Match {
     private String accountID;
 
 
-    private static final Logger LOG = Logger.getLogger(ClubManagementAPI.class.getName());
-    private Match() {}
+    //private static final Logger LOG = Logger.getLogger(ClubManagementAPI.class.getName());
 
+    private Match() {}
     public Match(final long id, final MatchForm matchForm) {
-        LOG.info("Home: ." + matchForm.getMatchTeam());
+        //LOG.info("Home: ." + matchForm.getMatchTeam());
         Preconditions.checkNotNull(matchForm.getMatchTeam(), "The date is required");
         this.id = id;
+        //this.accountKey = Key.create(Account.class, accountID);
+        //this.accountID = accountID;
         updateWithMatchForm(matchForm);
     }
 
