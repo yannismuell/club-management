@@ -43,11 +43,34 @@
                                 <span class="required-label-red label label-danger" ng-show="clubmemberForm.address.$error.required">Required!</span>
                                 <input id="address" type="text" name="address" ng-model="clubmember.address" class="form-control" ng-required="true"/>
                             </div>
-                            <div class="form-group">
+
+
+
+                            <!--<div class="form-group">
                                 <label for="role">Role <span class="required">*</span></label>
                                 <span class="required-label-red label label-danger" ng-show="clubmemberForm.role.$error.required">Required!</span>
                                 <input id="role" type="text" name="role" ng-model="clubmember.role" class="form-control" ng-required="true"/>
+                            </div>-->
+
+                            <div class="form-group" ng-class="{ 'has-error' : clubmemberForm.role.$invalid && (clubmemberForm.$submitted || clubmemberForm.role.$touched) }">
+                                <label>Role <span class="required">*</span></label>
+                                <span class="required-label-red label label-danger" ng-show="clubmemberForm.role.$error.required && (clubmemberForm.$submitted || clubmemberForm.role.$touched)">Required!</span>
+                                <div>
+                                    <label>
+                                        <input type="radio" name="role" ng-model="clubmember.role" value="clubmember" ng-required="true"/> Clubmember
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="role" ng-model="coach.role" value="coach" ng-required="true"/> Coach
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="role" ng-model="administrator.role" value="administrator" ng-required="true"/> Administrator
+                                    </label>
+                                </div>
                             </div>
+
+
+
+
                             <button ng-click="createClubmember(clubmemberForm)" class="btn btn-add-custom" ng-disabled="!isValidClubmember(clubmemberForm) || loading">Add</button>
                         </form>
                         <p><a class="nav-link" onclick="window.history.back();" href="">« Back</a></p>
