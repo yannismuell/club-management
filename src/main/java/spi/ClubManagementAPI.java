@@ -46,18 +46,6 @@ public class ClubManagementAPI {
         return email == null ? null : email.substring(0, email.indexOf("@"));
     }
 
-    private static Account getAccountFromUser(User user, String userId) {
-        // First fetch it from the datastore.
-        Account account = ofy().load().key(Key.create(Account.class, userId)).now();
-        if (account == null) {
-            // Create a new Account if not exist.
-            String email = user.getEmail();
-            float restTime = 11;
-            account = new Account(userId, extractDefaultDisplayNameFromEmail(email), "", "", email, restTime);
-        }
-        return account;
-    }
-
     /**
      * This is an ugly workaround for null userId for Android clients.
      *
@@ -120,64 +108,6 @@ public class ClubManagementAPI {
             }
             return result;
         }
-    }
-
-    /**
-     * Returns an Account object associated with the given user object. The cloud endpoints system
-     * automatically inject the User object.
-     *
-     * @param user A User object injected by the cloud endpoints.
-     * @return Account object.
-     * @throws UnauthorizedException when the User object is null.
-     */
-    @ApiMethod(name = "getAccount", path = "account", httpMethod = HttpMethod.GET)
-    public Account getAccount(final User user) throws UnauthorizedException {
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
-        }
-        return ofy().load().key(Key.create(Account.class, getUserId(user))).now();
-    }
-
-    /**
-     * Creates or updates an Account object associated with the given user object.
-     *
-     * @param user        A User object injected by the cloud endpoints.
-     * @param accountForm An AccountForm object sent from the client form.
-     * @return Account object just created.
-     * @throws UnauthorizedException when the User object is null.
-     */
-    @ApiMethod(name = "saveAccount", path = "account", httpMethod = HttpMethod.POST)
-    public Account saveAccount(final User user, final AccountForm accountForm) throws Exception {
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
-        }
-        String firstName = accountForm.getFirstName();
-        String surName = accountForm.getSurName();
-        String companyName = accountForm.getCompanyName();
-        String mainEmail = accountForm.getMainEmail();
-        float restTime = accountForm.getRestTime();
-
-        EmailValidator validator = new EmailValidator();
-        if (!validator.valid(mainEmail)) throw new Exception("Invalid Email format");
-
-        Account account = ofy().transact(new Work<Account>() {
-            @Override
-            public Account run() {
-                // Fetch user's Profile.
-                Account account = ofy().load().key(Key.create(Account.class, getUserId(user))).now();
-                if (account == null) {
-                    String email = user.getEmail();
-                    account = new Account(getUserId(user), firstName, surName, companyName, email, restTime);
-                } else {
-                    account.update(getUserId(user), firstName, surName, companyName, mainEmail, restTime);
-                }
-
-                ofy().save().entity(account).now();
-
-                return account;
-            }
-        });
-        return account;
     }
 
     private static void checkUserOk(User user) throws Exception {

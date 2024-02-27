@@ -28,7 +28,6 @@ public class OfyService implements ServletContextListener {
                         .getService()
         ));
 
-        ObjectifyService.register(Account.class);
         ObjectifyService.register(Match.class);
         ObjectifyService.register(Clubmember.class);
         ObjectifyService.register(Team.class);

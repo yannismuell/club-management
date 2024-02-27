@@ -7,7 +7,6 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Parent;
 import form.ClubmemberForm;
 import spi.ClubManagementAPI;
 import java.util.logging.Logger;
@@ -30,14 +29,6 @@ public class Clubmember {
 
     private String role;
 
-    @Parent
-    @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
-    private Key<Account> accountKey;
-
-    @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
-    private String accountID;
-
-
     private static final Logger LOG = Logger.getLogger(ClubManagementAPI.class.getName());
     private Clubmember() {}
 
@@ -51,8 +42,6 @@ public class Clubmember {
     public long getId() {
         return id;
     }
-
-    public String getAccountId() { return accountID; }
 
     public String getName() {
         return name;
@@ -78,20 +67,9 @@ public class Clubmember {
         return role;
     }
 
-
-    @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
-    public Key<Account> getAccountKey() {
-        return accountKey;
-    }
-
-    public String getWebsafeAccountKey() {
-        return Key.create(accountKey, Clubmember.class, id).toLegacyUrlSafe();
-    }
-
     public String getWebsafeClubmemberKey() {
-        return Key.create(accountKey, Clubmember.class, id).toLegacyUrlSafe();
+        return Key.create(Clubmember.class, id).toLegacyUrlSafe();
     }
-
 
     public void updateWithClubmemberForm(ClubmemberForm clubmemberForm) {
         this.name = clubmemberForm.getName();
@@ -100,7 +78,6 @@ public class Clubmember {
         this.telephoneNumber = clubmemberForm.getTelephoneNumber();
         this.address = clubmemberForm.getAddress();
         this.role = clubmemberForm.getRole();
-
     }
 
     public void update(String name, String surname, String birthDate, String telephoneNumber, String address, String role) {

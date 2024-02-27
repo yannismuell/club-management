@@ -27,14 +27,6 @@ public class Match {
     private int homeGoals;
     private int guestGoals;
 
-    @Parent
-    @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
-    private Key<Account> accountKey;
-
-    @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
-    private String accountID;
-
-
     //private static final Logger LOG = Logger.getLogger(ClubManagementAPI.class.getName());
 
     private Match() {}
@@ -42,16 +34,12 @@ public class Match {
         //LOG.info("Home: ." + matchForm.getMatchTeam());
         Preconditions.checkNotNull(matchForm.getMatchTeam(), "The date is required");
         this.id = id;
-        //this.accountKey = Key.create(Account.class, accountID);
-        //this.accountID = accountID;
         updateWithMatchForm(matchForm);
     }
 
     public long getId() {
         return id;
     }
-
-    public String getAccountId() { return accountID; }
 
     public String getMatchDate() {
         return matchDate;
@@ -75,19 +63,9 @@ public class Match {
         return guestGoals;
     }
 
-    @ApiResourceProperty(ignored = AnnotationBoolean.TRUE)
-    public Key<Account> getAccountKey() {
-        return accountKey;
-    }
-
-    public String getWebsafeAccountKey() {
-        return Key.create(accountKey, Match.class, id).toLegacyUrlSafe();
-    }
-
     public String getWebsafeMatchKey() {
-        return Key.create(accountKey, Match.class, id).toLegacyUrlSafe();
+        return Key.create(Match.class, id).toLegacyUrlSafe();
     }
-
 
     public void updateWithMatchForm(MatchForm matchForm) {
         this.matchDate = matchForm.getMatchDate();

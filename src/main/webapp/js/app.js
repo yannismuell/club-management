@@ -6,14 +6,6 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
             templateUrl: 'index.html',
             controller: 'RootCtrl'
         }).
-        when('/account', {
-            templateUrl: 'partials/account.html',
-            controller: 'AccountCtrl'
-        }).
-        when('/account_edit', {
-            templateUrl: 'partials/account_edit.html',
-            controller: 'AccountCtrl'
-        }).
         when('/matchesPage', {
             templateUrl: 'partials/matchesPage.html',
             controller: 'MatchesPageCtrl'
@@ -42,10 +34,6 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
                 templateUrl: 'partials/match_details.html',
                 controller: 'detailedMatchController'
         }).
-
-
-
-
         when('/clubmembers', {
              templateUrl: 'partials/clubmembers.html',
              controller: 'getClubmembersCtrl'
