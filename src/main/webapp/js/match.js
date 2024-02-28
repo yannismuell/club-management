@@ -362,7 +362,7 @@ ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log
 
          var callback = function() {
             $scope.loading = true;
-            gapi.client.clubmanagement.saveMatch({matchDate: $scope.match.matchDate, matchTime: $scope.match.matchTime, matchTeam: $scope.match.matchTeam, opponent: $scope.match.opponent, homeGoals: $scope.match.homeGoals, guestGoals: $scope.match.guestGoals, opponent: $scope.match.opponent, matchKey: $routeParams.websafeMatchKey})
+            gapi.client.clubmanagement.saveMatch({matchDate: $scope.match.matchDate, matchTime: $scope.match.matchTime, matchTeam: $scope.match.matchTeam, guest: $scope.match.guest, homeGoals: $scope.match.homeGoals, guestGoals: $scope.match.guestGoals, guest: $scope.match.guest, matchKey: $routeParams.websafeMatchKey})
              .execute(function (resp) {
                  $scope.$apply(function () {
                     $scope.loading = false;
