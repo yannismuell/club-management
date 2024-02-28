@@ -24,11 +24,10 @@ public class Team {
 
     private String coach;
 
-    //private static final Logger LOG = Logger.getLogger(ClubManagementAPI.class.getName());
-
+    private static final Logger LOG = Logger.getLogger(ClubManagementAPI.class.getName());
     private Team() {}
     public Team(final long id, final TeamForm teamForm) {
-        //LOG.info("Home: ." + teamForm.getName());
+        LOG.info("Home: ." + teamForm.getName());
         Preconditions.checkNotNull(teamForm.getName(), "The name is required");
         this.id = id;
         updateWithTeamForm(teamForm);

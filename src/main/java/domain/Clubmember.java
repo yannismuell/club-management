@@ -31,7 +31,6 @@ public class Clubmember {
 
     private static final Logger LOG = Logger.getLogger(ClubManagementAPI.class.getName());
     private Clubmember() {}
-
     public Clubmember(final long id, final ClubmemberForm clubmemberForm) {
         LOG.info("Name: ." + clubmemberForm.getName());
         Preconditions.checkNotNull(clubmemberForm.getName(), "The name is required");

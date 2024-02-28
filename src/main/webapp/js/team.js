@@ -43,7 +43,7 @@ ClubManagementApp.controllers.controller('getTeamsCtrl', function ($scope, $log,
             let nameToSearch = element.name.toLowerCase();
             let playersToSearch = element.players.toLowerCase();
             let searchString = search_field.toLowerCase();
-            if (nameToSearch.includes(searchString) || descriptionToSearch.includes(searchString)){
+            if (nameToSearch.includes(searchString) || playersToSearch.includes(searchString)){
                 $scope.filteredTeams.push(element);
             }
         });
@@ -84,6 +84,8 @@ ClubManagementApp.controllers.controller('getTeamsCtrl', function ($scope, $log,
             retrieveTeamsCallback();
         }
     };
+
+    $scope.team = {};
 
     $scope.deleteTeamWithWebsafeTeamKey = function (websafeTeamKey) {
         var callback = function() {
@@ -246,7 +248,7 @@ ClubManagementApp.controllers.controller('detailedTeamCtrl', function ($scope, $
  * @ngdoc controller
  * @name createTeamCtrl
  *
- * @description
+ * @players
  * A controller used to save a team page.
  */
 ClubManagementApp.controllers.controller('createTeamCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
