@@ -317,7 +317,7 @@ public class ClubManagementAPI {
      * @param name The clubmember name
      * @param surname The clubmember surname
      * @param birthDate The clubmember birthDate
-     * @param telephoneNumber The clubmember telephoneNumber
+     * @param eMail The clubmember eMail
      * @param address The clubmember address
      * @param role The clubmember role
      * @return An updated clubmember object.
@@ -330,7 +330,7 @@ public class ClubManagementAPI {
                            @Named ("name") final String name,
                            @Named ("surname") final String surname,
                            @Named ("birthDate") final String birthDate,
-                           @Named ("telephoneNumber") final String telephoneNumber,
+                           @Named ("eMail") final String eMail,
                            @Named ("address") final String address,
                            @Named ("role") final String role,
                            @Named ("clubmemberKey") final String websafeClubmemberKey)
@@ -341,7 +341,7 @@ public class ClubManagementAPI {
             public Clubmember run() {
                 Key<Clubmember> clubmemberKey = Key.create(websafeClubmemberKey);
                 Clubmember clubmember = ofy().load().key(clubmemberKey).now();
-                clubmember.update(name, surname, birthDate, telephoneNumber, address, role);
+                clubmember.update(name, surname, birthDate, eMail, address, role);
                 ofy().save().entity(clubmember).now();
                 return clubmember;
             }
