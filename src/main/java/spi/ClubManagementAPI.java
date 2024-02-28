@@ -319,7 +319,8 @@ public class ClubManagementAPI {
      * @param birthDate The clubmember birthDate
      * @param eMail The clubmember eMail
      * @param address The clubmember address
-     * @param role The clubmember role
+     * @param isCoach The clubmember isCoach
+     * @param isAdmin The clubmember isAdmin
      * @return An updated clubmember object.
      * @throws UnauthorizedException when the user is not signed in.
      */
@@ -332,7 +333,8 @@ public class ClubManagementAPI {
                            @Named ("birthDate") final String birthDate,
                            @Named ("eMail") final String eMail,
                            @Named ("address") final String address,
-                           @Named ("role") final String role,
+                           @Named ("isCoach") final boolean isCoach,
+                           @Named ("isAdmin") final boolean isAdmin,
                            @Named ("clubmemberKey") final String websafeClubmemberKey)
             throws Exception  {
         checkUserOk(user);
@@ -341,7 +343,7 @@ public class ClubManagementAPI {
             public Clubmember run() {
                 Key<Clubmember> clubmemberKey = Key.create(websafeClubmemberKey);
                 Clubmember clubmember = ofy().load().key(clubmemberKey).now();
-                clubmember.update(name, surname, birthDate, eMail, address, role);
+                clubmember.update(name, surname, birthDate, eMail, address, isCoach, isAdmin);
                 ofy().save().entity(clubmember).now();
                 return clubmember;
             }
