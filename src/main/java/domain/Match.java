@@ -22,7 +22,7 @@ public class Match {
     private String matchTime;
 
     private String matchTeam;
-    private String opponent;
+    private String guest;
 
     private int homeGoals;
     private int guestGoals;
@@ -53,7 +53,7 @@ public class Match {
         return matchTeam;
     }
 
-    public String getOpponent(){return opponent;}
+    public String getGuest(){return guest;}
 
     public int getHomeGoals() {
         return homeGoals;
@@ -71,17 +71,17 @@ public class Match {
         this.matchDate = matchForm.getMatchDate();
         this.matchTime = matchForm.getMatchTime();
         this.matchTeam = matchForm.getMatchTeam();
-        this.opponent = matchForm.getOpponent();
+        this.guest = matchForm.getGuest();
         this.homeGoals = matchForm.getHomeGoals();
         this.guestGoals = matchForm.getGuestGoals();
 
     }
 
-    public void update(String matchDate, String matchTime, String matchTeam, String opponent, int homeGoals, int guestGoals) {
+    public void update(String matchDate, String matchTime, String matchTeam, String guest, int homeGoals, int guestGoals) {
         this.matchDate = getMatchDate();
         this.matchTime = getMatchTime();
         this.matchTeam = getMatchTeam();
-        this.opponent = getOpponent();
+        this.guest = getGuest();
         this.homeGoals = getHomeGoals();
         this.guestGoals = getGuestGoals();
     }
@@ -92,4 +92,6 @@ public class Match {
 
         return stringBuilder.toString();
     }
+
+
 }

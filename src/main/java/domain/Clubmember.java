@@ -23,11 +23,13 @@ public class Clubmember {
 
     private String birthDate;
 
-    private String telephoneNumber;
+    private String eMail;
 
     private String address;
 
-    private String role;
+    private boolean isCoach;
+
+    private boolean isAdmin;
 
     private static final Logger LOG = Logger.getLogger(ClubManagementAPI.class.getName());
     private Clubmember() {}
@@ -54,17 +56,19 @@ public class Clubmember {
         return birthDate;
     }
 
-    public String getTelephoneNumber() {
-        return telephoneNumber;
+    public String getEMail() {
+        return eMail;
     }
 
     public String getAddress() {
         return address;
     }
 
-    public String getRole() {
-        return role;
+    public boolean getIsCoach() {
+        return isCoach;
     }
+
+    public boolean getIsAdmin() {return isAdmin; }
 
     public String getWebsafeClubmemberKey() {
         return Key.create(Clubmember.class, id).toLegacyUrlSafe();
@@ -74,18 +78,20 @@ public class Clubmember {
         this.name = clubmemberForm.getName();
         this.surname = clubmemberForm.getSurname();
         this.birthDate = clubmemberForm.getBirthDate();
-        this.telephoneNumber = clubmemberForm.getTelephoneNumber();
+        this.eMail = clubmemberForm.getEMail();
         this.address = clubmemberForm.getAddress();
-        this.role = clubmemberForm.getRole();
+        this.isCoach = clubmemberForm.getIsCoach();
+        this.isAdmin = clubmemberForm.getIsAdmin();
     }
 
-    public void update(String name, String surname, String birthDate, String telephoneNumber, String address, String role) {
+    public void update(String name, String surname, String birthDate, String eMail, String address, boolean isCoach, boolean isAdmin) {
         this.name = getName();
         this.surname = getSurname();
         this.birthDate = getBirthDate();
-        this.telephoneNumber = getTelephoneNumber();
+        this.eMail = getEMail();
         this.address = getAddress();
-        this.role = getRole();
+        this.isCoach = getIsCoach();
+        this.isAdmin = getIsAdmin();
     }
 
     @Override
