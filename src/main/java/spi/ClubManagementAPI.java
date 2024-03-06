@@ -324,7 +324,7 @@ public class ClubManagementAPI {
      * @return An updated clubmember object.
      * @throws UnauthorizedException when the user is not signed in.
      */
-    @ApiMethod(name = "saveClubmember",
+    /*@ApiMethod(name = "saveClubmember",
             path = "clubmember/save/{clubmemberKey}",
             httpMethod = HttpMethod.POST)
     public Clubmember saveClubmember(final User user,
@@ -349,7 +349,7 @@ public class ClubManagementAPI {
             }
         });
         return (clubmember);
-    }
+    }*/
 
     /**
      * Deletes a Clubmember object and removes it from the datastore.

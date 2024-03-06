@@ -39,12 +39,13 @@
                     <table id="clubmember-table" class="table table-striped table-hover">
                         <thead>
                         <tr>
-                            <th>name</th>
-                            <th>surname</th>
-                            <th>birthDate</th>
-                            <th>telephoneNumber</th>
-                            <th>address</th>
-                            <th>role</th>
+                            <th>Name</th>
+                            <th>Surname</th>
+                            <th>Birthdate</th>
+                            <th>E-Mail</th>
+                            <th>Address</th>
+                            <th>Coach</th>
+                            <th>Admin</th>
                         </tr>
                         </thead>
 
@@ -54,9 +55,10 @@
                             <td><a href="#!/clubmembers/detail/{{clubmember.websafeClubmemberKey}}">{{clubmember.name}}</a></td>
                             <td>{{clubmember.surname}}</td>
                             <td>{{clubmember.birthDate}}</td>
-                            <td>{{clubmember.telephoneNumber}}</td>
+                            <td>{{clubmember.eMail}}</td>
                             <td>{{clubmember.address}}</td>
-                            <td>{{clubmember.role}}</td>
+                            <td>{{clubmember.isCoach}}</td>
+                            <td>{{clubmember.isAdmin}}</td>
                             <td>
                                 <button ng-click="deleteClubmemberWithWebsafeClubmemberKey(clubmember.websafeClubmemberKey)" class="btn btn-outline-danger" ng-disabled="loading" title="Delete Clubmember">&#10008;</button>
                             </td>

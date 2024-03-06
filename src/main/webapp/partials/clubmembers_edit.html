@@ -30,20 +30,24 @@
                             </div>
                             <div class="form-group">
                                 <label for="birthDate">Birthdate <span class="required">*</span></label>
-                                <input id="birthDate" type="number" name="birthDate" name="birthDate" onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="clubmember.birthDate"class="form-control"/>
+                                <input id="birthDate" type="number" name="birthDate" onkeypress="return isNumber(event)" ng-model="clubmember.birthDate" class="form-control" ng-required="true"/>
                             </div>
                             <div class="form-group">
-                                <label for="telephoneNumber ">Telephone Number <span class="required">*</span></label>
-                                <input id="telephoneNumber " type="number" name="telephoneNumber " name="telephoneNumber " onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="clubmember.telephoneNumber"class="form-control"/>
+                                <label for="eMail">E-Mail <span class="required">*</span></label>
+                                <input id="eMail" type="text" name="eMail" ng-model="clubmember.eMail" class="form-control" ng-required="true"/>
                             </div>
                             <div class="form-group">
                                 <label for="address ">Address <span class="required">*</span></label>
-                                <input id="address " type="number" name="address " name="address " onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="clubmember.address"class="form-control"/>
+                                <input id="address " type="text" name="address" ng-model="clubmember.address" class="form-control" ng-required="true"/>
+                            </div>
+                            <!--<div class="form-group">
+                                <label for="isCoach">Coach </label>
+                                <input id="isCoach" type="radio" name="isCoach"  ng-model="clubmember.isCoach" class="form-control" value="coach" ng-required="true"/>
                             </div>
                             <div class="form-group">
-                                <label for="role ">Role <span class="required">*</span></label>
-                                <input id="role " type="number" name="role " name="role " onkeypress="return isNumber(event)" placeholder="0.00" step="0.1" ng-model="clubmember.role"class="form-control"/>
-                            </div>
+                                <label for="isAdmin">Admin </label>
+                                <input id="isAdmin" type="radio" name="isAdmin"  ng-model="clubmember.isAdmin" class="form-control" value="admin" ng-required="true"/>
+                            </div>-->
                             <button ng-click="saveClubmember(clubmemberForm)" class="btn btn-add-custom" ng-disabled="!isValidClubmember(clubmemberForm) || loading">Save</button>
                         </form>
                         <p><a class="nav-link" onclick="window.history.back();" href="">« Back</a></p>
