@@ -14,7 +14,7 @@ ClubManagementApp.controllers.controller('getTeamsCtrl', function ($scope, $log,
     activeURL = '#!/teams';
 
     $scope.teams = [];
-    $scope.filteredTeam = [];
+    $scope.filteredTeams = [];
 
     $scope.pagination = $scope.pagination || {};
     $scope.pagination.currentPage = 0;
@@ -39,7 +39,7 @@ ClubManagementApp.controllers.controller('getTeamsCtrl', function ($scope, $log,
 
     $scope.queryTeamsByName = function (search_field) {
         $scope.filteredTeams = [];
-        $scope.team.forEach(function(element) {
+        $scope.teams.forEach(function(element) {
             let nameToSearch = element.name.toLowerCase();
             let playersToSearch = element.players.toLowerCase();
             let searchString = search_field.toLowerCase();
@@ -60,7 +60,7 @@ ClubManagementApp.controllers.controller('getTeamsCtrl', function ($scope, $log,
                         if (resp.error) {
                             // The request has failed.
                             var errorMessage = resp.error.message || '';
-                            $scope.messages = 'Failed to obtain team : ' + errorMessage;
+                            $scope.messages = 'Failed to obtain teams : ' + errorMessage;
                             $scope.alertStatus = 'warning';
                             $log.error($scope.messages );
                         } else {
