@@ -1,7 +1,5 @@
 package domain;
 
-import com.google.api.server.spi.config.AnnotationBoolean;
-import com.google.api.server.spi.config.ApiResourceProperty;
 import com.google.common.base.Preconditions;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Cache;
@@ -23,7 +21,7 @@ public class Clubmember {
 
     private String birthDate;
 
-    private String eMail;
+    private String email;
 
     private String address;
 
@@ -56,8 +54,8 @@ public class Clubmember {
         return birthDate;
     }
 
-    public String getEMail() {
-        return eMail;
+    public String getEmail() {
+        return email;
     }
 
     public String getAddress() {
@@ -78,20 +76,10 @@ public class Clubmember {
         this.name = clubmemberForm.getName();
         this.surname = clubmemberForm.getSurname();
         this.birthDate = clubmemberForm.getBirthDate();
-        this.eMail = clubmemberForm.getEMail();
+        this.email = clubmemberForm.getEmail();
         this.address = clubmemberForm.getAddress();
         this.isCoach = clubmemberForm.getIsCoach();
         this.isAdmin = clubmemberForm.getIsAdmin();
-    }
-
-    public void update(String name, String surname, String birthDate, String eMail, String address, boolean isCoach, boolean isAdmin) {
-        this.name = getName();
-        this.surname = getSurname();
-        this.birthDate = getBirthDate();
-        this.eMail = getEMail();
-        this.address = getAddress();
-        this.isCoach = getIsCoach();
-        this.isAdmin = getIsAdmin();
     }
 
     @Override

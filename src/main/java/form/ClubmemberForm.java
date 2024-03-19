@@ -6,10 +6,9 @@ public class ClubmemberForm {
     private String name;
     private String surname;
     private String birthDate;
-    private String eMail;
+    private String email;
     private String address;
     private boolean isCoach;
-
     private boolean isAdmin;
     private String websafeClubmemberKey;
 
@@ -23,11 +22,11 @@ public class ClubmemberForm {
      * @param websafeClubmemberKey
      */
 
-    public ClubmemberForm(String name, String surname, String birthDate, String eMail, String address, boolean isCoach, boolean isAdmin, String websafeClubmemberKey) {
+    public ClubmemberForm(String name, String surname, String birthDate, String email, String address, boolean isCoach, boolean isAdmin, String websafeClubmemberKey) {
         this.name = name;
         this.surname = surname;
         this.birthDate = birthDate;
-        this.eMail = eMail;
+        this.email = email;
         this.address = address;
         this.isCoach = isCoach;
         this.isAdmin = isAdmin;
@@ -50,8 +49,8 @@ public class ClubmemberForm {
         return birthDate;
     }
 
-    public String getEMail() {
-        return eMail;
+    public String getEmail() {
+        return email;
     }
 
     public String getAddress() {

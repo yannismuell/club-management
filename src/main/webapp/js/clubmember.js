@@ -72,6 +72,7 @@ ClubManagementApp.controllers.controller('getClubmembersCtrl', function ($scope,
                             $scope.clubmembers = resp.items;
                             $scope.filteredClubmembers = $scope.clubmembers;
                             parentProvider.clubmembers = $scope.clubmembers;
+                            console.log("retrieve: ", JSON.stringify($scope.clubmembers))
                         }
                         $scope.submitted = true;
                     });
@@ -266,6 +267,7 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
 
         var callback = function() {
             $scope.loading = true;
+            console.log("create: ", JSON.stringify($scope.clubmember))
             gapi.client.clubmanagement.createClubmember($scope.clubmember).
             execute(function (resp) {
                 $scope.$apply(function () {
