@@ -268,6 +268,7 @@ ClubManagementApp.controllers.controller('createTeamCtrl', function ($scope, $lo
 
         var callback = function() {
             $scope.loading = true;
+            console.log("Team: ", $scope.team);
             gapi.client.clubmanagement.createTeam($scope.team).
             execute(function (resp) {
                 $scope.$apply(function () {
