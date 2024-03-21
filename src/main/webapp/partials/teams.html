@@ -32,7 +32,7 @@
                         </div>
                     </div>
                 </form>
-                <div ng-show="submitted && filteredTeam.length == 0">
+                <div ng-show="submitted && filteredTeams.length == 0">
                     <h4>No matching results.</h4>
                 </div>
                 <div class="table-responsive" ng-show="filteredTeams.length > 0">
@@ -49,7 +49,7 @@
                         <tbody>
 
                         <tr ng-repeat="team in filteredTeams | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize | orderBy:'name'">
-                            <td><a href="#!/teams/name/{{team.websafeTeamKey}}">{{team.name}}</a></td>
+                            <td><a href="#!/teams/detail/{{team.websafeTeamKey}}">{{team.name}}</a></td>
                             <td>{{team.players}}</td>
                             <td>{{team.coach}}</td>
                             <td>

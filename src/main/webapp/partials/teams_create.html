@@ -32,7 +32,7 @@
                                 <label for="coach">Coach <span class="required">*</span></label>
                                 <input id="coach" type="text" name="coach" ng-model="team.coach" class="form-control" ng-required="true"/>
                             </div>
-                            <button ng-click="createTeam(teamForm)" class="btnCreateTeams" ng-disabled="!isValidTeam(teamForm) || loading">Add</button>
+                            <button ng-click="createTeam(teamForm)" class="btn btn-add-custom" ng-disabled="!isValidTeam(teamForm) || loading">Add</button>
                         </form>
                         <p><a class="nav-link" onclick="window.history.back();" href="">« Back</a></p>
                     </div>

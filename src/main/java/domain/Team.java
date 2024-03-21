@@ -59,11 +59,11 @@ public class Team {
         this.coach = teamForm.getCoach();
     }
 
-    public void update(String name, String players, String coach) {
+    /* public void update(String name, String players, String coach) {
         this.name = name;
         this.players = players;
         this.coach = coach;
-    }
+    } */
 
     @Override
     public String toString() {

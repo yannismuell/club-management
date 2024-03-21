@@ -445,7 +445,7 @@ public class ClubManagementAPI {
      * @return An updated team object.
      * @throws UnauthorizedException when the user is not signed in.
      */
-    @ApiMethod(name = "saveTeam",
+    /*@ApiMethod(name = "saveTeam",
             path = "team/save/{teamKey}",
             httpMethod = HttpMethod.POST)
     public Team saveTeam(final User user,
@@ -466,7 +466,7 @@ public class ClubManagementAPI {
             }
         });
         return (team);
-    }
+    }*/
 
     /**
      * Deletes a Team object and removes it from the datastore.

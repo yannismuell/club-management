@@ -59,8 +59,8 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
              controller: 'getTeamsCtrl'
         }).
         when('/teams/create', {
-              templateUrl: 'partials/teams_create.html',
               controller: 'createTeamCtrl'
+              templateUrl: 'partials/teams_create.html',
         }).
         when('/teams/edit/:websafeTeamKey', {
               templateUrl: 'partials/teams_edit.html',

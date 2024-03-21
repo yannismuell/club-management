@@ -52,6 +52,7 @@ ClubManagementApp.controllers.controller('getTeamsCtrl', function ($scope, $log,
 
     $scope.init = function () {
         var retrieveTeamsCallback = function () {
+            console.log("Teams init")
             $scope.loading = true;
             gapi.client.clubmanagement.getTeams().
                 execute(function (resp) {
@@ -72,6 +73,7 @@ ClubManagementApp.controllers.controller('getTeamsCtrl', function ($scope, $log,
                             $scope.teams = resp.items;
                             $scope.filteredTeams = $scope.teams;
                             parentProvider.teams = $scope.teams;
+                            console.log("retrieve: ", JSON.stringify($scope.teams))
                         }
                         $scope.submitted = true;
                     });
@@ -85,7 +87,7 @@ ClubManagementApp.controllers.controller('getTeamsCtrl', function ($scope, $log,
         }
     };
 
-    $scope.team = {};
+    // $scope.team = {};
 
     $scope.deleteTeamWithWebsafeTeamKey = function (websafeTeamKey) {
         var callback = function() {
@@ -217,6 +219,7 @@ ClubManagementApp.controllers.controller('detailedTeamCtrl', function ($scope, $
         var callback = function() {
             $scope.loading = true;
             $scope.submitted = true;
+            // var websafeTeamKey = $routeParams.websafeTeamKey; // Hinzufügen
             gapi.client.clubmanagement.getTeam({websafeTeamKey: $routeParams.websafeTeamKey}).execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
@@ -268,7 +271,7 @@ ClubManagementApp.controllers.controller('createTeamCtrl', function ($scope, $lo
 
         var callback = function() {
             $scope.loading = true;
-            console.log("Team: ", $scope.team);
+            console.log("create: ", $scope.team);
             gapi.client.clubmanagement.createTeam($scope.team).
             execute(function (resp) {
                 $scope.$apply(function () {
@@ -361,7 +364,8 @@ ClubManagementApp.controllers.controller('saveTeamCtrl', function ($scope, $log,
 
          var callback = function() {
             $scope.loading = true;
-            gapi.client.clubmanagement.saveTeam({name: $scope.team.name, players: $scope.team.players, coach: $scope.team.coach, teamKey: $routeParams.websafeTeamKey})
+            // gapi.client.clubmanagement.saveTeam({name: $scope.team.name, players: $scope.team.players, coach: $scope.team.coach, teamKey: $routeParams.websafeTeamKey})
+            gapi.client.clubmanagement.saveTeam($scope.team)
              .execute(function (resp) {
                  $scope.$apply(function () {
                     $scope.loading = false;
