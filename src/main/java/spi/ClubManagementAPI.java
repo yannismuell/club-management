@@ -384,7 +384,7 @@ public class ClubManagementAPI {
      * @throws UnauthorizedException when the user is not signed in.
      */
     @ApiMethod(
-            name = "getTeam",
+            name = "getTeams",
             path = "team/all",
             httpMethod = HttpMethod.POST
     )
@@ -401,7 +401,7 @@ public class ClubManagementAPI {
      * @throws NotFoundException when there is no Team with the given teamID.
      */
     @ApiMethod(
-            name = "getTeams", //eigentlich nicht in der Mehrzahl also Team
+            name = "getTeam", //eigentlich nicht in der Mehrzahl also Team
             path = "team/{websafeTeamKey}",
             httpMethod = HttpMethod.GET
     )
