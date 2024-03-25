@@ -13,7 +13,7 @@ ClubManagementApp.controllers.controller('getTeamsCtrl', function ($scope, $log,
     $scope.loading = false;
     activeURL = '#!/teams';
 
-    $scope.teams = [];
+    $scope.team = [];
     $scope.filteredTeam = [];
 
     $scope.pagination = $scope.pagination || {};
