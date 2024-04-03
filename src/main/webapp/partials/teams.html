@@ -40,8 +40,7 @@
                         <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Players</th>
-                            <th>Coach</th>
+                            <th>Clubmember</th>
                             <th>Delete</th>
                         </tr>
                         </thead>
@@ -50,8 +49,7 @@
 
                         <tr ng-repeat="team in filteredTeams | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize | orderBy:'name'">
                             <td><a href="#!/teams/detail/{{team.websafeTeamKey}}">{{team.name}}</a></td>
-                            <td>{{team.players}}</td>
-                            <td>{{team.coach}}</td>
+                            <td>{{team.clubmember}}</td>
                             <td>
                                 <button ng-click="deleteTeamWithWebsafeTeamKey(team.websafeTeamKey)" class="btn btn-outline-danger" ng-disabled="loading" title="Delete Team">&#10008;</button>
                             </td>
