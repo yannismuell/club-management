@@ -11,9 +11,9 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
             controller: 'MatchesPageCtrl'
         }).
         when('/teamsPage', {
-                    templateUrl: 'partials/teamsPage.html',
-                    controller: 'TeamsPageCtrl'
-                }).
+              templateUrl: 'partials/teamsPage.html',
+              controller: 'TeamsPageCtrl'
+        }).
         when('/matches', {
              templateUrl: 'partials/matches.html',
              controller: 'getMatchesCtrl'
@@ -59,8 +59,8 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
              controller: 'getTeamsCtrl'
         }).
         when('/teams/create', {
+              controller: 'createTeamCtrl',
               templateUrl: 'partials/teams_create.html',
-              controller: 'createTeamCtrl'
         }).
         when('/teams/edit/:websafeTeamKey', {
               templateUrl: 'partials/teams_edit.html',
@@ -74,10 +74,6 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
                 templateUrl: 'partials/team_details.html',
                 controller: 'detailedTeamCtrl'
         }).
-
-
-
-
         when('/impressum', {
             templateUrl: 'partials/impressum.html'
         }).

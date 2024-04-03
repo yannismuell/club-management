@@ -20,7 +20,7 @@ public class TeamForm {
      * @param websafeTeamKey
      */
 
-    public TeamForm(String name, String players, String coach, String websafeTeamKey, float restTime) {
+    public TeamForm(String name, String players, String coach, String websafeTeamKey) {
         this.name = name;
         this.players = players;
         this.coach = coach;

@@ -384,7 +384,7 @@ public class ClubManagementAPI {
      * @throws UnauthorizedException when the user is not signed in.
      */
     @ApiMethod(
-            name = "getTeam",
+            name = "getTeams",
             path = "team/all",
             httpMethod = HttpMethod.POST
     )
@@ -401,7 +401,7 @@ public class ClubManagementAPI {
      * @throws NotFoundException when there is no Team with the given teamID.
      */
     @ApiMethod(
-            name = "getTeams", //eigentlich nicht in der Mehrzahl also Team
+            name = "getTeam", //eigentlich nicht in der Mehrzahl also Team
             path = "team/{websafeTeamKey}",
             httpMethod = HttpMethod.GET
     )
@@ -445,7 +445,7 @@ public class ClubManagementAPI {
      * @return An updated team object.
      * @throws UnauthorizedException when the user is not signed in.
      */
-    @ApiMethod(name = "saveTeam",
+    /*@ApiMethod(name = "saveTeam",
             path = "team/save/{teamKey}",
             httpMethod = HttpMethod.POST)
     public Team saveTeam(final User user,
@@ -466,7 +466,7 @@ public class ClubManagementAPI {
             }
         });
         return (team);
-    }
+    }*/
 
     /**
      * Deletes a Team object and removes it from the datastore.

@@ -51,7 +51,7 @@ ClubManagementApp.controllers.controller('getClubmembersCtrl', function ($scope,
     }
 
     $scope.init = function () {
-        var retrieveClubmembersCallback = function () {
+        var retrieveClubmembers = function () {
             $scope.loading = true;
             gapi.client.clubmanagement.getClubmembers().
                 execute(function (resp) {
@@ -72,6 +72,7 @@ ClubManagementApp.controllers.controller('getClubmembersCtrl', function ($scope,
                             $scope.clubmembers = resp.items;
                             $scope.filteredClubmembers = $scope.clubmembers;
                             parentProvider.clubmembers = $scope.clubmembers;
+                            console.log("retrieve: ", JSON.stringify($scope.clubmembers))
                         }
                         $scope.submitted = true;
                     });
@@ -79,14 +80,14 @@ ClubManagementApp.controllers.controller('getClubmembersCtrl', function ($scope,
             );
         };
         if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(retrieveClubmembersCallback);
+            oauth2Provider.signIn(retrieveClubmembers);
         } else {
-            retrieveClubmembersCallback();
+            retrieveClubmembers();
         }
     };
 
     $scope.deleteClubmemberWithWebsafeClubmemberKey = function (websafeClubmemberKey) {
-        var callback = function() {
+        var deleteClubmember = function() {
             $scope.loading = true;
             gapi.client.clubmanagement.deleteClubmember({websafeClubmemberKey: websafeClubmemberKey})
             .execute(function (resp) {
@@ -115,9 +116,9 @@ ClubManagementApp.controllers.controller('getClubmembersCtrl', function ($scope,
             });
         }
         if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(callback);
+            oauth2Provider.signIn(deleteClubmember);
         } else {
-            callback();
+            deleteClubmember();
         }
     };
 });
@@ -173,7 +174,7 @@ ClubManagementApp.controllers.controller('detailedClubmemberCtrl', function ($sc
     };
 
     $scope.deleteClubmember = function (clubmemberForm) {
-        var callback = function() {
+        var deleteClubmember = function() {
             $scope.loading = true;
             $scope.submitted = true;
             gapi.client.clubmanagement.deleteClubmember({websafeClubmemberKey: $routeParams.websafeClubmemberKey})
@@ -205,14 +206,14 @@ ClubManagementApp.controllers.controller('detailedClubmemberCtrl', function ($sc
             });
         }
         if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(callback);
+            oauth2Provider.signIn(deleteClubmember);
         } else {
-            callback();
+            deleteClubmember();
         }
     };
 
     $scope.init = function () {
-        var callback = function() {
+        var getClubmember = function() {
             $scope.loading = true;
             $scope.submitted = true;
             gapi.client.clubmanagement.getClubmember({websafeClubmemberKey: $routeParams.websafeClubmemberKey}).execute(function (resp) {
@@ -228,16 +229,15 @@ ClubManagementApp.controllers.controller('detailedClubmemberCtrl', function ($sc
                         $scope.alertStatus = 'success';
                         $scope.clubmember = resp.result;
                         parentProvider.clubmember = $scope.clubmember;
-
                         if ($scope.clubmember == null) { $scope.clubmember = []; }
                     }
                 });
             });
         }
         if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(callback);
+            oauth2Provider.signIn(getClubmember);
         } else {
-            callback();
+            getClubmember();
         }
     };
 });
@@ -264,8 +264,9 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
             return;
         }
 
-        var callback = function() {
+        var createClubmember = function() {
             $scope.loading = true;
+            console.log("create: ", JSON.stringify($scope.clubmember))
             gapi.client.clubmanagement.createClubmember($scope.clubmember).
             execute(function (resp) {
                 $scope.$apply(function () {
@@ -292,9 +293,9 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
             });
         }
         if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(callback);
+            oauth2Provider.signIn(createClubmember);
         } else {
-            callback();
+            createClubmember();
         }
 
         document.getElementById("name").focus();
@@ -319,7 +320,7 @@ ClubManagementApp.controllers.controller('saveClubmemberCtrl', function ($scope,
     $scope.clubmember = {};
 
     $scope.init = function () {
-        var callback = function() {
+        var getClubmember = function() {
             $scope.loading = true;
             gapi.client.clubmanagement.getClubmember({websafeClubmemberKey: $routeParams.websafeClubmemberKey
             }).execute(function (resp) {
@@ -340,9 +341,9 @@ ClubManagementApp.controllers.controller('saveClubmemberCtrl', function ($scope,
             });
         }
         if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(callback);
+            oauth2Provider.signIn(getClubmember);
         } else {
-            callback();
+            getClubmember();
         }
     };
 
@@ -356,7 +357,7 @@ ClubManagementApp.controllers.controller('saveClubmemberCtrl', function ($scope,
              return;
          }
 
-         var callback = function() {
+         var saveClubmember = function() {
             $scope.loading = true;
             gapi.client.clubmanagement.saveClubmember($scope.clubmember)
              .execute(function (resp) {
@@ -384,9 +385,9 @@ ClubManagementApp.controllers.controller('saveClubmemberCtrl', function ($scope,
              });
          }
          if (!oauth2Provider.signedIn) {
-             oauth2Provider.signIn(callback);
+             oauth2Provider.signIn(saveClubmember);
          } else {
-             callback();
+             saveClubmember();
          }
     };
 });
