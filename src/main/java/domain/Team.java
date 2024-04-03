@@ -20,9 +20,7 @@ public class Team {
 
     private String name;
 
-    private String players;
-
-    private String coach;
+    private String clubmember;
 
     private static final Logger LOG = Logger.getLogger(ClubManagementAPI.class.getName());
     private Team() {}
@@ -41,12 +39,8 @@ public class Team {
         return name;
     }
 
-    public String getPlayers() {
-        return players;
-    }
-
-    public String getCoach() {
-        return coach;
+    public String getClubmember() {
+        return clubmember;
     }
 
     public String getWebsafeTeamKey() {
@@ -55,14 +49,12 @@ public class Team {
 
     public void updateWithTeamForm(TeamForm teamForm) {
         this.name = teamForm.getName();
-        this.players = teamForm.getPlayers();
-        this.coach = teamForm.getCoach();
+        this.clubmember = teamForm.getClubmember();
     }
 
-    /* public void update(String name, String players, String coach) {
+    /* public void update(String name, String clubmember) {
         this.name = name;
-        this.players = players;
-        this.coach = coach;
+        this.players = clubmember;
     } */
 
     @Override

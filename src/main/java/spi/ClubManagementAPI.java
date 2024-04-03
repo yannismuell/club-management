@@ -440,8 +440,7 @@ public class ClubManagementAPI {
      *
      * @param user A user who invokes this method, null when the user is not signed in.
      * @param name The team name
-     * @param players The team players
-     * @param coach The team coach
+     * @param clubmember The team clubmember
      * @return An updated team object.
      * @throws UnauthorizedException when the user is not signed in.
      */
@@ -450,8 +449,7 @@ public class ClubManagementAPI {
             httpMethod = HttpMethod.POST)
     public Team saveTeam(final User user,
                                      @Named ("name") final String name,
-                                     @Named ("players") final String players,
-                                     @Named ("coach") final String coach,
+                                     @Named ("clubmember") final String clubmember,
                                      @Named ("teamKey") final String websafeTeamKey)
             throws Exception  {
         checkUserOk(user);
@@ -460,7 +458,7 @@ public class ClubManagementAPI {
             public Team run() {
                 Key<Team> teamKey = Key.create(websafeTeamKey);
                 Team team = ofy().load().key(teamKey).now();
-                team.update(name, players, coach);
+                team.update(name, clubmember);
                 ofy().save().entity(team).now();
                 return team;
             }

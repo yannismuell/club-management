@@ -4,9 +4,7 @@ public class TeamForm {
 
     private String name;
 
-    private String players;
-
-    private String coach;
+    private String clubmember;
 
     private String websafeTeamKey;
 
@@ -15,15 +13,13 @@ public class TeamForm {
     /**
      * Public constructor is solely for Unit Test.
      * @param name
-     * @param players
-     * @param coach
+     * @param clubmember
      * @param websafeTeamKey
      */
 
-    public TeamForm(String name, String players, String coach, String websafeTeamKey) {
+    public TeamForm(String name, String clubmember, String websafeTeamKey) {
         this.name = name;
-        this.players = players;
-        this.coach = coach;
+        this.clubmember = clubmember;
         this.websafeTeamKey = websafeTeamKey;
     }
 
@@ -31,12 +27,8 @@ public class TeamForm {
         return name;
     }
 
-    public String getPlayers() {
-        return players;
-    }
-
-    public String getCoach() {
-        return coach;
+    public String getClubmember() {
+        return clubmember;
     }
 
     public String getWebsafeTeamKey() { return websafeTeamKey; }

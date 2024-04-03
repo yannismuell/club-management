@@ -10,5 +10,8 @@
         <module name="club-management" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="club-management" target="9" />
+    </bytecodeTargetLevel>
   </component>
 </project>
