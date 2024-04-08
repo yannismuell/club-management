@@ -5,4 +5,13 @@
       <configuration />
     </facet>
   </component>
+<<<<<<< HEAD
+=======
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+    </content>
+  </component>
+>>>>>>> 17f40984da6b2c30ab90d7345612a56f72548094
 </module>

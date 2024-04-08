@@ -28,7 +28,7 @@
                               <span class="input-group-btn">
                                   <button type="submit" ng-click="queryMatchesByName(search_field)" class="modal-action btn btn-secondary" type="button">Search</button>
                               </span>
-                            <input id="query-input" type="text" class="form-control" placeholder="Search Match MatchDate/MatchTime" ng-model="search_field" autofocus>
+                            <input id="query-input" type="search" class="form-control" placeholder="Search Match MatchDate/MatchTime" ng-model="search_field" autofocus>
                         </div>
                     </div>
                 </form>
@@ -52,7 +52,7 @@
                         <tbody>
 
                         <tr ng-repeat="match in filteredMatches | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize | orderBy:'matchDate'">
-                            <td><a href="#!/matches/matchDate/{{match.websafeMatchKey}}">{{match.matchDate}}</a></td>
+                            <td><a href="#!/matches/detail/{{match.websafeMatchKey}}">{{match.matchDate}}</a></td>
                             <td>{{match.matchTime}}</td>
                             <td>{{match.matchTeam}}</td>
                             <td>{{match.guest}}</td>

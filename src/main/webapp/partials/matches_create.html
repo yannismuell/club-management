@@ -44,7 +44,7 @@
                                 <label for="guestGoals">GuestGoals <span class="required">*</span></label>
                                 <input id="guestGoals" type="number" name="guestGoals" name="guestGoals" onkeypress="return isNumber(event)" placeholder="0" step="1" ng-model="match.guestGoals"class="form-control"/>
                             </div>
-                            <button ng-click="createMatch(matchForm)" class="btnCreateMatches" ng-disabled="!isValidMatch(matchForm) || loading">Add</button>
+                            <button ng-click="createMatch(matchForm)" class="btn btn-add-custom" ng-disabled="!isValidMatch(matchForm) || loading">Add</button>
                         </form>
                         <p><a class="nav-link" onclick="window.history.back();" href="">« Back</a></p>
                     </div>
