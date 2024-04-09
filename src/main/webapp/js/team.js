@@ -41,9 +41,9 @@ ClubManagementApp.controllers.controller('getTeamsCtrl', function ($scope, $log,
         $scope.filteredTeams = [];
         $scope.teams.forEach(function(element) {
             let nameToSearch = element.name.toLowerCase();
-            let playersToSearch = element.players.toLowerCase();
+            let clubmemberToSearch = element.clubmember;
             let searchString = search_field.toLowerCase();
-            if (nameToSearch.includes(searchString) || playersToSearch.includes(searchString)){
+            if (nameToSearch.includes(searchString) || clubmemberToSearch.includes(searchString)){
                 $scope.filteredTeams.push(element);
             }
         });
