@@ -1,13 +1,10 @@
 package domain;
 
-import com.google.api.server.spi.config.AnnotationBoolean;
-import com.google.api.server.spi.config.ApiResourceProperty;
 import com.google.common.base.Preconditions;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Cache;
-import com.googlecode.objectify.annotation.Parent;
 import form.MatchForm;
 import spi.ClubManagementAPI;
 import java.util.logging.Logger;
@@ -31,8 +28,8 @@ public class Match {
 
     private Match() {}
     public Match(final long id, final MatchForm matchForm) {
-        LOG.info("Home: ." + matchForm.getMatchTeam());
-        Preconditions.checkNotNull(matchForm.getMatchTeam(), "The date is required");
+        LOG.info("Date: ." + matchForm.getMatchDate());
+        Preconditions.checkNotNull(matchForm.getMatchDate(), "The date is required");
         this.id = id;
         updateWithMatchForm(matchForm);
     }
@@ -77,18 +74,18 @@ public class Match {
 
     }
 
-    public void update(String matchDate, String matchTime, String matchTeam, String guest, int homeGoals, int guestGoals) {
+/*    public void update(String matchDate, String matchTime, String matchTeam, String guest, int homeGoals, int guestGoals) {
         this.matchDate = getMatchDate();
         this.matchTime = getMatchTime();
         this.matchTeam = getMatchTeam();
         this.guest = getGuest();
         this.homeGoals = getHomeGoals();
         this.guestGoals = getGuestGoals();
-    }
+    }*/
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder("Id: " + id + "\n").append("Date: ").append(matchTeam).append("\n");
+        StringBuilder stringBuilder = new StringBuilder("Id: " + id + "\n").append("Date: ").append(matchDate).append("\n");
 
         return stringBuilder.toString();
     }

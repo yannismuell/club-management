@@ -198,7 +198,7 @@ public class ClubManagementAPI {
      * @return An updated match object.
      * @throws UnauthorizedException when the user is not signed in.
      */
-    @ApiMethod(name = "saveMatch",
+    /*@ApiMethod(name = "saveMatch",
             path = "match/save/{matchKey}",
             httpMethod = HttpMethod.POST)
     public Match saveMatch(final User user,
@@ -222,7 +222,7 @@ public class ClubManagementAPI {
             }
         });
         return (match);
-    }
+    }*/
 
     /**
      * Deletes a Match object and removes it from the datastore.

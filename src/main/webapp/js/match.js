@@ -51,7 +51,7 @@ ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $lo
     }
 
     $scope.init = function () {
-        var retrieveMatchesCallback = function () {
+        var retrieveMatches = function () {
             $scope.loading = true;
             gapi.client.clubmanagement.getMatches().
                 execute(function (resp) {
@@ -79,14 +79,14 @@ ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $lo
             );
         };
         if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(retrieveMatchesCallback);
+            oauth2Provider.signIn(retrieveMatches);
         } else {
-            retrieveMatchesCallback();
+            retrieveMatches();
         }
     };
 
     $scope.deleteMatchWithWebsafeMatchKey = function (websafeMatchKey) {
-        var callback = function() {
+        var deleteMatch = function() {
             $scope.loading = true;
             gapi.client.clubmanagement.deleteMatch({websafeMatchKey: websafeMatchKey})
             .execute(function (resp) {
@@ -115,9 +115,9 @@ ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $lo
             });
         }
         if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(callback);
+            oauth2Provider.signIn(deleteMatch);
         } else {
-            callback();
+            deleteMatch();
         }
     };
 });
@@ -174,7 +174,7 @@ ClubManagementApp.controllers.controller('detailedMatchCtrl', function ($scope, 
     };
 
     $scope.deleteMatch = function (matchForm) {
-        var callback = function() {
+        var deleteMatch = function() {
             $scope.loading = true;
             $scope.submitted = true;
             gapi.client.clubmanagement.deleteMatch({websafeMatchKey: $routeParams.websafeMatchKey})
@@ -206,14 +206,14 @@ ClubManagementApp.controllers.controller('detailedMatchCtrl', function ($scope, 
             });
         }
         if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(callback);
+            oauth2Provider.signIn(deleteMatch);
         } else {
-            callback();
+            deleteMatch();
         }
     };
 
     $scope.init = function () {
-        var callback = function() {
+        var getMatch = function() {
             $scope.loading = true;
             $scope.submitted = true;
             gapi.client.clubmanagement.getMatch({websafeMatchKey: $routeParams.websafeMatchKey}).execute(function (resp) {
@@ -229,16 +229,15 @@ ClubManagementApp.controllers.controller('detailedMatchCtrl', function ($scope, 
                         $scope.alertStatus = 'success';
                         $scope.match = resp.result;
                         parentProvider.match = $scope.match;
-
                         if ($scope.match == null) { $scope.match = []; }
                     }
                 });
             });
         }
         if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(callback);
+            oauth2Provider.signIn(getMatch);
         } else {
-            callback();
+            getMatch();
         }
     };
 });
@@ -265,14 +264,12 @@ ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $l
             return;
         }
 
-        var callback = function() {
+        var createMatch = function() {
             $scope.loading = true;
-            console.log("Match: ", $scope.match);
+            //console.log("create: ", JSON.stringify($scope.match);
             gapi.client.clubmanagement.createMatch($scope.match).
             execute(function (resp) {
-            console.log("Match1: ", $scope.match);
                 $scope.$apply(function () {
-                console.log("Match2: ", $scope.match);
                     $scope.loading = false;
                     if (resp.error) {
                         // The request has failed.
@@ -296,9 +293,9 @@ ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $l
             });
         }
         if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(callback);
+            oauth2Provider.signIn(createMatch);
         } else {
-            callback();
+            createMatch();
         }
 
         document.getElementById("matchDate").focus();
@@ -323,7 +320,7 @@ ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log
     $scope.match = {};
 
     $scope.init = function () {
-        var callback = function() {
+        var getMatch = function() {
             $scope.loading = true;
             gapi.client.clubmanagement.getMatch({websafeMatchKey: $routeParams.websafeMatchKey
             }).execute(function (resp) {
@@ -344,9 +341,9 @@ ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log
             });
         }
         if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(callback);
+            oauth2Provider.signIn(getMatch);
         } else {
-            callback();
+            getMatch();
         }
     };
 
@@ -360,7 +357,7 @@ ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log
              return;
          }
 
-         var callback = function() {
+         var saveMatch = function() {
             $scope.loading = true;
             gapi.client.clubmanagement.saveMatch($scope.match)
              .execute(function (resp) {
@@ -388,9 +385,9 @@ ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log
              });
          }
          if (!oauth2Provider.signedIn) {
-             oauth2Provider.signIn(callback);
+             oauth2Provider.signIn(saveMatch);
          } else {
-             callback();
+             saveMatch();
          }
     };
 });
