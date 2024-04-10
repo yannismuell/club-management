@@ -23,10 +23,21 @@
                                 <span class="required-label-red label label-danger" ng-show="teamForm.name.$error.required">Required!</span>
                                 <input id="name" type="text" name="name" ng-model="team.name" class="form-control" ng-required="true"/>
                             </div>
-                            <div class="form-group">
+                            <!--<div class="form-group">
                                 <label for="clubmember">Clubmember <span class="required">*</span></label>
                                 <span class="required-label-red label label-danger" ng-show="teamForm.away.$error.required">Required!</span>
                                 <input id="clubmember" type="select" name="clubmember" ng-model="team.clubmember" class="form-control" ng-required="true"/>
+                            </div>-->
+                            <!--<select id="clubmember" name="clubmember" ng-model="clubmember" class="form-control">
+                                <option value="">Select a Clubmember</option>
+                                <option value="">{{clubmember.name}}</option>
+                            </select>-->
+
+                            <div class="form-group">
+                                <label for="name">Clubmember<span class="required">*</span></label>
+                                <td><select id="clubmember" name="clubmember" ng-model="team.clubmember">
+                                    <option ng-repeat="option in clubmemberList" ng-value="option">{{option}}</option>
+                                </select></td>
                             </div>
 
                             <button ng-click="createTeam(teamForm)" class="btn btn-add-custom" ng-disabled="!isValidTeam(teamForm) || loading">Add</button>
