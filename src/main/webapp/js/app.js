@@ -32,7 +32,7 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
         }).
         when('/matches/detail/:websafeMatchKey', {
                 templateUrl: 'partials/match_details.html',
-                controller: 'detailedMatchController'
+                controller: 'detailedMatchCtrl'
         }).
         when('/clubmembers', {
              templateUrl: 'partials/clubmembers.html',

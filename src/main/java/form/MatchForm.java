@@ -2,6 +2,7 @@ package form;
 
 public class MatchForm {
 
+    private long id;
     private String matchDate;
     private String matchTime;
     private String matchTeam;
@@ -30,7 +31,9 @@ public class MatchForm {
     }
 
     public String getWebsafeMatchKey() { return websafeMatchKey; }
-
+    public long getId() {
+        return id;
+    }
     public String getMatchDate() {
         return matchDate;
     }
