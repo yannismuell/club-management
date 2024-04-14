@@ -143,6 +143,24 @@ public class ClubManagementAPI {
         List<Match> matches = ofy().load().type(Match.class).list();
         return matches;
     }
+
+    /**
+     * Returns a list of Matches
+     * In order to receive the websafeMatchKey via the JSON params, uses a POST method.
+     *
+     * @return a list of Matches that the user created.
+     * @throws UnauthorizedException when the user is not signed in.
+     */
+    @ApiMethod(
+            name = "getMatchesGuest",
+            path = "match/guest",
+            httpMethod = HttpMethod.POST
+    )
+    public List<Match> getMatchesGuest(final User user) throws Exception {
+        List<Match> matches = ofy().load().type(Match.class).list();
+        return matches;
+    }
+
     /**
      * Returns a Match object with the given matchID.
      *
