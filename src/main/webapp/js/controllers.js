@@ -29,7 +29,78 @@ ClubManagementApp.controllers = angular.module('clubmanagementControllers', ['ui
  * A controller used for the MatchesPage page.
  */
 ClubManagementApp.controllers.controller('MatchesPageCtrl', function ($scope, $log, oauth2Provider, HTTP_ERRORS) {
+    activeURL = '#!/matchesPage';
+    console.log("bin aaaaa")
+    $scope.matches = [];
+    $scope.filteredMatches = [];
 
+    $scope.pagination = $scope.pagination || {};
+    $scope.pagination.currentPage = 0;
+    $scope.pagination.pageSize = 25;
+
+    $scope.pagination.numberOfPages = function () {
+        return Math.ceil($scope.filteredMatches.length / $scope.pagination.pageSize);
+    };
+
+    $scope.pagination.pageArray = function () {
+        var pages = [];
+        var numberOfPages = $scope.pagination.numberOfPages();
+        for (var i = 0; i < numberOfPages; i++) {
+            pages.push(i);
+        }
+        return pages;
+    }
+
+    $scope.pagination.isDisabled = function (event) {
+        return angular.element(event.target).hasClass('disabled');
+    }
+
+    $scope.queryMatchesByMatchDate = function (search_field) {
+        $scope.filteredMatches = [];
+        $scope.matches.forEach(function(element) {
+            let matchDateToSearch = element.matchDate.toLowerCase();
+            let matchTimeToSearch = element.matchTime.toLowerCase();
+            let searchString = search_field.toLowerCase();
+            if (matchDateToSearch.includes(searchString) || matchTimeToSearch.includes(searchString)){
+                $scope.filteredMatches.push(element);
+            }
+        });
+        $scope.pagination.currentPage = 0;
+    }
+
+    $scope.init = function () {
+        console.log("bin im init")
+        var retrieveMatches = function () {
+            console.log("bin im retrieve")
+            $scope.loading = true;
+            gapi.client.clubmanagement.getMatchesGuest().
+                execute(function (resp) {
+                    $scope.$apply(function () {
+                        $scope.loading = false;
+                        if (resp.error) {
+                            // The request has failed.
+                            var errorMessage = resp.error.message || '';
+                            $scope.messages = 'Failed to obtain matches : ' + errorMessage;
+                            $scope.alertStatus = 'warning';
+                            $log.error($scope.messages );
+                        } else {
+                            // The request has succeeded.
+                            $scope.submitted = false;
+                            $scope.messages = 'Query succeeded';
+                            $scope.alertStatus = 'success';
+                            $log.info($scope.messages);
+                            $scope.matches = resp.items;
+                            $scope.filteredMatches = $scope.matches;
+                            parentProvider.matches = $scope.matches;
+                        }
+                        $scope.submitted = true;
+                    });
+                }
+            );
+        };
+        retrieveMatches();
+
+    };
 
 });
 

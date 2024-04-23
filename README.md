@@ -21,7 +21,7 @@ Frameworks used:
 
 1. User Authenticating with Google Accounts in Web Clients
 
-    1. Updated the `WEB_CLIENT_ID` in [Constants.java](src/main/webapp/js/app.js)
+    1. Updated the `WEB_CLIENT_ID` in [Constants.java](src/main/webapp/js/)
       to reflect the web client ID registered in the
       [Credentials on Developers Console for OAuth 2.0 client IDs][6].
 
