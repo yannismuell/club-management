@@ -1,79 +1,39 @@
-<div ng-init="init()" class="container-fluid">
-
+<!--
+                <div ng-init="init()" class="container-fluid">
     <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
-
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-lg-12">
-<!--
-  <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Date & Time</th>
-                    <th>Home Club</th>
-                    <th>Goals</th>
-                    <th>Goals</th>
-                    <th>Guest Club</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>21. Feb 2024<br>15:00</td>
-                    <td><img src="img/Barcelona.png" alt="Left Image" class="img-fluid small-img">Club A</td>
-                    <td>7</td>
-                    <td>1</td>
-                    <td><img src="img/Madrid.png" alt="Club C Logo" class="club-logo">Club C</td>
-                </tr>
-                <tr>
-                    <td>22. Feb 2024<br>14:30</td>
-                    <td><img src="clubBlogo.jpg" alt="Club B Logo" class="club-logo">Club B</td>
-                    <td>4</td>
-                    <td>3</td>
-                    <td><img src="clubDlogo.jpg" alt="Club D Logo" class="club-logo">Club D</td>
-                </tr>
-
-                <tr>
-                    <td>23. Feb 2024<br>16:00</td>
-                    <td><img src="clubElogo.jpg" alt="Club E Logo" class="club-logo">Club E</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td><img src="clubFlogo.jpg" alt="Club F Logo" class="club-logo">Club F</td>
-                </tr>
-                <tr>
-                    <td>24. Feb 2024<br>17:30</td>
-                    <td><img src="clubGlogo.jpg" alt="Club G Logo" class="club-logo">Club G</td>
-                    <td>3</td>
-                    <td>1</td>
-                    <td><img src="clubHlogo.jpg" alt="Club H Logo" class="club-logo">Club H</td>
-                </tr>
-                </tbody>
-                </table>
+                <div class="table-responsive" ng-show="filteredMatches.length > 0">
+                    <table id="match-table" class="table table-striped table-hover">
                 -->
+<div ng-init="init()" class="container-fluid">
+    <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+        <div class="row justify-content-center">
+            <div class="col-xs-12 col-sm-12 col-lg-8 text-center">
                 <div class="table-responsive" ng-show="filteredMatches.length > 0">
                     <table id="match-table" class="table table-striped table-hover">
                         <thead>
                         <tr>
-                            <th>MatchDate</th>
-                            <th>MatchTime</th>
-                            <th>MatchTeam</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Team</th>
+                            <th>     </th>
+                            <th>     </th>
+                            <th>     </th>
                             <th>Guest</th>
-                            <th>HomeGoals</th>
-                            <th>GuestGoals</th>
-                            <th>Delete</th>
                         </tr>
                         </thead>
 
                         <tbody>
 
                         <tr ng-repeat="match in filteredMatches | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize | orderBy:'matchDate'">
-                            <td><a href="#!/matches/detail/{{match.websafeMatchKey}}">{{match.matchDate}}</a></td>
+                            <td>{{match.matchDate}}</td>
                             <td>{{match.matchTime}}</td>
                             <td>{{match.matchTeam}}</td>
-                            <td>{{match.guest}}</td>
                             <td>{{match.homeGoals}}</td>
+                            <td>:</td>
                             <td>{{match.guestGoals}}</td>
-                            <td>
-                                <button ng-click="deleteMatchWithWebsafeMatchKey(match.websafeMatchKey)" class="btn btn-outline-danger" ng-disabled="loading" title="Delete Match">&#10008;</button>
-                            </td>
+                            <td>{{match.guest}}</td>
                         </tr>
                         </tbody>
                     </table>
