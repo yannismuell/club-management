@@ -151,7 +151,7 @@
                         <tbody>
 
                         <tr ng-repeat="team in filteredTeams | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize ">
-                            <td>{{team.name}}</td>
+                            <td><a href="#!/teams/members/{{team.websafeTeamKey}}">{{team.name}}</a></td>
                         </tr>
                         </tbody>
                     </table>
