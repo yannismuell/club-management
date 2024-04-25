@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -127,7 +127,35 @@
         </tr>
         </tbody>
     </table>
-</div>
+</div>-->
+<!--
+                <div ng-init="init()" class="container-fluid">
+    <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-lg-12">
+                <div class="table-responsive" ng-show="filteredMatches.length > 0">
+                    <table id="match-table" class="table table-striped table-hover">
+                -->
+<div ng-init="init()" class="container-fluid">
+    <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+        <div class="row justify-content-center">
+            <div class="col-xs-12 col-sm-12 col-lg-8 text-center">
+                <div class="table-responsive" ng-show="filteredTeams.length > 0">
+                    <table id="teams-table" class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>Teams</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        <tr ng-repeat="team in filteredTeams | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize ">
+                            <td>{{team.name}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
 <ul class="pagination" ng-show="filteredClubmembers.length > 0">
     <li ng-class="{disabled: pagination.currentPage == 0 }">
         <a ng-class="{disabled: pagination.currentPage == 0 }"
@@ -138,7 +166,7 @@
            ng-click="pagination.isDisabled($event) || (pagination.currentPage = pagination.currentPage - 1)" href="">&lt</a>&nbsp &nbsp
     </li>
 
-    <!-- ng-repeat creates a new scope. Need to specify the pagination.currentPage as $parent.pagination.currentPage -->
+   <!-- ng-repeat creates a new scope. Need to specify the pagination.currentPage as $parent.pagination.currentPage -->
     <li ng-repeat="page in pagination.pageArray()">
         <a ng-click="$parent.pagination.currentPage = page" id="pagination-item" ng-class="{'active': $parent.pagination.currentPage == page}" href="">{{page + 1}}</a>&nbsp &nbsp
     </li>
@@ -154,3 +182,6 @@
 </div>
 </body>
 </html>
+        </div>
+    </main>
+</div>

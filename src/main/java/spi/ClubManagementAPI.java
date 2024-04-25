@@ -411,6 +411,25 @@ public class ClubManagementAPI {
         List<Team> teams = ofy().load().type(Team.class).list();
         return teams;
     }
+
+    /**
+     * Returns a list of Teams
+     * In order to receive the websafeTeamKey via the JSON params, uses a POST method.
+     *
+     * @return a list of Teams that the user created.
+     * @throws UnauthorizedException when the user is not signed in.
+     */
+    @ApiMethod(
+            name = "getTeamsName",
+            path = "team/name",
+            httpMethod = HttpMethod.POST
+    )
+    public List<Team> getTeamsName(final User user) throws Exception {
+        List<Team> teams = ofy().load().type(Team.class).list();
+        return teams;
+    }
+
+
     /**
      * Returns a Team object with the given teamID.
      *
