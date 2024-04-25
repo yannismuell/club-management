@@ -18,13 +18,22 @@
                             <table class="table table-striped table-hover">
                                 <thead>
                                 <tr>
-                                    <th><h2>Match Details</h2></th>
-                                    <th><h3>Date {{match.matchDate}}</h3></th>
-                                    <th><h3>Time {{match.matchTime}}</h3></th>
-                                    <th><h3>Team {{match.matchTeam}}</h3></th>
-                                    <th><h3>Guest {{match.guest}}</h3></th>
-                                    <th><h3>Goals Home {{match.homeGoals}}</h3></th>
-                                    <th><h3>Goals Guest {{match.guestGoals}}</h3></th>
+                                    <th><h2> </h2></th>
+                                    <th><h3>Date</h3></th>
+                                    <th><h3>Time</h3></th>
+                                    <th><h3>Team</h3></th>
+                                    <th><h3>Guest</h3></th>
+                                    <th><h3>Goals Home</h3></th>
+                                    <th><h3>Goals Guest</h3></th>
+                                </tr>
+                                <tr>
+                                    <th><h3>Match Details</h3></th>
+                                    <th><h5>{{match.matchDate}}</h5></th>
+                                    <th><h5>{{match.matchTime}}</h5></th>
+                                    <th><h5>{{match.matchTeam}}</h5></th>
+                                    <th><h5>{{match.guest}}</h5></th>
+                                    <th><h5>{{match.homeGoals}}</h5></th>
+                                    <th><h5>{{match.guestGoals}}</h5></th>
                                     <th><a class="btn btn-outline-primary" href="#!/matches/edit/{{match.websafeMatchKey}}" role="button">Edit &raquo;</a></th>
                                 </tr>
                                 </thead>
