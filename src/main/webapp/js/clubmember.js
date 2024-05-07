@@ -358,6 +358,7 @@ ClubManagementApp.controllers.controller('saveClubmemberCtrl', function ($scope,
          }
 
          var saveClubmember = function() {
+            console.log("Hier")
             $scope.loading = true;
             gapi.client.clubmanagement.saveClubmember($scope.clubmember)
              .execute(function (resp) {

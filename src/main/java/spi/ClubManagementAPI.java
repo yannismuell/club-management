@@ -349,42 +349,28 @@ public class ClubManagementAPI {
      * Saves a Clubmember object and stores it to the datastore.
      *
      * @param user A user who invokes this method, null when the user is not signed in.
-     * @param name The clubmember name
-     * @param surname The clubmember surname
-     * @param birthDate The clubmember birthDate
-     * @param eMail The clubmember eMail
-     * @param address The clubmember address
-     * @param isCoach The clubmember isCoach
-     * @param isAdmin The clubmember isAdmin
+     * @param clubmemberForm The clubmember name
      * @return An updated clubmember object.
      * @throws UnauthorizedException when the user is not signed in.
      */
-    /*@ApiMethod(name = "saveClubmember",
+    @ApiMethod(name = "saveClubmember",
             path = "clubmember/save/{clubmemberKey}",
             httpMethod = HttpMethod.POST)
-    public Clubmember saveClubmember(final User user,
-                           @Named ("name") final String name,
-                           @Named ("surname") final String surname,
-                           @Named ("birthDate") final String birthDate,
-                           @Named ("eMail") final String eMail,
-                           @Named ("address") final String address,
-                           @Named ("isCoach") final boolean isCoach,
-                           @Named ("isAdmin") final boolean isAdmin,
-                           @Named ("clubmemberKey") final String websafeClubmemberKey)
-            throws Exception  {
+    public Clubmember saveClubmember(final User user, final ClubmemberForm clubmemberForm) throws Exception  {
         checkUserOk(user);
+        String websafeClubmemberKey = clubmemberForm.getWebsafeClubmemberKey();
         Clubmember clubmember = ofy().transact(new Work<Clubmember>() {
             @Override
             public Clubmember run() {
                 Key<Clubmember> clubmemberKey = Key.create(websafeClubmemberKey);
                 Clubmember clubmember = ofy().load().key(clubmemberKey).now();
-                clubmember.update(name, surname, birthDate, eMail, address, isCoach, isAdmin);
+                clubmember.updateWithClubmemberForm(clubmemberForm);
                 ofy().save().entity(clubmember).now();
                 return clubmember;
             }
         });
         return (clubmember);
-    }*/
+    }
 
     /**
      * Deletes a Clubmember object and removes it from the datastore.
