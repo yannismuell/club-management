@@ -7,22 +7,12 @@
                         <tr>
                             <th>Name</th>
                             <th>Surname</th>
-                            <th>Birthdate</th>
-                            <th>E-Mail</th>
-                            <th>Address</th>
-                            <th>Coach</th>
-                            <th>Admin</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat="clubmembers in filteredClubmembers | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize | orderBy:'name'">
                             <td>{{clubmembers.name}}</td>
                             <td>{{clubmembers.surname}}</td>
-                            <td>{{clubmembers.birthDate}}</td>
-                            <td>{{clubmembers.email}}</td>
-                            <td>{{clubmembers.address}}</td>
-                            <td>{{clubmembers.isCoach}}</td>
-                            <td>{{clubmembers.isAdmin}}</td>
                         </tr>
                         </tbody>
                     </table>

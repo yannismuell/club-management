@@ -163,7 +163,7 @@ ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, 
                         if (resp.error) {
                             // The request has failed.
                             var errorMessage = resp.error.message || '';
-                            $scope.messages = 'Failed to obtain teams : ' + errorMessage;
+                            $scope.messages = 'Failed to obtain clubmembers : ' + errorMessage;
                             $scope.alertStatus = 'warning';
                             $log.error($scope.messages );
                         } else {
