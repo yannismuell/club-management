@@ -478,33 +478,29 @@ public class ClubManagementAPI {
     /**
      * Saves a Team object and stores it to the datastore.
      *
-     * @param user A user who invokes this method, null when the user is not signed in.
-     * @param name The team name
-     * @param clubmember The team clubmember
+     * @param teamForm The team name
      * @return An updated team object.
      * @throws UnauthorizedException when the user is not signed in.
      */
-    /*@ApiMethod(name = "saveTeam",
+    @ApiMethod(name = "saveTeam",
             path = "team/save/{teamKey}",
             httpMethod = HttpMethod.POST)
-    public Team saveTeam(final User user,
-                                     @Named ("name") final String name,
-                                     @Named ("clubmember") final String clubmember,
-                                     @Named ("teamKey") final String websafeTeamKey)
+    public Team saveTeam(final User user, final TeamForm teamForm)
             throws Exception  {
         checkUserOk(user);
+        String websafeTeamKey = teamForm.getWebsafeTeamKey();
         Team team = ofy().transact(new Work<Team>() {
             @Override
             public Team run() {
                 Key<Team> teamKey = Key.create(websafeTeamKey);
                 Team team = ofy().load().key(teamKey).now();
-                team.update(name, clubmember);
+                team.updateWithTeamForm(teamForm);
                 ofy().save().entity(team).now();
                 return team;
             }
         });
         return (team);
-    }*/
+    }
 
     /**
      * Deletes a Team object and removes it from the datastore.
