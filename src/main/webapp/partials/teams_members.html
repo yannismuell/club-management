@@ -7,12 +7,22 @@
                         <tr>
                             <th>Name</th>
                             <th>Surname</th>
+                            <th>Birthdate</th>
+                            <th>E-Mail</th>
+                            <th>Address</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat="clubmembers in filteredClubmembers | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize | orderBy:'name'">
                             <td>{{clubmembers.name}}</td>
                             <td>{{clubmembers.surname}}</td>
+                            <td>{{clubmembers.birthDate}}</td>
+                            <td>{{clubmembers.email}}</td>
+                            <td>{{clubmembers.address}}</td>
+                        </tr>
+                        <!-- Falls keine Übereinstimmungen vorhanden sind -->
+                        <tr ng-if="filteredTeams.length === 0">
+                            <td colspan="6" class="text-center">No matches found</td>
                         </tr>
                         </tbody>
                     </table>
