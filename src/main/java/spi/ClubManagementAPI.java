@@ -207,40 +207,28 @@ public class ClubManagementAPI {
      * Saves a Match object and stores it to the datastore.
      *
      * @param user A user who invokes this method, null when the user is not signed in.
-     * @param matchDate The match matchDate
-     * @param matchTime The match matchTime
-     * @param matchTeam The match matchTeam
-     * @param opponent The match opponent
-     * @param homeGoals The match homeGoals
-     * @param guestGoals The match guestGoals
+     * @param matchForm The matchDate
      * @return An updated match object.
      * @throws UnauthorizedException when the user is not signed in.
      */
-    /*@ApiMethod(name = "saveMatch",
+    @ApiMethod(name = "saveMatch",
             path = "match/save/{matchKey}",
             httpMethod = HttpMethod.POST)
-    public Match saveMatch(final User user,
-                                   @Named ("matchDate") final String matchDate,
-                                   @Named ("matchTime") final String matchTime,
-                                   @Named ("matchTeam") final String matchTeam,
-                                   @Named ("opponent") final String opponent,
-                                   @Named ("homeGoals") final int homeGoals,
-                                   @Named ("guestGoals") final int guestGoals,
-                                   @Named ("matchKey") final String websafeMatchKey)
-            throws Exception  {
+    public Match saveMatch(final User user, final MatchForm matchForm) throws Exception  {
         checkUserOk(user);
+        String websafeMatchKey = matchForm.getWebsafeMatchKey();
         Match match = ofy().transact(new Work<Match>() {
             @Override
             public Match run() {
                 Key<Match> matchKey = Key.create(websafeMatchKey);
                 Match match = ofy().load().key(matchKey).now();
-                match.update(matchDate, matchTime, matchTeam, opponent, homeGoals, guestGoals);
+                match.updateWithMatchForm(matchForm);
                 ofy().save().entity(match).now();
                 return match;
             }
         });
         return (match);
-    }*/
+    }
 
     /**
      * Deletes a Match object and removes it from the datastore.
