@@ -208,6 +208,7 @@ public class ClubManagementAPI {
      *
      * @param user A user who invokes this method, null when the user is not signed in.
      * @param matchForm The match matchDate
+     * @param matchForm The matchDate
      * @return An updated match object.
      * @throws UnauthorizedException when the user is not signed in.
      */
