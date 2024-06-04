@@ -38,12 +38,12 @@ ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $lo
     }
 
     $scope.queryMatchesByMatchDate = function (search_field) {
+        console.log("queryMatchesByMatchDate")
         $scope.filteredMatches = [];
         $scope.matches.forEach(function(element) {
             let matchDateToSearch = element.matchDate.toLowerCase();
-            let matchTimeToSearch = element.matchTime.toLowerCase();
             let searchString = search_field.toLowerCase();
-            if (matchDateToSearch.includes(searchString) || matchTimeToSearch.includes(searchString)){
+            if (matchDateToSearch.includes(searchString) ){
                 $scope.filteredMatches.push(element);
             }
         });
