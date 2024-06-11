@@ -38,12 +38,13 @@ ClubManagementApp.controllers.controller('getClubmembersCtrl', function ($scope,
     }
 
     $scope.queryClubmembersByName = function (search_field) {
+        console.log("queryClumbembers")
         $scope.filteredClubmembers = [];
         $scope.clubmembers.forEach(function(element) {
             let nameToSearch = element.name.toLowerCase();
             let surnameToSearch = element.surname.toLowerCase();
             let searchString = search_field.toLowerCase();
-            if (nameToSearch.includes(searchString) || surname.includes(searchString)){
+            if (nameToSearch.includes(searchString) || surnameToSearch.includes(searchString)){
                 $scope.filteredClubmembers.push(element);
             }
         });
