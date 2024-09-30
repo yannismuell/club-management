@@ -1,8 +1,8 @@
 package form;
 
-public class ClubmemberForm {
+/*import domain.MembersinTeam;*/
 
-    private long id;
+public class ClubmemberForm {
     private String name;
     private String surname;
     private String birthDate;
@@ -10,6 +10,7 @@ public class ClubmemberForm {
     private String address;
     private boolean isCoach;
     private boolean isAdmin;
+    private String websafeMembersinTeamClassKey;
     private String websafeClubmemberKey;
 
 
@@ -22,7 +23,7 @@ public class ClubmemberForm {
      * @param websafeClubmemberKey
      */
 
-    public ClubmemberForm(String name, String surname, String birthDate, String email, String address, boolean isCoach, boolean isAdmin, String websafeClubmemberKey) {
+    public ClubmemberForm(String name, String surname, String birthDate, String email, String address, boolean isCoach, boolean isAdmin, String websafeMembersinTeamClassKey, String websafeClubmemberKey) {
         this.name = name;
         this.surname = surname;
         this.birthDate = birthDate;
@@ -30,13 +31,9 @@ public class ClubmemberForm {
         this.address = address;
         this.isCoach = isCoach;
         this.isAdmin = isAdmin;
+        this.websafeMembersinTeamClassKey = websafeMembersinTeamClassKey;
         this.websafeClubmemberKey = websafeClubmemberKey;
     }
-
-    public long getId() {
-        return id;
-    }
-
     public String getName() {
         return name;
     }
@@ -64,6 +61,8 @@ public class ClubmemberForm {
     public boolean getIsAdmin() {
         return isAdmin;
     }
+
+    public String getWebsafeMembersinTeamClassKey() { return websafeMembersinTeamClassKey; }
 
     public String getWebsafeClubmemberKey() { return websafeClubmemberKey; }
 

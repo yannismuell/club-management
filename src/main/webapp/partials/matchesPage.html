@@ -71,7 +71,34 @@
     <main role="main">
         <div class="row justify-content-center">
             <div class="table-responsive">
-                <table id="match-table" class="table table-striped table-hover text-center">
+                <h2>Upcoming matches</h2>
+                <table id="match-table1" class="table table-striped table-hover text-center">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Team</th>
+                        <th>Score</th>
+                        <th>Guest</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Filter für kommende Spiele -->
+                    <tr ng-repeat="match in filteredMatches | filter:matchFilter('upcoming') | orderBy:'matchDate'">
+                        <td>{{match.matchDate}}</td>
+                        <td>{{match.matchTime}}</td>
+                        <td>{{match.matchTeam}}</td>
+                        <td>{{match.homeGoals}} : {{match.guestGoals}}</td>
+                        <td>{{match.guest}}</td>
+                    </tr>
+                    <!-- Falls keine Übereinstimmungen vorhanden sind -->
+                    <tr ng-if="(filteredMatches | filter:matchFilter('upcoming')).length === 0">
+                        <td colspan="6" class="text-center">No upcoming matches found</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <h2>Last matches</h2>
+                <table id="match-table2" class="table table-striped table-hover text-center">
                     <thead>
                     <tr>
                         <th>Date</th>

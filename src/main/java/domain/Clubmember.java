@@ -5,9 +5,11 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 import form.ClubmemberForm;
 import spi.ClubManagementAPI;
 import java.util.logging.Logger;
+import static service.OfyService.ofy;
 @Entity
 @Cache
 public class Clubmember {
@@ -16,23 +18,28 @@ public class Clubmember {
     private Long id;
     private String name;
     private String surname;
-
     private String birthDate;
-
+    @Index
     private String email;
-
     private String address;
-
     private boolean isCoach;
-
     private boolean isAdmin;
-
+    private String team;
+    private String websafeMembersinTeamKey;
     private static final Logger LOG = Logger.getLogger(ClubManagementAPI.class.getName());
     private Clubmember() {}
-    public Clubmember(final long id, final ClubmemberForm clubmemberForm) {
+    public Clubmember(Long id, ClubmemberForm clubmemberForm) {
         LOG.info("Name: ." + clubmemberForm.getName());
         Preconditions.checkNotNull(clubmemberForm.getName(), "The name is required");
         this.id = id;
+        this.name = clubmemberForm.getName();
+        this.surname = clubmemberForm.getSurname();
+        this.birthDate = clubmemberForm.getBirthDate();
+        this.email = clubmemberForm.getEmail();
+        this.address = clubmemberForm.getAddress();
+        this.isCoach = clubmemberForm.getIsCoach();
+        this.isAdmin = clubmemberForm.getIsAdmin();
+        this.team = null;
         updateWithClubmemberForm(clubmemberForm);
     }
 
@@ -68,6 +75,10 @@ public class Clubmember {
 
     public String getWebsafeClubmemberKey() {
         return Key.create(Clubmember.class, id).toLegacyUrlSafe();
+    }
+    public String getTeam() {return team; }
+    public String getWebsafeMembersinTeamKey() {
+        return websafeMembersinTeamKey;
     }
 
     public void updateWithClubmemberForm(ClubmemberForm clubmemberForm) {
