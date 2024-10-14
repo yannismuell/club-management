@@ -254,6 +254,8 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
 
     $scope.clubmember = {};
 
+    $scope.roles = ["STUDENT", "TEACHER"];
+
     document.getElementById("name").focus();
 
     $scope.isValidClubmember = function (clubmemberForm) {
