@@ -1,5 +1,6 @@
 package domain;
 
+import clubmanagement.Constants;
 import com.google.common.base.Preconditions;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Cache;
@@ -8,7 +9,10 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import form.ClubmemberForm;
 import spi.ClubManagementAPI;
+
+import java.util.Arrays;
 import java.util.logging.Logger;
+import java.util.Date;
 import static service.OfyService.ofy;
 @Entity
 @Cache
@@ -43,6 +47,14 @@ public class Clubmember {
         updateWithClubmemberForm(clubmemberForm);
     }
 
+    public Clubmember(String name, String surname, String email) {
+        this.id = (long)999999999;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.isAdmin = true;
+    }
+
     public long getId() {
         return id;
     }
@@ -71,7 +83,10 @@ public class Clubmember {
         return isCoach;
     }
 
-    public boolean getIsAdmin() {return isAdmin; }
+    public boolean getIsAdmin() {
+        if (Arrays.asList(Constants.CLUBMEMBER_EMAILS).contains(email)) return true;
+        return isAdmin;
+    }
 
     public String getWebsafeClubmemberKey() {
         return Key.create(Clubmember.class, id).toLegacyUrlSafe();

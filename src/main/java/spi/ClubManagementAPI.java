@@ -16,7 +16,9 @@ import static service.OfyService.factory;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Work;
 
+import com.googlecode.objectify.cmd.Query;
 import domain.*;
+// import domain.Class;
 import form.*;
 import utility.*;
 
@@ -52,6 +54,31 @@ public class ClubManagementAPI {
      * @param user A User object injected by the cloud endpoints.
      * @return the App Engine userId for the user.
      */
+
+    private static String getUserId(User user) {
+        String userId = user.getUserId();
+        if (userId == null) {
+            LOG.info("userId is null, so trying to obtain it from the datastore.");
+            AppEngineUser appEngineUser = new AppEngineUser(user);
+            ofy().save().entity(appEngineUser).now();
+// Begin new session for not using session cache.
+            AppEngineUser savedUser = ofy().load().key(appEngineUser.getKey()).now();
+            userId = savedUser.getUser().getUserId();
+        }
+        return userId;
+    }
+
+    private static void checkUserOk(User user) throws Exception {
+
+        /*if (user == null) {
+            throw new UnauthorizedException("Authorization required");
+        }
+
+        EmailValidator validator = new EmailValidator();
+        if (!validator.valid(user.getEmail())) {
+            throw new Exception("Invalid Email format");
+        }*/
+    }
 
     /**
      * Just a wrapper for Boolean.
@@ -110,21 +137,6 @@ public class ClubManagementAPI {
         }
     }
 
-    private static void checkUserOk(User user) throws Exception {
-
-        if (user == null) {
-            throw new UnauthorizedException("Authorization required");
-        }
-
-        EmailValidator validator = new EmailValidator();
-        if (!validator.valid(user.getEmail())) {
-            throw new Exception("Invalid Email format");
-        }
-
-        if (!validator.emailDomainIsOk(user.getEmail())) {
-            throw new Exception("Invalid Email Domain");
-        }
-    }
     /**
      * Returns a list of Matches
      * In order to receive the websafeMatchKey via the JSON params, uses a POST method.
@@ -256,25 +268,60 @@ public class ClubManagementAPI {
         return new WrappedBoolean(result.getResult());
     }
 
-
     /**
-     * Returns a list of Clubmembers
-     * In order to receive the websafeClubmemberKey via the JSON params, uses a POST method.
+     * Returns a WrappedBoolean object indicating if the given user is already stored in Datastore
      *
-     * @param user An user who invokes this method, null when the user is not signed in.
-     * @return a list of Clubmembers that the user created.
-     * @throws UnauthorizedException when the user is not signed in.
+     * @param user A User object injected by the cloud endpoints.
+     * @return WrappedBoolean object.
+     * @throws UnauthorizedException when the User object is null.
      */
-    @ApiMethod(
-            name = "getClubmembers",
-            path = "clubmember/all",
-            httpMethod = HttpMethod.POST
-    )
+
+    //@ApiMethod(name = "accountExists", path = "account", httpMethod = HttpMethod.GET)
+    @ApiMethod(name = "clubmemberExists", path = "clubmember",
+            httpMethod = HttpMethod.GET)
+    public Clubmember clubmemberExists(final User user, @Named("clubmemberEmail") final String clubmemberEmail) throws Exception {
+        checkUserOk(user);
+
+        // Caution! This will delete all Clubmember entities
+        //Iterable<Key<Clubmember>> allKeys = ofy().load().type(Clubmember.class).keys();
+        //ofy().delete().keys(allKeys);
+        // TODO: Check if list contains more than one entries!!
+
+        Query<Clubmember> clubmembers = ofy().load().type(Clubmember.class).filter("email =", clubmemberEmail);
+        if (clubmembers.stream().count() > 1) {
+            LOG.info("More than one account with email " + clubmemberEmail + " exitsts. Returning null");
+            return null;
+        }
+
+        Clubmember clubmember = ofy().load().type(Clubmember.class).filter("email =", clubmemberEmail).first().now();
+
+        if (clubmember != null) return clubmember;
+
+        if (Arrays.asList(clubmanagement.Constants.CLUBMEMBER_EMAILS).contains(clubmemberEmail)) {
+            clubmember = new Clubmember("Clubmember", "Admin", "admin@devicesharing.ey.r.appspot.com");
+        }
+
+        return clubmember;
+    }
+    /**
+     * Returns all Clubmember objects
+     *
+     * @param user A User object injected by the cloud endpoints.
+     * @return Clubmember object.
+     * @throws UnauthorizedException when the User object is null.
+     */
+    @ApiMethod(name = "getClubmembers", path = "clubmembers", httpMethod = HttpMethod.GET)
     public List<Clubmember> getClubmembers(final User user) throws Exception {
         checkUserOk(user);
+
+        // Caution! This will delete all Account entities
+        // Iterable<Key<Account>> allKeys = ofy().load().type(Account.class).keys();
+        // ofy().delete().keys(allKeys);
+
         List<Clubmember> clubmembers = ofy().load().type(Clubmember.class).list();
         return clubmembers;
     }
+
     /**
      * Returns a Clubmember object with the given clubmemberID.
      *
@@ -328,6 +375,7 @@ public class ClubManagementAPI {
             httpMethod = HttpMethod.POST)
     public Clubmember createClubmember(final User user, final ClubmemberForm clubmemberForm) throws Exception {
         checkUserOk(user);
+
         final Key<Clubmember> clubmemberKey = factory().allocateId(Clubmember.class);
         final long clubmemberId = clubmemberKey.getId();
         Clubmember clubmember = new Clubmember(clubmemberId, clubmemberForm);
@@ -358,7 +406,7 @@ public class ClubManagementAPI {
                 return clubmember;
             }
         });
-        return (clubmember);
+        return clubmember;
     }
 
     /**
@@ -374,6 +422,11 @@ public class ClubManagementAPI {
             httpMethod = HttpMethod.DELETE)
     public WrappedBoolean deleteClubmember(final User user, @Named("websafeClubmemberKey") final String websafeClubmemberKey) throws Exception {
         checkUserOk(user);
+
+        // This will delete all clubmemer entities
+        // Iterable<Key<Clubmember>> allKeys = ofy().load().type(Clubmember.class).keys();
+        // ofy().delete().keys(allKeys);
+
         Key<Clubmember> clubmemberKey = Key.create(websafeClubmemberKey);
         Clubmember clubmember = ofy().load().key(clubmemberKey).now();
         TxResult<Boolean> result = ofy().transact(new Work<TxResult<Boolean>>() {
@@ -515,17 +568,5 @@ public class ClubManagementAPI {
         });
         return new WrappedBoolean(result.getResult());
     }
-
-    private static String getUserId(User user) {
-        String userId = user.getUserId();
-        if (userId == null) {
-            LOG.info("userId is null, so trying to obtain it from the datastore.");
-            AppEngineUser appEngineUser = new AppEngineUser(user);
-            ofy().save().entity(appEngineUser).now();
-// Begin new session for not using session cache.
-            AppEngineUser savedUser = ofy().load().key(appEngineUser.getKey()).now();
-            userId = savedUser.getUser().getUserId();
-        }
-        return userId;
-    }
 }
+

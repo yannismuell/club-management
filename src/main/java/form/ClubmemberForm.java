@@ -18,6 +18,7 @@ public class ClubmemberForm {
 
     /**
      * Public constructor is solely for Unit Test.
+     * @param email
      * @param name
      * @param surname
      * @param websafeClubmemberKey

@@ -6,6 +6,10 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
             templateUrl: 'index.html',
             controller: 'RootCtrl'
         }).
+        when('/clubmember', {
+            templateUrl: 'partials/clubmember.html',
+            controller: 'ClubmemberCtrl'
+        }).
         when('/matchesPage', {
             templateUrl: 'partials/matchesPage.html',
             controller: 'MatchesPageCtrl'
@@ -39,9 +43,9 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
                 controller: 'detailedMatchCtrl'
         }).
         when('/clubmembers', {
-             templateUrl: 'partials/clubmembers.html',
-             controller: 'getClubmembersCtrl'
-        }).
+              templateUrl: 'partials/clubmembers.html',
+              controller: 'getClubmembersCtrl'
+                        }).
         when('/clubmembers/create', {
               templateUrl: 'partials/clubmembers_create.html',
               controller: 'createClubmemberCtrl'
@@ -119,7 +123,7 @@ app.factory('parentProvider', function ($uibModal) {
     return parentProvider;
 
 });
-
+/*
 app.factory('oauth2Provider', function ($uibModal) {
 
     var oauth2Provider = {
@@ -139,21 +143,22 @@ app.factory('oauth2Provider', function ($uibModal) {
             'callback': callback
         });
     };
+*/
+        /*oauth2Provider.signOut = function () {
+            //gapi.auth.signOut();
+            gapi.auth2.getAuthInstance().signOut();
+            oauth2Provider.signedIn = false;
+        };
 
-    oauth2Provider.signOut = function () {
-        //gapi.auth.signOut();
-        gapi.auth2.getAuthInstance().signOut();
-        oauth2Provider.signedIn = false;
-    };
+        oauth2Provider.showLoginModal = function() {
+            var modalInstance = $modal.open({
+                templateUrl: '/partials/modals/login.modal.html',
+                controller: 'OAuth2LoginModalCtrl'
+            });
+            oauth2Provider.signedIn = true;
+            return modalInstance;
+        };
 
-    oauth2Provider.showLoginModal = function() {
-        var modalInstance = $modal.open({
-            templateUrl: '/partials/modals/login.modal.html',
-            controller: 'OAuth2LoginModalCtrl'
-        });
-        oauth2Provider.signedIn = true;
-        return modalInstance;
-    };
+        return oauth2Provider;
+    });*/
 
-    return oauth2Provider;
-});

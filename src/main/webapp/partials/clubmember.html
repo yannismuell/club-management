@@ -1,0 +1,28 @@
+<div ng-init="init()">
+  <div class="row">
+    <table class="col-md-8 table table-striped table-hover">
+      <thead>
+      <tr>
+        <th><h3>Clubmember</h3></th>
+      </tr>
+      <tr>
+        <td><h5>First Name</h5></td>
+        <td><h5>Surname</h5></td>
+      </tr>
+      <tr>
+        <td><p class="lead">{{initialClubmember.firstName}}</p></td>
+        <td><p class="lead">{{initialClubmember.surName}}</p></td>
+      </tr>
+      <tr>
+        <td><h5>Email</h5></td>
+      </tr>
+      <tr>
+        <td><p class="lead">{{initialClubmember.email}}</p></td>
+      </tr>
+      </thead>
+    </table>
+  </div>
+  <div>
+    <a class="nav-link" href="#!/clubmembers_edit"><button ng-class="{ active: isActive('/clubmembers_edit')}" $location.path="#/clubmembers_edit" class="btn btn-outline-primary" ng-disabled="loading">Edit Account</button></a>
+  </div>
+</div>

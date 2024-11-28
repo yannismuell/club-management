@@ -28,7 +28,7 @@ ClubManagementApp.controllers = angular.module('clubmanagementControllers', ['ui
  * @description
  * A controller used for the MatchesPage page.
  */
-ClubManagementApp.controllers.controller('MatchesPageCtrl', function ($scope, $log, oauth2Provider, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('MatchesPageCtrl', function ($scope, $log, HTTP_ERRORS) {
     activeURL = '#!/matchesPage';
     console.log("bin aaaaa")
     $scope.matches = [];
@@ -112,7 +112,7 @@ ClubManagementApp.controllers.controller('MatchesPageCtrl', function ($scope, $l
  * @description
  * A controller used for the Teams_members page.
  */
-ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, $log, oauth2Provider, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, $log, HTTP_ERRORS) {
     activeURL = '#!/teams_members';
     console.log("bin aaaaa")
     $scope.clubmembers = [];
@@ -194,7 +194,7 @@ ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, 
  * @description
  * A controller used for the TeamsPage page.
  */
-ClubManagementApp.controllers.controller('TeamsPageCtrl', function ($scope, $log, oauth2Provider, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('TeamsPageCtrl', function ($scope, $log, HTTP_ERRORS) {
     activeURL = '#!/teamsPage';
     console.log("bin aaaaa")
     $scope.teams = [];
@@ -268,69 +268,119 @@ ClubManagementApp.controllers.controller('TeamsPageCtrl', function ($scope, $log
     };
 
 });
+/**
+* @ngdoc controller
+* @name RootCtrl
+*
+* @description
+* A controller used for the page root.
+*/
 
-
-ClubManagementApp.controllers.controller('RootCtrl', function ($scope, $location, $timeout, oauth2Provider) {
+ClubManagementApp.controllers.controller('RootCtrl', function ($scope, $location, $log, $timeout,) {
 
     $scope.isActive = function (viewLocation) {
         return viewLocation === $location.path();
-    };
+    }
+
     $scope.getActiveURL = function() {
         return activeURL;
     }
 
+    $scope.isAdmin = function () {
+        if ($scope.clubmember == null) {
+            $scope.clubmember = {};
+            $scope.clubmember.isAdmin = false;
+        }
+        return $scope.clubmember.isAdmin;
+    };
+
+    $scope.isCoach = function () {
+        if ($scope.clubmember == null) {
+            $scope.clubmember = {};
+            $scope.clubmember.isCoach = false;
+        }
+        return $scope.clubmember.isCoach;
+    };
+
     $scope.getSignedInState = function () {
-        return oauth2Provider.signedIn;
-    };
+        return $scope.isSignedIn;
+    }
 
-    $scope.signIn = function () {
-        /*oauth2Provider.signIn(function () {
-            console.log(gapi.client.oauth2.userinfo.get());
-            gapi.client.oauth2.userinfo.get().execute(function (resp) {
-                $scope.$apply(function () {
-                    console.log(resp);
-                    $scope.signIn = function () {*/
-                     oauth2Provider.signIn(function () {
-                     gapi.client.oauth2.userinfo.get().execute(function (resp) {
-                     $scope.$apply(function () {
-                     const email = resp.email;
-                     if (email === 'felix.wittmann05@gmail.com' || email === 'davidreiter01@gmail.com' || email === 'florian.hoermann5524@gmail.com' || email === 'yannismueller124@gmail.com' || email === 'carinapospichal@gmail.com') {
-                     oauth2Provider.signedIn = true;
-                     $scope.alertStatus = 'success';
-                     $scope.rootMessages = 'Logged in with ' + resp.email;
-                     }
-                    return false;
-                    /*if (resp.email) {
-                        oauth2Provider.signedIn = true;
-                        $scope.alertStatus = 'success';
-                        $scope.rootMessages = 'Logged in with ' + resp.email;
-                    }*/
+    $scope.grantSignIn = function () {
+        $scope.isSignedIn = true;
+    }
+
+    $scope.denySignIn = function () {
+        $scope.isSignedIn = false;
+        $scope.clubmember = {};
+        $scope.clubmember.isAdmin = false;
+        $scope.clubmember.isCoach = false;
+        $location.path( "#!/about" );
+    }
+
+        $scope.createClubmember = function (clubmemberForm) {
+            if (!$scope.isValidClubmember(clubmemberForm)) {
+                return;
+            }
+
+            var createClubmember = function() {
+                $scope.loading = true;
+                gapi.client.clubmanagement.createClubmember($scope.clubmember).
+                execute(function (resp) {
+                    $scope.$apply(function () {
+                        $scope.loading = false;
+                        if (resp.error) {
+                            // The request has failed.
+                            var errorMessage = resp.error.message || '';
+                            $scope.messages = 'Failed to save an clubmember: ' + errorMessage;
+                            $scope.alertStatus = 'warning';
+                            $log.error($scope.messages + ' Clubmember : ' + JSON.stringify($scope.clubmember));
+                        } else {
+                            // The request has succeeded.
+                            $scope.messages = 'The clubmember has been saved : ' + resp.result.surName;
+                            $scope.alertStatus = 'success';
+                            $scope.submitted = false;
+                        }
+                    });
                 });
-            });
-        });
-    };
+            }
+            createClubmember();
 
-    $scope.signOut = function () {
-        oauth2Provider.signOut();
-        $scope.alertStatus = 'success';
-        $scope.rootMessages = 'Logged out';
-    };
+            document.getElementById("firstName").focus();
+        };
 
-    $scope.collapseNavbar = function () {
-        angular.element(document.querySelector('.navbar-collapse')).removeClass('in');
-    };
-});
-
-ClubManagementApp.controllers.controller('OAuth2LoginModalCtrl', function ($scope, $modalInstance, $rootScope, oauth2Provider) {
-    $scope.signInViaModal = function () {
-        oauth2Provider.signIn(function () {
-            gapi.client.oauth2.userinfo.get().execute(function (resp) {
-                $scope.$root.$apply(function () {
-                    $scope.$root.alertStatus = 'success';
-                    $scope.$root.rootMessages = 'Logged in with ' + resp.email;
+        $scope.clubmemberExists = function() {
+            var clubmemberExists = function() {
+                $scope.loading = true;
+                gapi.client.clubmanagement.clubmemberExists({clubmemberEmail: userEmail}).execute(function (resp) {
+                    $scope.$apply(function () {
+                        $scope.loading = false;
+                        if (resp.error) {
+                            // The request has failed.
+                            var errorMessage = resp.error.message || '';
+                            $scope.messages = 'Failed to get info on clubmember: '  + ' ' + errorMessage;
+                            $scope.alertStatus = 'warning';
+                            $log.error($scope.messages);
+                        } else {
+                            // The request has succeeded.
+                            $scope.alertStatus = 'success';
+                            if (resp.result.id != null) { // id present means: clubmember exists
+                                $scope.clubmember = resp.result
+                                $location.path( "/" );
+                            } else {
+                                window.location.href = "index.html";
+                                 $scope.messages = 'Account does not exist! Please contact an administrator: '  + ' ' + errorMessage;
+                                 $scope.alertStatus = 'warning';
+                            }
+                        }
+                    });
                 });
-                $modalInstance.close();
-            });
-        });
-    };
+            }
+            clubmemberExists();
+        };
+
+        $scope.collapseNavbar = function () {
+                angular.element(document.querySelector('.navbar-collapse')).removeClass('in');
+        };
+
 });

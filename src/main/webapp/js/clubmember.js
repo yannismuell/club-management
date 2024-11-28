@@ -5,7 +5,7 @@
  * @surname
  * A controller used to save a clubmember page.
  */
-ClubManagementApp.controllers.controller('getClubmembersCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('getClubmembersCtrl', function ($scope, $log, $location, $route, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
 
     document.getElementById("query-input").focus();
 
@@ -80,11 +80,7 @@ ClubManagementApp.controllers.controller('getClubmembersCtrl', function ($scope,
                 }
             );
         };
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(retrieveClubmembers);
-        } else {
-            retrieveClubmembers();
-        }
+        retrieveClubmembers();
     };
 
     $scope.deleteClubmemberWithWebsafeClubmemberKey = function (websafeClubmemberKey) {
@@ -100,10 +96,6 @@ ClubManagementApp.controllers.controller('getClubmembersCtrl', function ($scope,
                         $scope.messages = 'Failed to delete clubmember : ' + errorMessage;
                         $scope.alertStatus = 'warning';
                         $log.error($scope.messages + ' Clubmember : ' + JSON.stringify($scope.clubmember));
-                        if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
-                            oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
-                            return;
-                        }
                     } else {
                         // The request has succeeded.
                         $scope.messages = 'The clubmember has been deleted ';
@@ -116,11 +108,7 @@ ClubManagementApp.controllers.controller('getClubmembersCtrl', function ($scope,
                 });
             });
         }
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(deleteClubmember);
-        } else {
-            deleteClubmember();
-        }
+        deleteClubmember();
     };
 });
 
@@ -131,7 +119,7 @@ ClubManagementApp.controllers.controller('getClubmembersCtrl', function ($scope,
  * @surname
  * A controller used to save a clubmember page.
  */
-ClubManagementApp.controllers.controller('detailedClubmemberCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('detailedClubmemberCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, parentProvider, HTTP_ERRORS) {
 
     $scope.clubmember = {};
     $scope.submitted = false;
@@ -165,11 +153,6 @@ ClubManagementApp.controllers.controller('detailedClubmemberCtrl', function ($sc
     Array.prototype.clone = function(){
       return this.slice(0)
     }
-
-    $scope.getSignedInState = function () {
-        return oauth2Provider.signedIn;
-    };
-
     $scope.collapseNavbar = function () {
         angular.element(document.querySelector('.navbar-collapse')).removeClass('in');
     };
@@ -187,10 +170,6 @@ ClubManagementApp.controllers.controller('detailedClubmemberCtrl', function ($sc
                         $scope.messages = 'Failed to delete clubmember : ' + errorMessage;
                         $scope.alertStatus = 'warning';
                         $log.error($scope.messages + ' Clubmember : ' + JSON.stringify($scope.clubmember));
-                        if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
-                            oauth2Provider.signIn();//   showLoginModal();
-                            return;
-                        }
                         $route.reload();
                     } else {
                         $scope.messages = 'The clubmember has been deleted ';
@@ -205,11 +184,6 @@ ClubManagementApp.controllers.controller('detailedClubmemberCtrl', function ($sc
                     }
                 });
             });
-        }
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(deleteClubmember);
-        } else {
-            deleteClubmember();
         }
     };
 
@@ -235,11 +209,6 @@ ClubManagementApp.controllers.controller('detailedClubmemberCtrl', function ($sc
                 });
             });
         }
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(getClubmember);
-        } else {
-            getClubmember();
-        }
     };
 });
 
@@ -250,7 +219,7 @@ ClubManagementApp.controllers.controller('detailedClubmemberCtrl', function ($sc
  * @surname
  * A controller used to save a clubmember page.
  */
-ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scope, $log, $location, $routeParams, HTTP_ERRORS) {
 
     $scope.clubmember = {};
 
@@ -278,10 +247,6 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
                         $scope.messages = 'Failed to save a clubmember : ' + errorMessage;
                         $scope.alertStatus = 'warning';
                         $log.error($scope.messages + ' Clubmember : ' + JSON.stringify($scope.clubmember));
-                        if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
-                            oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
-                            return;
-                        }
                     } else {
                         // The request has succeeded.
                         $scope.messages = 'The clubmember has been saved : ' + resp.result.name;
@@ -293,19 +258,13 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
                 });
             });
         }
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(createClubmember);
-        } else {
-            createClubmember();
-        }
+        createClubmember();
 
         document.getElementById("name").focus();
     };
 
     $scope.init = function () {
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(); //var modalInstance = oauth2Provider.showLoginModal();
-        }
+        $scope.newClubmember = {};
     };
 });
 
@@ -316,7 +275,7 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
  * @surname
  * A controller used to save a clubmember page.
  */
-ClubManagementApp.controllers.controller('saveClubmemberCtrl', function ($scope, $log, $location, $route, oauth2Provider, $routeParams, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('saveClubmemberCtrl', function ($scope, $log, $location, $route, $routeParams, HTTP_ERRORS) {
 
     $scope.clubmember = {};
 
@@ -340,56 +299,44 @@ ClubManagementApp.controllers.controller('saveClubmemberCtrl', function ($scope,
                     }
                 });
             });
-        }
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(getClubmember);
-        } else {
-            getClubmember();
-        }
-    };
+       }
 
-    $scope.isValidClubmember = function (clubmemberForm) {
-        return !clubmemberForm.$invalid;
-    }
+       getClubmember();
+   };
 
-    $scope.saveClubmember = function (clubmemberForm) {
-         $scope.clubmember.websafeClubmemberKey = $routeParams.websafeClubmemberKey;
-         if (!$scope.isValidClubmember(clubmemberForm)) {
-             return;
-         }
+   $scope.isValidClubmember = function (clubmemberForm) {
+       return !clubmemberForm.$invalid;
+   }
 
-         var saveClubmember = function() {
-            console.log("Hier")
-            $scope.loading = true;
+   $scope.saveClubmember = function () {
+        $scope.submitted = true;
+        $scope.loading = true;
+        var saveClubmember = function() {
             gapi.client.clubmanagement.saveClubmember($scope.clubmember)
-             .execute(function (resp) {
-                 $scope.$apply(function () {
+            .execute(function (resp) {
+                $scope.$apply(function () {
                     $scope.loading = false;
-                     if (resp.error) {
-                         var errorMessage = resp.error.message || '';
-                         $scope.messages = 'Failed to save a clubmember : ' + errorMessage;
-                         $scope.alertStatus = 'warning';
-                         $log.error($scope.messages + ' Clubmember : ' + JSON.stringify($scope.clubmember));
-                         if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
-                             oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
-                             return;
-                         }
-                         $route.reload();
-                     } else {
-                         $scope.messages = 'The clubmember has been saved : ' + resp.result.name;
-                         $scope.alertStatus = 'success';
-                         $scope.submitted = false;
-                         $scope.clubmember = {};
-                         $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
-                         window.history.back();
-                     }
-                 });
-             });
-         }
-         if (!oauth2Provider.signedIn) {
-             oauth2Provider.signIn(saveClubmember);
-         } else {
-             saveClubmember();
-         }
-    };
+                    if (resp.error) {
+                       var errorMessage = resp.error.message || '';
+                       $scope.messages = 'Failed to save a clubmember : ' + errorMessage;
+                       $scope.alertStatus = 'warning';
+                       $log.error($scope.messages + ' Clubmember : ' + JSON.stringify($scope.clubmember));
+                    } else {
+                       $scope.messages = 'The clubmember has been saved : ' + resp.result.name;
+                       $scope.alertStatus = 'success';
+                       $scope.submitted = false;
+                       $scope.clubmember = {
+                          firstName: $scope.clubmember.firstName,
+                          surName: $scope.clubmember.surName,
+                          email: $scope.clubmember.email,
+                       };
+                       $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
+                       window.history.back();
+                    }
+                });
+            });
+        }
+
+        saveClubmember();
+   };
 });

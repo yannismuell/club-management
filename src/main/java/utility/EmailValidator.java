@@ -18,11 +18,11 @@ public class EmailValidator {
         pattern = Pattern.compile(EMAIL_PATTERN);
     }
 
-    public boolean emailDomainIsOk(String str)
+    /* public boolean emailDomainIsOk(String str)
     {
         String domain = str.substring(str.indexOf("@") + 1);
-        return (domain.equals(Constants.EMAIL_DOMAIN) || domain.equals(Constants.EMAIL_EXAMPLE));
-    }
+        return (domain.equals(clubmanagement.Constants.EMAIL_DOMAIN) || domain.equals(clubmanagement.Constants.EMAIL_EXAMPLE));
+    } */
 
     /**
      * Validate hex with regular expression

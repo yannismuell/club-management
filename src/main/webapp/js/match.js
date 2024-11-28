@@ -5,7 +5,7 @@
  * @matchTime
  * A controller used to save a match page.
  */
-ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $log, $location, $route, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
 
     document.getElementById("query-input").focus();
 
@@ -78,11 +78,7 @@ ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $lo
                 }
             );
         };
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(retrieveMatches);
-        } else {
-            retrieveMatches();
-        }
+        retrieveMatches();
     };
 
     $scope.deleteMatchWithWebsafeMatchKey = function (websafeMatchKey) {
@@ -98,10 +94,6 @@ ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $lo
                         $scope.messages = 'Failed to delete match : ' + errorMessage;
                         $scope.alertStatus = 'warning';
                         $log.error($scope.messages + ' Match : ' + JSON.stringify($scope.match));
-                        if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
-                            oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
-                            return;
-                        }
                     } else {
                         // The request has succeeded.
                         $scope.messages = 'The match has been deleted ';
@@ -114,11 +106,7 @@ ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $lo
                 });
             });
         }
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(deleteMatch);
-        } else {
-            deleteMatch();
-        }
+        deleteMatch();
     };
 });
 
@@ -129,7 +117,7 @@ ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $lo
  * @matchTime
  * A controller used to save a match page.
  */
-ClubManagementApp.controllers.controller('detailedMatchCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('detailedMatchCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, parentProvider, HTTP_ERRORS) {
 
     $scope.match = {};
     $scope.submitted = false;
@@ -165,10 +153,6 @@ ClubManagementApp.controllers.controller('detailedMatchCtrl', function ($scope, 
       return this.slice(0)
     }
 
-    $scope.getSignedInState = function () {
-        return oauth2Provider.signedIn;
-    };
-
     $scope.collapseNavbar = function () {
         angular.element(document.querySelector('.navbar-collapse')).removeClass('in');
     };
@@ -186,10 +170,6 @@ ClubManagementApp.controllers.controller('detailedMatchCtrl', function ($scope, 
                         $scope.messages = 'Failed to delete match : ' + errorMessage;
                         $scope.alertStatus = 'warning';
                         $log.error($scope.messages + ' Match : ' + JSON.stringify($scope.match));
-                        if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
-                            oauth2Provider.signIn();//   showLoginModal();
-                            return;
-                        }
                         $route.reload();
                     } else {
                         $scope.messages = 'The match has been deleted ';
@@ -204,11 +184,6 @@ ClubManagementApp.controllers.controller('detailedMatchCtrl', function ($scope, 
                     }
                 });
             });
-        }
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(deleteMatch);
-        } else {
-            deleteMatch();
         }
     };
 
@@ -234,11 +209,6 @@ ClubManagementApp.controllers.controller('detailedMatchCtrl', function ($scope, 
                 });
             });
         }
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(getMatch);
-        } else {
-            getMatch();
-        }
     };
 });
 
@@ -249,7 +219,7 @@ ClubManagementApp.controllers.controller('detailedMatchCtrl', function ($scope, 
  * @matchTime
  * A controller used to save a match page.
  */
-ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $log, $location, $routeParams, HTTP_ERRORS) {
 
     $scope.match = {};
 
@@ -266,7 +236,7 @@ ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $l
 
         var createMatch = function() {
             $scope.loading = true;
-            //console.log("create: ", JSON.stringify($scope.match);
+            console.log("create: ", JSON.stringify($scope.match));
             gapi.client.clubmanagement.createMatch($scope.match).
             execute(function (resp) {
                 $scope.$apply(function () {
@@ -277,10 +247,6 @@ ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $l
                         $scope.messages = 'Failed to save a match : ' + errorMessage;
                         $scope.alertStatus = 'warning';
                         $log.error($scope.messages + ' Match : ' + JSON.stringify($scope.match));
-                        if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
-                            oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
-                            return;
-                        }
                     } else {
                         // The request has succeeded.
                         $scope.messages = 'The match has been saved : ' + resp.result.matchDate;
@@ -292,19 +258,13 @@ ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $l
                 });
             });
         }
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(createMatch);
-        } else {
-            createMatch();
-        }
+        createMatch();
 
         document.getElementById("matchDate").focus();
     };
 
     $scope.init = function () {
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(); //var modalInstance = oauth2Provider.showLoginModal();
-        }
+            $scope.newMatch = {};
     };
 });
 
@@ -315,7 +275,7 @@ ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $l
  * @matchTime
  * A controller used to save a match page.
  */
-ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log, $location, $route, oauth2Provider, $routeParams, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log, $location, $route, $routeParams, HTTP_ERRORS) {
 
     $scope.match = {};
 
@@ -340,25 +300,18 @@ ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log
                 });
             });
         }
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(getMatch);
-        } else {
-            getMatch();
-        }
+
+        getMatch();
     };
 
     $scope.isValidMatch = function (matchForm) {
              return !matchForm.$invalid;
-         }
+    }
 
-    $scope.saveMatch = function (matchForm) {
-         $scope.match.websafeMatchKey = $routeParams.websafeMatchKey;
-         if (!$scope.isValidMatch(matchForm)) {
-             return;
-         }
-
+    $scope.saveMatch = function () {
+         $scope.submitted = true;
+         $scope.loading = true;
          var saveMatch = function() {
-            $scope.loading = true;
             gapi.client.clubmanagement.saveMatch($scope.match)
              .execute(function (resp) {
                  $scope.$apply(function () {
@@ -368,11 +321,6 @@ ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log
                          $scope.messages = 'Failed to save a match : ' + errorMessage;
                          $scope.alertStatus = 'warning';
                          $log.error($scope.messages + ' Match : ' + JSON.stringify($scope.match));
-                         if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
-                             oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
-                             return;
-                         }
-                         $route.reload();
                      } else {
                          $scope.messages = 'The match has been saved : ' + resp.result.matchDate;
                          $scope.alertStatus = 'success';
@@ -384,10 +332,7 @@ ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log
                  });
              });
          }
-         if (!oauth2Provider.signedIn) {
-             oauth2Provider.signIn(saveMatch);
-         } else {
-             saveMatch();
-         }
+
+         saveMatch();
     };
 });

@@ -1,0 +1,55 @@
+<div ng-init="init()" class="container-fluid">
+  <div class="row">
+    <div ng-include src="'partials/management_nav.html'"></div>
+
+    <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+      <div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div id="messages" class="alert alert-{{alertStatus}}" ng-show="messages">
+              <span ng-bind="messages"></span>
+              <i class="dismiss-messages pull-right glyphicon glyphicon-remove" ng-click="messages = ''"
+                 ng-show="messages"></i>
+            </div>
+            <img class="spinner" src="/img/ajax-loader.gif" ng-show="loading"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <h3>Add a Clubmember</h3>
+            <form name="clubmemberForm" novalidate role="form">
+              <div class="form-group">
+                <label for="firstName">First Name <span class="required">*</span></label>
+                <span class="required-label-red label label-danger" ng-show="clubmemberForm.name.$error.required">Required!</span>
+                <input id="firstName" type="text" name="name" ng-model="clubmember.firstName" class="form-control" ng-required="true"/>
+              </div>
+              <div class="form-group">
+                <label for="surName">Surname <span class="required">*</span></label>
+                <span class="required-label-red label label-danger" ng-show="clubmemberForm.surName.$error.required">Required!</span>
+                <input id="surName" type="text" name="surName" ng-model="clubmember.surName" class="form-control" ng-required="true"/>
+              </div>
+
+              <div class="form-group">
+                <td><select ng-model="clubmember.role"><option ng-repeat="option in roles" ng-value="{{x}}">{{option}}</option></select>
+                <!-- <td><select ng-model="clubmember.classList"><option ng-repeat="option in classList" ng-value="{{x}}">{{option}}</option></select></td> -->
+              </div>
+
+              <button ng-click="createClubmember(clubmemberForm)" class="btn btn-add-custom" ng-disabled="!isValidClubmember(clubmemberForm) || loading">Submit</button>
+            </form>
+            <p><a class="nav-link" onclick="window.history.back();" href="">« Back</a></p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<script type="text/javascript">
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if ( (charCode > 31 && charCode < 48) || charCode > 57) {
+            return false;
+        }
+        return true;
+    }
+</script>

@@ -8,8 +8,7 @@
 // https://developers.google.com/identity/oauth2/web/guides/migration-to-gis#gapi-client-library
 
 function handleCredentialResponse(response) {
-    const responsePayload = decodeJwtResponse(response.credential);
-    if(isEmailDomainValid(responsePayload.email)){
+        const responsePayload = decodeJwtResponse(response.credential);
         const login = new Promise((res,rej) => {
             const token_client = google.accounts.oauth2.initTokenClient({
                 client_id: GOOGLE_APP_ENGINE_CLIENT_ID,
@@ -17,8 +16,7 @@ function handleCredentialResponse(response) {
                 hint: responsePayload.email,
                 callback: (response) => {
                     if (!response.access_token) {
-                        var $scope = angular.element('[ng-controller=RootCtrl]').scope();
-                        $scope.$apply(function() {$scope.denySignIn()});
+                        alert("Unauthorized (user unknown) - access denied. Please contact an administrator")
                         return rej('authorization-failed');
                     }
                     res();
@@ -30,11 +28,28 @@ function handleCredentialResponse(response) {
         login.then(() => {
             var $scope = angular.element('[ng-controller=RootCtrl]').scope();
             $scope.userEmail = responsePayload.email
-            $scope.$apply(function() {$scope.grantSignIn()});
-            $scope.accountExists($scope.userEmail);
+            clubmemberExists();
         });
-    } else{
-        alert("Unauthorized Email Domain - Access Denied");
+
+    var clubmemberExists = function() {
+        var $scope = angular.element('[ng-controller=RootCtrl]').scope();
+        gapi.client.clubmanagement.clubmemberExists({clubmemberEmail: $scope.userEmail}).execute(function (resp) {
+            $scope.$apply(function () {
+                if (resp.error) {
+                    // The request has failed.
+                    var errorMessage = resp.error.message || '';
+                } else {
+                    // The request has succeeded.
+                    if (resp.result.id != null) { // id present means: account exists
+                        $scope.clubmember = resp.result
+                        $scope.grantSignIn();
+                    } else {
+                        $scope.denySignIn();
+                        alert("Unauthorized - Access Denied. Please Call an Administrator")
+                    }
+                }
+            });
+        });
     }
 }
 
@@ -60,7 +75,9 @@ function initGSI() {
     });
     google.accounts.id.prompt((notification) => {
         if (notification.isSkippedMoment()) {
-            alert("Reason: Refresh this page to override.");
+            alert("Cancelled by User - Access Denied. Refresh this page to override.");
+            var $scope = angular.element('[ng-controller=RootCtrl]').scope();
+            $scope.denySignIn();
         }
     });
 }

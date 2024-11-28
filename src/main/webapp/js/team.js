@@ -6,7 +6,7 @@
  * @players
  * A controller used to save a team page.
  */
-ClubManagementApp.controllers.controller('getTeamsCtrl', function ($scope, $log, $location, $route, oauth2Provider, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('getTeamsCtrl', function ($scope, $log, $location, $route, parentProvider, $routeParams, $uibModal, HTTP_ERRORS) {
 
     document.getElementById("query-input").focus();
 
@@ -53,7 +53,6 @@ ClubManagementApp.controllers.controller('getTeamsCtrl', function ($scope, $log,
 
     $scope.init = function () {
         var retrieveTeamsCallback = function () {
-            console.log("Teams init")
             $scope.loading = true;
             gapi.client.clubmanagement.getTeams().
                 execute(function (resp) {
@@ -81,17 +80,13 @@ ClubManagementApp.controllers.controller('getTeamsCtrl', function ($scope, $log,
                 }
             );
         };
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(retrieveTeamsCallback);
-        } else {
-            retrieveTeamsCallback();
-        }
+        retrieveTeamsCallback();
     };
 
     // $scope.team = {};
 
     $scope.deleteTeamWithWebsafeTeamKey = function (websafeTeamKey) {
-        var callback = function() {
+        var deleteTeam = function() {
             $scope.loading = true;
             gapi.client.clubmanagement.deleteTeam({websafeTeamKey: websafeTeamKey})
             .execute(function (resp) {
@@ -103,10 +98,6 @@ ClubManagementApp.controllers.controller('getTeamsCtrl', function ($scope, $log,
                         $scope.messages = 'Failed to delete team : ' + errorMessage;
                         $scope.alertStatus = 'warning';
                         $log.error($scope.messages + ' Team : ' + JSON.stringify($scope.team));
-                        if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
-                            oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
-                            return;
-                        }
                     } else {
                         // The request has succeeded.
                         $scope.messages = 'The team has been deleted ';
@@ -119,11 +110,7 @@ ClubManagementApp.controllers.controller('getTeamsCtrl', function ($scope, $log,
                 });
             });
         }
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(callback);
-        } else {
-            callback();
-        }
+        deleteTeam();
     };
 });
 
@@ -134,7 +121,7 @@ ClubManagementApp.controllers.controller('getTeamsCtrl', function ($scope, $log,
  * @players
  * A controller used to save a team page.
  */
-ClubManagementApp.controllers.controller('detailedTeamCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, oauth2Provider, parentProvider, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('detailedTeamCtrl', function ($scope, $log, $location, $timeout, $route, $uibModal, $routeParams, parentProvider, HTTP_ERRORS) {
 
     $scope.team = {};
     $scope.submitted = false;
@@ -169,16 +156,12 @@ ClubManagementApp.controllers.controller('detailedTeamCtrl', function ($scope, $
       return this.slice(0)
     }
 
-    $scope.getSignedInState = function () {
-        return oauth2Provider.signedIn;
-    };
-
     $scope.collapseNavbar = function () {
         angular.element(document.querySelector('.navbar-collapse')).removeClass('in');
     };
 
     $scope.deleteTeam = function (teamForm) {
-        var callback = function() {
+        var deleteTeam = function() {
             $scope.loading = true;
             $scope.submitted = true;
             gapi.client.clubmanagement.deleteTeam({websafeTeamKey: $routeParams.websafeTeamKey})
@@ -190,10 +173,6 @@ ClubManagementApp.controllers.controller('detailedTeamCtrl', function ($scope, $
                         $scope.messages = 'Failed to delete team : ' + errorMessage;
                         $scope.alertStatus = 'warning';
                         $log.error($scope.messages + ' Team : ' + JSON.stringify($scope.team));
-                        if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
-                            oauth2Provider.signIn();//   showLoginModal();
-                            return;
-                        }
                         $route.reload();
                     } else {
                         $scope.messages = 'The team has been deleted ';
@@ -209,18 +188,12 @@ ClubManagementApp.controllers.controller('detailedTeamCtrl', function ($scope, $
                 });
             });
         }
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(callback);
-        } else {
-            callback();
-        }
     };
 
     $scope.init = function () {
-        var callback = function() {
+        var getTeams = function() {
             $scope.loading = true;
             $scope.submitted = true;
-            // var websafeTeamKey = $routeParams.websafeTeamKey; // Hinzufügen
             gapi.client.clubmanagement.getTeam({websafeTeamKey: $routeParams.websafeTeamKey}).execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
@@ -234,16 +207,10 @@ ClubManagementApp.controllers.controller('detailedTeamCtrl', function ($scope, $
                         $scope.alertStatus = 'success';
                         $scope.team = resp.result;
                         parentProvider.team = $scope.team;
-
                         if ($scope.team == null) { $scope.team = []; }
                     }
                 });
             });
-        }
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(callback);
-        } else {
-            callback();
         }
     };
 });
@@ -255,7 +222,7 @@ ClubManagementApp.controllers.controller('detailedTeamCtrl', function ($scope, $
  * @players
  * A controller used to save a team page.
  */
-ClubManagementApp.controllers.controller('createTeamCtrl', function ($scope, $log, $location, oauth2Provider, $routeParams, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('createTeamCtrl', function ($scope, $log, $location, $routeParams, HTTP_ERRORS) {
 
     $scope.team = {};
 
@@ -270,7 +237,7 @@ ClubManagementApp.controllers.controller('createTeamCtrl', function ($scope, $lo
             return;
         }
 
-        var callback = function() {
+        var createTeam = function() {
             $scope.loading = true;
             console.log("create: ", $scope.team);
             gapi.client.clubmanagement.createTeam($scope.team).
@@ -283,10 +250,6 @@ ClubManagementApp.controllers.controller('createTeamCtrl', function ($scope, $lo
                         $scope.messages = 'Failed to save a team : ' + errorMessage;
                         $scope.alertStatus = 'warning';
                         $log.error($scope.messages + ' Team : ' + JSON.stringify($scope.team));
-                        if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
-                            oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
-                            return;
-                        }
                     } else {
                         // The request has succeeded.
                         $scope.messages = 'The team has been saved : ' + resp.result.name;
@@ -298,19 +261,13 @@ ClubManagementApp.controllers.controller('createTeamCtrl', function ($scope, $lo
                 });
             });
         }
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(callback);
-        } else {
-            callback();
-        }
+        createTeam();
 
         document.getElementById("name").focus();
     };
 
     $scope.init = function () {
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(); //var modalInstance = oauth2Provider.showLoginModal();
-        }
+    $scope.newTeam = {};
     };
 });
 
@@ -321,12 +278,12 @@ ClubManagementApp.controllers.controller('createTeamCtrl', function ($scope, $lo
  * @players
  * A controller used to save a team page.
  */
-ClubManagementApp.controllers.controller('saveTeamCtrl', function ($scope, $log, $location, $route, oauth2Provider, $routeParams, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('saveTeamCtrl', function ($scope, $log, $location, $route, $routeParams, HTTP_ERRORS) {
 
     $scope.team = {};
 
     $scope.init = function () {
-        var callback = function() {
+        var getTeams = function() {
             $scope.loading = true;
             gapi.client.clubmanagement.getTeam({websafeTeamKey: $routeParams.websafeTeamKey
             }).execute(function (resp) {
@@ -346,27 +303,19 @@ ClubManagementApp.controllers.controller('saveTeamCtrl', function ($scope, $log,
                 });
             });
         }
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(callback);
-        } else {
-            callback();
-        }
+
+        getTeam();
     };
 
     $scope.isValidTeam = function (teamForm) {
         return !teamForm.$invalid;
     }
 
-    $scope.saveTeam = function (teamForm) {
-         $scope.team.websafeTeamKey = $routeParams.websafeTeamKey;
-         if (!$scope.isValidTeam(teamForm)) {
-             return;
-         }
-
-         var callback = function() {
-            $scope.loading = true;
-            // gapi.client.clubmanagement.saveTeam({name: $scope.team.name, clubmember: $scope.team.clubmember, teamKey: $routeParams.websafeTeamKey})
-            gapi.client.clubmanagement.saveTeam($scope.team)
+    $scope.saveTeam = function () {
+         $scope.submitted = true;
+         $scope.loading = true;
+         var saveTeam = function() {
+             gapi.client.clubmanagement.saveTeam($scope.team)
              .execute(function (resp) {
                  $scope.$apply(function () {
                     $scope.loading = false;
@@ -375,11 +324,6 @@ ClubManagementApp.controllers.controller('saveTeamCtrl', function ($scope, $log,
                          $scope.messages = 'Failed to save a team : ' + errorMessage;
                          $scope.alertStatus = 'warning';
                          $log.error($scope.messages + ' Team : ' + JSON.stringify($scope.team));
-                         if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
-                             oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
-                             return;
-                         }
-                         $route.reload();
                      } else {
                          $scope.messages = 'The team has been saved : ' + resp.result.name;
                          $scope.alertStatus = 'success';
@@ -391,10 +335,7 @@ ClubManagementApp.controllers.controller('saveTeamCtrl', function ($scope, $log,
                  });
              });
          }
-         if (!oauth2Provider.signedIn) {
-             oauth2Provider.signIn(callback);
-         } else {
-             callback();
-         }
+
+         saveTeam();
     };
 });

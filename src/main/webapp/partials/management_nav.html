@@ -1,9 +1,10 @@
-<nav class="d-none d-sm-block bg-light sidebar_ClubManagement">
+<nav class="sidebar_ClubManagement">
     <ul class="nav nav-pills flex-column">
         <li class="nav-item">
             <a class="nav-link" ng-class="{ active: isActive('/matches')}" ng-show="getSignedInState()" ng-click="collapseNavbar()" href="#!/matches">Matches</a>
             <a class="nav-link" ng-class="{ active: isActive('/clubmembers')}" ng-show="getSignedInState()" ng-click="collapseNavbar()" href="#!/clubmembers">Clubmembers</a>
-            <a class="nav-link" ng-class="{ active: isActive('/teams')}" ng-show="getSignedInState()" ng-click="collapseNavbar()" href="#!/teams">Teams</a>
+            <a class="nav-link" ng-class="{ active: isActive('/teams')}"  ng-show="getSignedInState()" ng-click="collapseNavbar()" href="#!/teams">Teams</a>
         </li>
     </ul>
 </nav>
+<!-- <nav class="d-none d-sm-block bg-light sidebar_ClubManagement"> ng-show="getSignedInState()"-->
