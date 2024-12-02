@@ -223,6 +223,101 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
 
     $scope.clubmember = {};
 
+    $scope.teamsFromClubmember = function () {
+        var retrieveTeamsInClubmemeberCallback = function () {
+            console.log("Teams init")
+            $scope.loading = true;
+            gapi.client.clubmanagement.getTeams().
+                execute(function (resp) {
+                    $scope.$apply(function () {
+                        $scope.loading = false;
+                        if (resp.error) {
+                            // The request has failed.
+                            var errorMessage = resp.error.message || '';
+                            $scope.messages = 'Failed to obtain teams : ' + errorMessage;
+                            $scope.alertStatus = 'warning';
+                            $log.error($scope.messages );
+                        } else {
+                            // The request has succeeded.
+                            $scope.submitted = false;
+                            $scope.messages = 'Query succeeded';
+                            $scope.alertStatus = 'success';
+                            $log.info($scope.messages);
+                            $scope.teams = resp.items;
+                            $scope.teams = [];
+                            $scope.teams.push("-")
+                            $scope.teamsInClubmemeber.forEach(function(element){
+                            $scope.teams.push(element.name)})
+
+
+                            $scope.filteredTeams = $scope.teams;
+                            parentProvider.teams = $scope.teams;
+                            console.log("retrieve: ", JSON.stringify($scope.teams))
+                        }
+                        $scope.teamName = "Team Name"
+                        if ($scope.teams.length > 0) {$scope.createClubmember.teamsInClubmemeber=$scope.teams[0];
+                        $scope.submitted = true;
+                    });
+                }
+            );
+        };
+
+
+
+
+        $scope.init = function () {
+                console.log("bin im init")
+                var retrieveTeams = function () {
+                    console.log("bin im retrieve")
+                    $scope.loading = true;
+                    gapi.client.clubmanagement.getTeamsName().
+                        execute(function (resp) {
+                            $scope.$apply(function () {
+                                $scope.loading = false;
+                                if (resp.error) {
+                                    // The request has failed.
+                                    var errorMessage = resp.error.message || '';
+                                    $scope.messages = 'Failed to obtain teams : ' + errorMessage;
+                                    $scope.alertStatus = 'warning';
+                                    $log.error($scope.messages );
+                                } else {
+                                    // The request has succeeded.
+                                    $scope.submitted = false;
+                                    $scope.messages = 'Query succeeded';
+                                    $scope.alertStatus = 'success';
+                                    $log.info($scope.messages);
+                                    $scope.teams = resp.items;
+                                    $scope.filteredTeams = $scope.teams;
+                                    parentProvider.teams = $scope.teams;
+                                }
+                                $scope.submitted = true;
+                            });
+                        }
+                    );
+                };
+                retrieveTeams();
+
+            };
+
+
+
+
+
+
+
+
+
+
+        if (!oauth2Provider.signedIn) {
+            oauth2Provider.signIn(retrieveTeamsCallback);
+        } else {
+            retrieveTeamsCallback();
+        }
+    };
+
+
+
+
     document.getElementById("name").focus();
 
     $scope.isValidClubmember = function (clubmemberForm) {

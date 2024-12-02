@@ -50,6 +50,10 @@
                                 <input id="role" type="text" name="role" ng-model="clubmember.role" class="form-control" ng-required="true"/>
                             </div>-->
 
+
+                            <td><select ng-model="team"><option ng-repeat="option in team">{{option}}</option></select>
+
+
                             <div class="form-group">
                                 <label>
                                     <input type="checkbox" name="isCoach" ng-model="clubmember.isCoach" value="coach" ng-required="false"/> Coach

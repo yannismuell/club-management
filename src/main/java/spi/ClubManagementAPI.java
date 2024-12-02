@@ -375,6 +375,9 @@ public class ClubManagementAPI {
             httpMethod = HttpMethod.POST)
     public Clubmember createClubmember(final User user, final ClubmemberForm clubmemberForm) throws Exception {
         checkUserOk(user);
+        // Caution! This will delete all Clubmember entities
+        //Iterable<Key<Clubmember>> allKeys = ofy().load().type(Clubmember.class).keys();
+        //ofy().delete().keys(allKeys);
 
         final Key<Clubmember> clubmemberKey = factory().allocateId(Clubmember.class);
         final long clubmemberId = clubmemberKey.getId();
