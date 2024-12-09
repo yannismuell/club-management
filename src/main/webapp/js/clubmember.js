@@ -321,7 +321,7 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
         var createClubmember = function() {
             $scope.loading = true;
             console.log("create: ", JSON.stringify($scope.clubmember));
-            gapi.client.clubmanagement.createClubmember($scope.clubmember, $scope.teams).
+            gapi.client.clubmanagement.createClubmember($scope.clubmember).
             execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
@@ -413,9 +413,8 @@ ClubManagementApp.controllers.controller('saveClubmemberCtrl', function ($scope,
          }
 
          var saveClubmember = function() {
-            console.log("Hier")
             $scope.loading = true;
-            gapi.client.clubmanagement.saveClubmember($scope.clubmember)
+            gapi.client.clubmanagement.saveClubmember($scope.clubmember, $scope.teams)
              .execute(function (resp) {
                  $scope.$apply(function () {
                     $scope.loading = false;
@@ -423,7 +422,7 @@ ClubManagementApp.controllers.controller('saveClubmemberCtrl', function ($scope,
                          var errorMessage = resp.error.message || '';
                          $scope.messages = 'Failed to save a clubmember : ' + errorMessage;
                          $scope.alertStatus = 'warning';
-                         $log.error($scope.messages + ' Clubmember : ' + JSON.stringify($scope.clubmember));
+                         $log.error($scope.messages + ' Clubmember : ' + JSON.stringify($scope.clubmember, $scope.teams));
                          if (resp.code && resp.code == HTTP_ERRORS.UNAUTHORIZED) {
                              oauth2Provider.signIn();//   oauth2Provider.showLoginModal();
                              return;
