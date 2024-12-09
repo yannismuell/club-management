@@ -40,6 +40,13 @@
                                 <label for="address ">Address <span class="required">*</span></label>
                                 <input id="address " type="text" name="address" ng-model="clubmember.address" class="form-control" ng-required="true"/>
                             </div>
+
+
+                            <select ng-model="createClubmember.clubmember_create" ng-options="team for team in filteredTeams">
+                                <option ng-repeat="option in roles">{{option}}</option>
+                            </select>
+
+
                             <div class="form-group">
                                 <label>
                                     <input type="checkbox" name="isCoach" ng-model="clubmember.isCoach" value="coach" ng-required="false"/> Coach
