@@ -289,7 +289,7 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
                         }
                         $scope.name = "Team Name";
                         if ($scope.teams.length > 0) {
-                            $scope.createClubmember.clubmember_create = $scope.teams[0];
+                            $scope.createClubmember.team = $scope.teams[0];
                         }
                         $scope.submitted = true;
                     });
@@ -414,7 +414,7 @@ ClubManagementApp.controllers.controller('saveClubmemberCtrl', function ($scope,
 
          var saveClubmember = function() {
             $scope.loading = true;
-            gapi.client.clubmanagement.saveClubmember($scope.clubmember, $scope.teams)
+            gapi.client.clubmanagement.saveClubmember($scope.clubmember)
              .execute(function (resp) {
                  $scope.$apply(function () {
                     $scope.loading = false;
