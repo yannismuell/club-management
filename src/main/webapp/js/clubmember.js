@@ -209,6 +209,8 @@ ClubManagementApp.controllers.controller('detailedClubmemberCtrl', function ($sc
                 });
             });
         }
+
+        getClubmember();
     };
 });
 

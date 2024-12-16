@@ -209,6 +209,8 @@ ClubManagementApp.controllers.controller('detailedMatchCtrl', function ($scope, 
                 });
             });
         }
+
+        getMatch();
     };
 });
 

@@ -191,7 +191,7 @@ ClubManagementApp.controllers.controller('detailedTeamCtrl', function ($scope, $
     };
 
     $scope.init = function () {
-        var getTeams = function() {
+        var getTeam = function() {
             $scope.loading = true;
             $scope.submitted = true;
             gapi.client.clubmanagement.getTeam({websafeTeamKey: $routeParams.websafeTeamKey}).execute(function (resp) {
@@ -212,6 +212,8 @@ ClubManagementApp.controllers.controller('detailedTeamCtrl', function ($scope, $
                 });
             });
         }
+
+        getTeam();
     };
 });
 
@@ -283,7 +285,7 @@ ClubManagementApp.controllers.controller('saveTeamCtrl', function ($scope, $log,
     $scope.team = {};
 
     $scope.init = function () {
-        var getTeams = function() {
+        var getTeam = function() {
             $scope.loading = true;
             gapi.client.clubmanagement.getTeam({websafeTeamKey: $routeParams.websafeTeamKey
             }).execute(function (resp) {
