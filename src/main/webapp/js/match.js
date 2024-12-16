@@ -308,6 +308,13 @@ ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log
              return !matchForm.$invalid;
     }
 
+    $scope.saveMatch = function (matchForm) {
+         $scope.match.websafeMatchKey = $routeParams.websafeMatchKey;
+         if (!$scope.isValidMatch(matchForm)) {
+             return;
+         }
+    }
+
     $scope.saveMatch = function () {
          $scope.submitted = true;
          $scope.loading = true;

@@ -65,8 +65,6 @@ function decodeJwtResponse (token) {
 
 function initGSI() {
     console.log("initGSI... ")
-    // deletes cookie(s) in particular g_state cookie
-    // Source: https://stackoverflow.com/questions/62281579/google-one-tap-sign-in-ui-not-displayed-after-clicking-the-close-button
     document.cookie =  `g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
     google.accounts.id.initialize({
         client_id: GOOGLE_APP_ENGINE_CLIENT_ID,

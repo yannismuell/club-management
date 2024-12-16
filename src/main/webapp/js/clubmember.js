@@ -228,7 +228,7 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
             console.log("Teams init")
             $scope.loading = true;
             gapi.client.clubmanagement.getTeams().
-                execute(function (resp) {
+            execute(function (resp) {
                     $scope.$apply(function () {
                         $scope.loading = false;
                         if (resp.error) {
@@ -248,8 +248,6 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
                             $scope.teams.push("-")
                             $scope.teamsInClubmemeber.forEach(function(element){
                             $scope.teams.push(element.name)})
-
-
                             $scope.filteredTeams = $scope.teams;
                             parentProvider.teams = $scope.teams;
                             console.log("retrieve: ", JSON.stringify($scope.teams))
@@ -257,13 +255,10 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
                         $scope.teamName = "Team Name"
                         if ($scope.teams.length > 0) {$scope.createClubmember.teamsInClubmemeber=$scope.teams[0];
                         $scope.submitted = true;
-                    });
-                }
-            );
-        };
+                    };
 
-
-
+            });
+        });
 
         $scope.init = function () {
                 console.log("bin im init")
@@ -298,25 +293,9 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
                 retrieveTeams();
 
             };
-
-
-
-
-
-
-
-
-
-
-        if (!oauth2Provider.signedIn) {
-            oauth2Provider.signIn(retrieveTeamsCallback);
-        } else {
             retrieveTeamsCallback();
-        }
-    };
-
-
-
+        };
+    }
 
     document.getElementById("name").focus();
 
