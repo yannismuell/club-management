@@ -263,9 +263,7 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
         });
 
         $scope.init = function () {
-                console.log("bin im init")
                 var retrieveTeams = function () {
-                    console.log("bin im retrieve")
                     $scope.loading = true;
                     gapi.client.clubmanagement.getTeamsName().
                         execute(function (resp) {
