@@ -54,6 +54,18 @@ ClubManagementApp.controllers.controller('MatchesPageCtrl', function ($scope, $l
     $scope.pagination.isDisabled = function (event) {
         return angular.element(event.target).hasClass('disabled');
     }
+// Benutzerdefinierte Filterfunktion im Controller
+$scope.upcomingMatches = function(match) {
+    var today = new Date();
+    var matchDate = new Date(match.matchDate);
+    return matchDate >= today;
+};
+
+$scope.lastMatches = function(match) {
+    var today = new Date();
+    var matchDate = new Date(match.matchDate);
+    return matchDate < today;
+};
 
     $scope.queryMatchesByMatchDate = function (search_field) {
         $scope.filteredMatches = [];
