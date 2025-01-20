@@ -72,7 +72,7 @@ ClubManagementApp.controllers.controller('getClubmembersCtrl', function ($scope,
                             $log.info($scope.messages);
                             $scope.clubmembers = resp.items;
                             $scope.filteredClubmembers = $scope.clubmembers;
-                            parentProvider.clubmembers = $scope.clubmembers;
+                            /*parentProvider.clubmembers = $scope.clubmembers;*/
                             console.log("retrieve: ", JSON.stringify($scope.clubmembers))
                         }
                         $scope.submitted = true;

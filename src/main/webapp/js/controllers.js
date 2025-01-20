@@ -69,9 +69,7 @@ ClubManagementApp.controllers.controller('MatchesPageCtrl', function ($scope, $l
     }
 
     $scope.init = function () {
-        console.log("bin im init")
         var retrieveMatches = function () {
-            console.log("bin im retrieve")
             $scope.loading = true;
             gapi.client.clubmanagement.getMatchesGuest().
                 execute(function (resp) {
@@ -91,7 +89,7 @@ ClubManagementApp.controllers.controller('MatchesPageCtrl', function ($scope, $l
                             $log.info($scope.messages);
                             $scope.matches = resp.items;
                             $scope.filteredMatches = $scope.matches;
-                            parentProvider.matches = $scope.matches;
+                            /*parentProvider.matches = $scope.matches;*/
                         }
                         $scope.submitted = true;
                     });
@@ -174,7 +172,7 @@ ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, 
                             $log.info($scope.messages);
                             $scope.teams = resp.items;
                             $scope.filteredClubmember = $scope.clubmembers;
-                            parentProvider.clubmembers = $scope.clubmembers;
+                            /*parentProvider.clubmembers = $scope.clubmembers;*/
                         }
                         $scope.submitted = true;
                     });
@@ -256,7 +254,7 @@ ClubManagementApp.controllers.controller('TeamsPageCtrl', function ($scope, $log
                             $log.info($scope.messages);
                             $scope.teams = resp.items;
                             $scope.filteredTeams = $scope.teams;
-                            parentProvider.teams = $scope.teams;
+                            /*parentProvider.teams = $scope.teams;*/
                         }
                         $scope.submitted = true;
                     });
