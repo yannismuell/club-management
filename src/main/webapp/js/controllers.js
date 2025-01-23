@@ -91,7 +91,6 @@ ClubManagementApp.controllers.controller('MatchesPageCtrl', function ($scope, $l
                             $log.info($scope.messages);
                             $scope.matches = resp.items;
                             $scope.filteredMatches = $scope.matches;
-                            parentProvider.matches = $scope.matches;
                         }
                         $scope.submitted = true;
                     });
@@ -99,9 +98,7 @@ ClubManagementApp.controllers.controller('MatchesPageCtrl', function ($scope, $l
             );
         };
         retrieveMatches();
-
     };
-
 });
 
 
@@ -182,9 +179,7 @@ ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, 
             );
         };
         retrieveClubmember();
-
     };
-
 });
 
 /**

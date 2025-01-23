@@ -73,7 +73,7 @@ ClubManagementApp.controllers.controller('getClubmembersCtrl', function ($scope,
                             $scope.clubmembers = resp.items;
                             $scope.filteredClubmembers = $scope.clubmembers;
                             parentProvider.clubmembers = $scope.clubmembers;
-                            console.log("retrieve: ", JSON.stringify($scope.clubmembers))
+                            //console.log("retrieve: ", JSON.stringify($scope.clubmembers))
                         }
                         $scope.submitted = true;
                     });
@@ -209,7 +209,6 @@ ClubManagementApp.controllers.controller('detailedClubmemberCtrl', function ($sc
                 });
             });
         }
-
         getClubmember();
     };
 });
@@ -225,12 +224,13 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
 
     $scope.clubmember = {};
 
-    $scope.teamsFromClubmember = function () {
-        var retrieveTeamsInClubmemeberCallback = function () {
-            console.log("Teams init")
+    // Initialize the controller
+    $scope.init = function () {
+        var retrieveTeamsCallback = function () {
+            console.log("finally");
             $scope.loading = true;
             gapi.client.clubmanagement.getTeams().
-            execute(function (resp) {
+                execute(function (resp) {
                     $scope.$apply(function () {
                         $scope.loading = false;
                         if (resp.error) {
@@ -238,7 +238,47 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
                             var errorMessage = resp.error.message || '';
                             $scope.messages = 'Failed to obtain teams : ' + errorMessage;
                             $scope.alertStatus = 'warning';
-                            $log.error($scope.messages );
+
+                            $log.error($scope.messages);
+
+                        } else {
+                            // The request has succeeded.
+                            $scope.submitted = false;
+                            $scope.messages = 'Query succeeded';
+                            $scope.alertStatus = 'success';
+                            $log.info($scope.messages);
+                            $scope.Teams = resp.items;
+                            console.log("Teams from DB: " + JSON.stringify(resp.items));
+                            $scope.teams = [];
+                            $scope.Teams.forEach(function (element) {
+                                $scope.teams.push(element.name);
+                            });
+
+                            $scope.teams.sort();
+                            $scope.filteredTeams = $scope.teams;
+                            console.log("retrieve: ", JSON.stringify($scope.teams));
+                        }
+                        $scope.name = "Team Name";
+                        if ($scope.teams.length > 0) {
+                            $scope.createClubmember.team = $scope.teams[0];
+                        }
+                        $scope.submitted = true;
+                    });
+                });
+        };
+
+        var retrieveTeams = function () {
+            $scope.loading = true;
+            gapi.client.clubmanagement.getTeamsName().
+                execute(function (resp) {
+                    $scope.$apply(function () {
+                        $scope.loading = false;
+                        if (resp.error) {
+                            // The request has failed.
+                            var errorMessage = resp.error.message || '';
+                            $scope.messages = 'Failed to obtain teams : ' + errorMessage;
+                            $scope.alertStatus = 'warning';
+                            $log.error($scope.messages);
                         } else {
                             // The request has succeeded.
                             $scope.submitted = false;
@@ -246,101 +286,64 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
                             $scope.alertStatus = 'success';
                             $log.info($scope.messages);
                             $scope.teams = resp.items;
-                            $scope.teams = [];
-                            $scope.teams.push("-")
-                            $scope.teamsInClubmemeber.forEach(function(element){
-                            $scope.teams.push(element.name)})
                             $scope.filteredTeams = $scope.teams;
                             parentProvider.teams = $scope.teams;
-                            console.log("retrieve: ", JSON.stringify($scope.teams))
                         }
-                        $scope.teamName = "Team Name"
-                        if ($scope.teams.length > 0) {$scope.createClubmember.teamsInClubmemeber=$scope.teams[0];
                         $scope.submitted = true;
-                    };
-
-            });
-        });
-
-        $scope.init = function () {
-                var retrieveTeams = function () {
-                    $scope.loading = true;
-                    gapi.client.clubmanagement.getTeamsName().
-                        execute(function (resp) {
-                            $scope.$apply(function () {
-                                $scope.loading = false;
-                                if (resp.error) {
-                                    // The request has failed.
-                                    var errorMessage = resp.error.message || '';
-                                    $scope.messages = 'Failed to obtain teams : ' + errorMessage;
-                                    $scope.alertStatus = 'warning';
-                                    $log.error($scope.messages );
-                                } else {
-                                    // The request has succeeded.
-                                    $scope.submitted = false;
-                                    $scope.messages = 'Query succeeded';
-                                    $scope.alertStatus = 'success';
-                                    $log.info($scope.messages);
-                                    $scope.teams = resp.items;
-                                    $scope.filteredTeams = $scope.teams;
-                                    parentProvider.teams = $scope.teams;
-                                }
-                                $scope.submitted = true;
-                            });
-                        }
-                    );
-                };
-                retrieveTeams();
-
-            };
-            retrieveTeamsCallback();
+                    });
+                });
         };
-    }
 
+            retrieveTeamsCallback();
+    };
+
+    // Set focus on the name input element
     document.getElementById("name").focus();
 
+    // Check if the form is valid
     $scope.isValidClubmember = function (clubmemberForm) {
         return !clubmemberForm.$invalid;
-    }
+    };
 
+    // Create a new clubmember
     $scope.createClubmember = function (clubmemberForm) {
         if (!$scope.isValidClubmember(clubmemberForm)) {
             return;
         }
 
-        var createClubmember = function() {
+        var createClubmember = function () {
             $scope.loading = true;
-            console.log("create: ", JSON.stringify($scope.clubmember))
+            console.log("create: ", JSON.stringify($scope.clubmember));
             gapi.client.clubmanagement.createClubmember($scope.clubmember).
-            execute(function (resp) {
-                $scope.$apply(function () {
-                    $scope.loading = false;
-                    if (resp.error) {
-                        // The request has failed.
-                        var errorMessage = resp.error.message || '';
-                        $scope.messages = 'Failed to save a clubmember : ' + errorMessage;
-                        $scope.alertStatus = 'warning';
-                        $log.error($scope.messages + ' Clubmember : ' + JSON.stringify($scope.clubmember));
-                    } else {
-                        // The request has succeeded.
-                        $scope.messages = 'The clubmember has been saved : ' + resp.result.name;
-                        $scope.alertStatus = 'success';
-                        $scope.submitted = false;
-                        $scope.clubmember = {};
-                        $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
-                    }
+                execute(function (resp) {
+                    $scope.$apply(function () {
+                        $scope.loading = false;
+                        if (resp.error) {
+                            // The request has failed.
+                            var errorMessage = resp.error.message || '';
+                            $scope.messages = 'Failed to save a clubmember : ' + errorMessage;
+                            $scope.alertStatus = 'warning';
+                            $log.error($scope.messages + ' Clubmember : ' + JSON.stringify($scope.clubmember));
+                            $scope.messages = 'The clubmember has been saved : ' + resp.result.name;
+                            $scope.alertStatus = 'success';
+                            $scope.submitted = false;
+                            $scope.clubmember = {};
+                            $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
+                        }
+                    });
                 });
-            });
-        }
-        createClubmember();
+        };
+            createClubmember();
 
         document.getElementById("name").focus();
     };
 
-    $scope.init = function () {
-        $scope.newClubmember = {};
-    };
+    $scope.init();
 });
+
+
+
+
 
 /**
  * @ngdoc controller
