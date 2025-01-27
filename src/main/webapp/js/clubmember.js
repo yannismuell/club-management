@@ -19,7 +19,6 @@ ClubManagementApp.controllers.controller('getClubmembersCtrl', function ($scope,
     $scope.pagination = $scope.pagination || {};
     $scope.pagination.currentPage = 0;
     $scope.pagination.pageSize = 25;
-
     $scope.pagination.numberOfPages = function () {
         return Math.ceil($scope.filteredClubmembers.length / $scope.pagination.pageSize);
     };
@@ -72,8 +71,9 @@ ClubManagementApp.controllers.controller('getClubmembersCtrl', function ($scope,
                             $log.info($scope.messages);
                             $scope.clubmembers = resp.items;
                             $scope.filteredClubmembers = $scope.clubmembers;
-                            parentProvider.clubmembers = $scope.clubmembers;
+                            /*parentProvider.clubmembers = $scope.clubmembers;*/
                             //console.log("retrieve: ", JSON.stringify($scope.clubmembers))
+
                         }
                         $scope.submitted = true;
                     });
@@ -251,7 +251,8 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
                             console.log("Teams from DB: " + JSON.stringify(resp.items));
                             $scope.teams = [];
                             $scope.Teams.forEach(function (element) {
-                                $scope.teams.push(element.name);
+                            $scope.teams.push(element.name);
+                            parentProvider.teams = $scope.teams;
                             });
 
                             $scope.teams.sort();

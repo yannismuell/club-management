@@ -20,29 +20,29 @@
                         <form name="matchForm" novalidate role="form">
                             <div class="form-group">
                                 <label for="matchDate">MatchDate <span class="required">*</span></label>
-                                <span class="required-label-red label label-danger" ng-show="matchForm.name.$error.required">Required!</span>
-                                <input id="matchDate" type="text" name="matchDate" ng-model="match.matchDate" class="form-control" ng-required="true"/>
+                                <span class="required-label-red label label-danger" ng-show="matchForm.matchDate.$error.required">Pflichtfeld!</span>
+                                <!-- Hier wird das Datum im Eingabefeld angezeigt, aber ohne Uhrzeit -->
+                                <input id="matchDate" type="date" name="matchDate" ng-model="match.matchDate" class="form-control" ng-required="true" />
                             </div>
                             <div class="form-group">
                                 <label for="matchTime">MatchTime <span class="required">*</span></label>
-                                <span class="required-label-red label label-danger" ng-show="matchForm.matchTime.$error.required">Required!</span>
                                 <input id="matchTime" type="text" name="matchTime" ng-model="match.matchTime" class="form-control" ng-required="true"/>
                             </div>
                             <div class="form-group">
                                 <label for="matchTeam">MatchTeam <span class="required">*</span></label>
-                                <input id="matchTeam" type="text" name="matchTeam" ng-model="match.matchTeam"class="form-control" ng-required="true"/>
+                                <input id="matchTeam" type="text" name="matchTeam" ng-model="match.matchTeam" class="form-control" ng-required="true"/>
                             </div>
                             <div class="form-group">
                                 <label for="guest">Guest <span class="required">*</span></label>
-                                <input id="guest" type="text" name="guest" ng-model="match.guest"class="form-control" ng-required="true"/>
+                                <input id="guest" type="text" name="guest" ng-model="match.guest" class="form-control" ng-required="true"/>
                             </div>
                             <div class="form-group">
                                 <label for="homeGoals">HomeGoals <span class="required">*</span></label>
-                                <input id="homeGoals" type="number" name="homeGoals" name="homeGoals" onkeypress="return isNumber(event)" placeholder="0" step="1" ng-model="match.homeGoals"class="form-control"/>
+                                <input id="homeGoals" type="number" name="homeGoals" onkeypress="return isNumber(event)" placeholder="0" step="1" ng-model="match.homeGoals" class="form-control"/>
                             </div>
                             <div class="form-group">
                                 <label for="guestGoals">GuestGoals <span class="required">*</span></label>
-                                <input id="guestGoals" type="number" name="guestGoals" name="guestGoals" onkeypress="return isNumber(event)" placeholder="0" step="1" ng-model="match.guestGoals"class="form-control"/>
+                                <input id="guestGoals" type="number" name="guestGoals" onkeypress="return isNumber(event)" placeholder="0" step="1" ng-model="match.guestGoals" class="form-control"/>
                             </div>
                             <button ng-click="createMatch(matchForm)" class="btn btn-add-custom" ng-disabled="!isValidMatch(matchForm) || loading">Add</button>
                         </form>
@@ -54,12 +54,12 @@
     </div>
 </div>
 <script type="text/javascript">
-function isNumber(evt) {
-    evt = (evt) ? evt : window.event;
-    var charCode = (evt.which) ? evt.which : evt.keyCode;
-    if ( (charCode > 31 && charCode < 48) || charCode > 57) {
-        return false;
-    }
-    return true;
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if ((charCode > 31 && charCode < 48) || charCode > 57) {
+            return false;
+        }
+        return true;
     }
 </script>
