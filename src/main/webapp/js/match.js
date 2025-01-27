@@ -71,7 +71,7 @@ ClubManagementApp.controllers.controller('getMatchesCtrl', function ($scope, $lo
                             $log.info($scope.messages);
                             $scope.matches = resp.items;
                             $scope.filteredMatches = $scope.matches;
-                            /*parentProvider.matches = $scope.matches;*/
+                            parentProvider.matches = $scope.matches;
                         }
                         $scope.submitted = true;
                     });

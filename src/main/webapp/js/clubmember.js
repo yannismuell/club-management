@@ -252,7 +252,7 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
                             $scope.teams = [];
                             $scope.Teams.forEach(function (element) {
                             $scope.teams.push(element.name);
-                            parentProvider.teams = $scope.teams;
+                            //parentProvider.teams = $scope.teams;
                             });
 
                             $scope.teams.sort();
