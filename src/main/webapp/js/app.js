@@ -18,6 +18,10 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
               templateUrl: 'partials/teamsPage.html',
               controller: 'TeamsPageCtrl'
         }).
+          when('/archive', {
+                      templateUrl: 'partials/archive.html',
+                      controller: 'ArchiveCtrl'
+                }).
         when('/teams/members/:websafeTeamKey', {
                         templateUrl: 'partials/teams_members.html',
                         controller: 'Teams_membersCtrl'
