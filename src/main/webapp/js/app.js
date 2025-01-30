@@ -23,9 +23,9 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
                       controller: 'ArchiveCtrl'
                 }).
         when('/teams/members/:websafeTeamKey', {
-                        templateUrl: 'partials/teams_members.html',
-                        controller: 'Teams_membersCtrl'
-                }).
+             templateUrl: 'partials/teams_members.html',
+             controller: 'Teams_membersCtrl'
+        }).
         when('/matches', {
              templateUrl: 'partials/matches.html',
              controller: 'getMatchesCtrl'

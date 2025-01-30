@@ -8,6 +8,7 @@ public class ClubmemberForm {
     private String birthDate;
     private String email;
     private String address;
+    private String team;
     private boolean isCoach;
     private boolean isAdmin;
     private String websafeMembersinTeamClassKey;
@@ -24,12 +25,13 @@ public class ClubmemberForm {
      * @param websafeClubmemberKey
      */
 
-    public ClubmemberForm(String name, String surname, String birthDate, String email, String address, boolean isCoach, boolean isAdmin, String websafeMembersinTeamClassKey, String websafeClubmemberKey) {
+    public ClubmemberForm(String name, String surname, String birthDate, String email, String address, String team, boolean isCoach, boolean isAdmin, String websafeMembersinTeamClassKey, String websafeClubmemberKey) {
         this.name = name;
         this.surname = surname;
         this.birthDate = birthDate;
         this.email = email;
         this.address = address;
+        this.team = team;
         this.isCoach = isCoach;
         this.isAdmin = isAdmin;
         this.websafeMembersinTeamClassKey = websafeMembersinTeamClassKey;
@@ -53,6 +55,10 @@ public class ClubmemberForm {
 
     public String getAddress() {
         return address;
+    }
+
+    public String getTeam() {
+        return team;
     }
 
     public boolean getIsCoach() {

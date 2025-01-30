@@ -1,4 +1,4 @@
-<div class="container-fluid" ng-show="getSignedInState()">
+<div ng-init="init()" class="container-fluid" ng-show="getSignedInState()">
     <div class="row">
         <div ng-include src="'partials/management_nav.html'"></div>
 
@@ -51,8 +51,23 @@
                             </div>-->
 
 
-                            <td><select ng-model="team"><option ng-repeat="option in team">{{option}}</option></select>
 
+                            <td>
+
+                                <!--<select ng-model="createClubmember.clubmember_create"><option ng-repeat="option in team">{{option}}</option></select>-->
+
+                                <!--<div class="form-group">
+                                <select ng-model="clubmember.clubmember_create" ng-options="team for team in filteredTeams">
+                                    <option ng-repeat="option in roles">{{option}}</option>
+                                </select>
+                                </div>-->
+
+                            <div class="form-group">
+                                <label for="team">Team</label>
+                                <select id="team" ng-model="clubmember.team" ng-options="team for team in teams" required>
+                                    <option value="">Wählen Sie ein Team</option>
+                                </select>
+                            </div>
 
                             <div class="form-group">
                                 <label>

@@ -72,7 +72,7 @@ ClubManagementApp.controllers.controller('getTeamsCtrl', function ($scope, $log,
                             $log.info($scope.messages);
                             $scope.teams = resp.items;
                             $scope.filteredTeams = $scope.teams;
-                            parentProvider.teams = $scope.teams;
+                            //parentProvider.teams = $scope.teams;
                             console.log("retrieve: ", JSON.stringify($scope.teams))
                         }
                         $scope.submitted = true;

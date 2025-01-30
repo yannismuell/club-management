@@ -43,7 +43,7 @@ public class Clubmember {
         this.address = clubmemberForm.getAddress();
         this.isCoach = clubmemberForm.getIsCoach();
         this.isAdmin = clubmemberForm.getIsAdmin();
-        this.team = null;
+        this.team = clubmemberForm.getTeam();
         updateWithClubmemberForm(clubmemberForm);
     }
 
@@ -92,6 +92,7 @@ public class Clubmember {
         return Key.create(Clubmember.class, id).toLegacyUrlSafe();
     }
     public String getTeam() {return team; }
+
     public String getWebsafeMembersinTeamKey() {
         return websafeMembersinTeamKey;
     }
@@ -104,6 +105,7 @@ public class Clubmember {
         this.address = clubmemberForm.getAddress();
         this.isCoach = clubmemberForm.getIsCoach();
         this.isAdmin = clubmemberForm.getIsAdmin();
+        this.team = clubmemberForm.getTeam();
     }
 
     @Override

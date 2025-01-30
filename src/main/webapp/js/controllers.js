@@ -54,18 +54,6 @@ ClubManagementApp.controllers.controller('MatchesPageCtrl', function ($scope, $l
     $scope.pagination.isDisabled = function (event) {
         return angular.element(event.target).hasClass('disabled');
     }
-// Benutzerdefinierte Filterfunktion im Controller
-$scope.upcomingMatches = function(match) {
-    var today = new Date();
-    var matchDate = new Date(match.matchDate);
-    return matchDate >= today;
-};
-
-$scope.lastMatches = function(match) {
-    var today = new Date();
-    var matchDate = new Date(match.matchDate);
-    return matchDate < today;
-};
 
     $scope.queryMatchesByMatchDate = function (search_field) {
         $scope.filteredMatches = [];
@@ -81,9 +69,7 @@ $scope.lastMatches = function(match) {
     }
 
     $scope.init = function () {
-        console.log("bin im init")
         var retrieveMatches = function () {
-            console.log("bin im retrieve")
             $scope.loading = true;
             gapi.client.clubmanagement.getMatchesGuest().
                 execute(function (resp) {
@@ -103,7 +89,8 @@ $scope.lastMatches = function(match) {
                             $log.info($scope.messages);
                             $scope.matches = resp.items;
                             $scope.filteredMatches = $scope.matches;
-                            parentProvider.matches = $scope.matches;
+                            /*parentProvider.matches = $scope.matches;*/
+
                         }
                         $scope.submitted = true;
                     });
@@ -111,9 +98,7 @@ $scope.lastMatches = function(match) {
             );
         };
         retrieveMatches();
-
     };
-
 });
 
 
@@ -186,7 +171,7 @@ ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, 
                             $log.info($scope.messages);
                             $scope.teams = resp.items;
                             $scope.filteredClubmember = $scope.clubmembers;
-                            parentProvider.clubmembers = $scope.clubmembers;
+                            /*parentProvider.clubmembers = $scope.clubmembers;*/
                         }
                         $scope.submitted = true;
                     });
@@ -194,9 +179,7 @@ ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, 
             );
         };
         retrieveClubmember();
-
     };
-
 });
 
 /**
@@ -268,7 +251,7 @@ ClubManagementApp.controllers.controller('TeamsPageCtrl', function ($scope, $log
                             $log.info($scope.messages);
                             $scope.teams = resp.items;
                             $scope.filteredTeams = $scope.teams;
-                            parentProvider.teams = $scope.teams;
+                            /*parentProvider.teams = $scope.teams;*/
                         }
                         $scope.submitted = true;
                     });
