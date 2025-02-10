@@ -1,0 +1,190 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teams</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 35vh; /* Änderung: 50% des Viewports von oben */
+            transform: translateY(-50%); /* Änderung: Vertikales Zentrieren */
+        }
+
+        .team-button {
+            width: 200px;
+            height: 50px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 50px;
+            margin: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Custom Styles */
+        .jumbotron {
+            background-color: #f8f9fa;
+            padding: 2rem 1rem;
+            position: relative; /* Position relativ für die absolute Positionierung des Bildes */
+            text-align: center;
+        }
+        .jumbotron img {
+            position: absolute; /* Absolutes Positionieren des Bildes */
+            top: 0; /* Oben ausrichten */
+            left: 50%; /* Horizontal zentrieren */
+            transform: translateX(-50%); /* Horizontal zentrieren */
+            width: 200px; /* Breite des Bildes */
+            height: auto; /* Automatische Höhe beibehalten */
+        }
+        .jumbotron h1 {
+            margin-top: 80px; /* Abstand zwischen dem Bild und der Überschrift */
+        }
+        .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            color: #212529;
+            border-collapse: collapse;
+        }
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+            background-color: #e9ecef;
+            color: #495057;
+            font-weight: bold;
+        }
+        .table tbody+tbody {
+            border-top: 2px solid #dee2e6;
+        }
+        .table tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+
+<div class="button-container">
+    <button class="team-button" onclick="showDetails('U12')">U12 Team</button>
+    <button class="team-button" onclick="showDetails('U15')">U15 Team</button>
+    <button class="team-button" onclick="showDetails('U16')">U16 Team</button>
+    <button class="team-button" onclick="showDetails('U18')">U18 Team</button>
+    <button class="team-button" onclick="showDetails('U23')">U23 Team</button>
+    <button class="team-button" onclick="showDetails('MainTeam')">Main Team</button>
+</div>
+
+<div id="team-details"></div>
+
+<script>
+    function showDetails(teamName) {
+        var detailsDiv = document.getElementById('team-details');
+        detailsDiv.innerHTML = "<h3>Players " + teamName + "</h3><p>Here you can see the players of " + teamName + " .</p>";
+    }
+</script>
+</div>
+<div class="table-responsive" ng-show="filteredClubmembers.length > 0">
+    <table id="clubmember-table" class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>name</th>
+            <th>surname</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr ng-repeat="clubmember in filteredClubmembers | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize | orderBy:'name'">
+            <td><a href="#!/clubmembers/detail/{{clubmember.websafeClubmemberKey}}">{{clubmember.name}}</a></td>
+            <td>{{clubmember.surname}}</td>
+            <td>
+                <button ng-click="deleteClubmemberWithWebsafeClubmemberKey(clubmember.websafeClubmemberKey)" class="btn btn-outline-danger" ng-disabled="loading" title="Delete Clubmember">&#10008;</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>-->
+<!--
+                <div ng-init="init()" class="container-fluid">
+    <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-lg-12">
+                <div class="table-responsive" ng-show="filteredMatches.length > 0">
+                    <table id="match-table" class="table table-striped table-hover">
+                                    </div>
+<ul class="pagination" ng-show="filteredClubmembers.length > 0">
+    <li ng-class="{disabled: pagination.currentPage == 0 }">
+        <a ng-class="{disabled: pagination.currentPage == 0 }"
+           ng-click="pagination.isDisabled($event) || (pagination.currentPage = 0)" href="">&lt&lt</a>&nbsp &nbsp
+    </li>
+    <li ng-class="{disabled: pagination.currentPage == 0 }">
+        <a ng-class="{disabled: pagination.currentPage == 0 }"
+           ng-click="pagination.isDisabled($event) || (pagination.currentPage = pagination.currentPage - 1)" href="">&lt</a>&nbsp &nbsp
+    </li>
+
+   ng-repeat creates a new scope. Need to specify the pagination.currentPage as $parent.pagination.currentPage
+    <li ng-repeat="page in pagination.pageArray()">
+        <a ng-click="$parent.pagination.currentPage = page" id="pagination-item" ng-class="{'active': $parent.pagination.currentPage == page}" href="">{{page + 1}}</a>&nbsp &nbsp
+    </li>
+    <li ng-class="{disabled: pagination.currentPage == pagination.numberOfPages() - 1}">
+        <a ng-class="{disabled: pagination.currentPage == pagination.numberOfPages() - 1}"
+           ng-click="pagination.isDisabled($event) || (pagination.currentPage = pagination.currentPage + 1)" href="">&gt</a>&nbsp &nbsp
+    </li>
+    <li ng-class="{disabled: pagination.currentPage == pagination.numberOfPages() - 1}">
+        <a ng-class="{disabled: pagination.currentPage == pagination.numberOfPages() - 1}"
+           ng-click="pagination.isDisabled($event) || (pagination.currentPage = pagination.numberOfPages() - 1)" href="">&gt&gt</a>
+    </li>
+</ul>
+</div>
+                -->
+<div ng-init="init()" class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="table-responsive">
+                <table id="teams-table" class="table table-striped table-hover text-center">
+                    <thead>
+                    <tr>
+                        <th>Archiv für Matches</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr ng-repeat="team in filteredTeams | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize ">
+                        <td><a href="#!/teams/members/{{team.websafeTeamKey}}">{{team.name}}</a></td>
+                    </tr>
+                    <!-- Falls keine Übereinstimmungen vorhanden sind -->
+                    <tr ng-if="filteredTeams.length === 0">
+                        <td colspan="6" class="text-center">No matches found</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    </main>
+</div>
