@@ -110,8 +110,8 @@ ClubManagementApp.controllers.controller('MatchesPageCtrl', function ($scope, $l
  * A controller used for the Teams_members page.
  */
 ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, $log, HTTP_ERRORS) {
-    activeURL = '#!/teams_members';
-    console.log("bin aaaaa")
+    activeURL = '#!/members/:websafeTeamKey';
+    console.log("wer mocht de komischen console.logs")
     $scope.clubmembers = [];
     $scope.filteredClubmember = [];
 
@@ -136,13 +136,13 @@ ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, 
         return angular.element(event.target).hasClass('disabled');
     }
 
- $scope.queryClubmemberByName = function (search_field) {
+ $scope.queryClubmembersByName = function (search_field) {
         $scope.filteredTeams = [];
         $scope.clubmembers.forEach(function(element) {
             let nameToSearch = element.name.toLowerCase();
             let searchString = search_field.toLowerCase();
             {
-                $scope.filteredClubmember.push(element);
+                $scope.filteredClubmembers.push(element);
             }
         });
         $scope.pagination.currentPage = 0;
@@ -150,7 +150,7 @@ ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, 
 
     $scope.init = function () {
         console.log("bin im init")
-        var retrieveClubmember = function () {
+        var retrieveClubmembers = function () {
             console.log("bin im retrieve")
             $scope.loading = true;
             gapi.client.clubmanagement.getClubmembersName().
@@ -169,8 +169,8 @@ ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, 
                             $scope.messages = 'Query succeeded';
                             $scope.alertStatus = 'success';
                             $log.info($scope.messages);
-                            $scope.teams = resp.items;
-                            $scope.filteredClubmember = $scope.clubmembers;
+                            $scope.clubmembers = resp.items;
+                            $scope.filteredClubmembers = $scope.clubmembers;
                             /*parentProvider.clubmembers = $scope.clubmembers;*/
                         }
                         $scope.submitted = true;
@@ -178,7 +178,7 @@ ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, 
                 }
             );
         };
-        retrieveClubmember();
+        retrieveClubmembers();
     };
 });
 

@@ -161,4 +161,3 @@ app.factory('oauth2Provider', function ($uibModal) {
 
         return oauth2Provider;
     });*/
-

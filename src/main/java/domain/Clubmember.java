@@ -28,6 +28,7 @@ public class Clubmember {
     private String address;
     private boolean isCoach;
     private boolean isAdmin;
+    @Index
     private String team;
     private String websafeMembersinTeamKey;
     private static final Logger LOG = Logger.getLogger(ClubManagementAPI.class.getName());
