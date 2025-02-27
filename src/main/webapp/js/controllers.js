@@ -109,78 +109,86 @@ ClubManagementApp.controllers.controller('MatchesPageCtrl', function ($scope, $l
  * @description
  * A controller used for the Teams_members page.
  */
-ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, $log, HTTP_ERRORS) {
+ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, $log, $routeParams, HTTP_ERRORS) {
     activeURL = '#!/members/:websafeTeamKey';
-    console.log("wer mocht de komischen console.logs")
+    console.log("Teams_membersCtrl initialized");
+
     $scope.clubmembers = [];
-    $scope.filteredClubmember = [];
+    $scope.filteredClubmembers = [];
 
     $scope.pagination = $scope.pagination || {};
     $scope.pagination.currentPage = 0;
     $scope.pagination.pageSize = 25;
 
     $scope.pagination.numberOfPages = function () {
-        return Math.ceil($scope.filteredClubmember.length / $scope.pagination.pageSize);
+        return Math.ceil($scope.filteredClubmembers.length / $scope.pagination.pageSize);
     };
 
     $scope.pagination.pageArray = function () {
         var pages = [];
-        var numberOfPages = $scope.pagination.numberOfPages();
-        for (var i = 0; i < numberOfPages; i++) {
+        for (var i = 0; i < $scope.pagination.numberOfPages(); i++) {
             pages.push(i);
         }
         return pages;
-    }
+    };
 
     $scope.pagination.isDisabled = function (event) {
         return angular.element(event.target).hasClass('disabled');
-    }
+    };
 
- $scope.queryClubmembersByName = function (search_field) {
-        $scope.filteredTeams = [];
-        $scope.clubmembers.forEach(function(element) {
-            let nameToSearch = element.name.toLowerCase();
-            let searchString = search_field.toLowerCase();
-            {
-                $scope.filteredClubmembers.push(element);
-            }
-        });
+    $scope.queryClubmembersByName = function (search_field) {
+        if (!search_field || search_field.trim() === '') {
+            $scope.filteredClubmembers = $scope.clubmembers.filter(member =>
+                member.team === $scope.websafeTeamKey
+            );
+            return;
+        }
+
+        let searchString = search_field.toLowerCase();
+        $scope.filteredClubmembers = $scope.clubmembers.filter(member =>
+            member.team === $scope.websafeTeamKey &&
+            member.name.toLowerCase().includes(searchString)
+        );
+
         $scope.pagination.currentPage = 0;
-    }
+    };
 
     $scope.init = function () {
-        console.log("bin im init")
+        console.log("Initializing Teams_membersCtrl");
+        $scope.websafeTeamKey = $routeParams.websafeTeamKey;
+
         var retrieveClubmembers = function () {
-            console.log("bin im retrieve")
+            console.log("Retrieving club members...");
             $scope.loading = true;
-            gapi.client.clubmanagement.getClubmembersName().
-                execute(function (resp) {
-                    $scope.$apply(function () {
-                        $scope.loading = false;
-                        if (resp.error) {
-                            // The request has failed.
-                            var errorMessage = resp.error.message || '';
-                            $scope.messages = 'Failed to obtain clubmembers : ' + errorMessage;
-                            $scope.alertStatus = 'warning';
-                            $log.error($scope.messages );
-                        } else {
-                            // The request has succeeded.
-                            $scope.submitted = false;
-                            $scope.messages = 'Query succeeded';
-                            $scope.alertStatus = 'success';
-                            $log.info($scope.messages);
-                            $scope.clubmembers = resp.items;
-                            $scope.filteredClubmembers = $scope.clubmembers;
-                            /*parentProvider.clubmembers = $scope.clubmembers;*/
-                        }
-                        $scope.submitted = true;
-                    });
-                }
-            );
+
+            console.log("TeamName:", $scope.getTeamsName);
+
+            gapi.client.clubmanagement.getClubmembersName().execute(function (resp) {
+                $scope.$apply(function () {
+                    $scope.loading = false;
+                    if (resp.error) {
+                        var errorMessage = resp.error.message || 'Unknown error';
+                        $scope.messages = 'Failed to obtain clubmembers: ' + errorMessage;
+                        $scope.alertStatus = 'warning';
+                        $log.error($scope.messages);
+                    } else {
+                        $scope.messages = 'Query succeeded';
+                        $scope.alertStatus = 'success';
+                        $log.info($scope.messages);
+                        $scope.clubmembers = resp.items || [];
+
+                        $scope.filteredClubmembers = $scope.clubmembers.filter(member =>
+                            member.team === $scope.websafeTeamKey
+                        );
+                    }
+                });
+            });
         };
         retrieveClubmembers();
     };
+    $scope.init();
 });
+
 
 /**
  * @ngdoc controller
@@ -334,7 +342,7 @@ ClubManagementApp.controllers.controller('ArchiveCtrl', function ($scope, $log, 
                             $log.info($scope.messages);
                             $scope.teams = resp.items;
                             $scope.filteredTeams = $scope.teams;
-                            parentProvider.teams = $scope.teams;
+                            // parentProvider.teams = $scope.teams;
                         }
                         $scope.submitted = true;
                     });
@@ -342,7 +350,6 @@ ClubManagementApp.controllers.controller('ArchiveCtrl', function ($scope, $log, 
             );
         };
         retrieveTeams();
-
     };
 });
 /**

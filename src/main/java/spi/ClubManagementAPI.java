@@ -20,7 +20,6 @@ import com.googlecode.objectify.cmd.Query;
 import domain.*;
 // import domain.Class;
 import form.*;
-import utility.*;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -79,6 +78,8 @@ public class ClubManagementAPI {
             throw new Exception("Invalid Email format");
         }*/
     }
+
+    private static void checkMemberinTeam(Team team) {}
 
     /**
      * Just a wrapper for Boolean.
@@ -286,7 +287,6 @@ public class ClubManagementAPI {
         //Iterable<Key<Clubmember>> allKeys = ofy().load().type(Clubmember.class).keys();
         //ofy().delete().keys(allKeys);
         // TODO: Check if list contains more than one entries!!
-
         Query<Clubmember> clubmembers = ofy().load().type(Clubmember.class).filter("email =", clubmemberEmail);
         if (clubmembers.stream().count() > 1) {
             LOG.info("More than one account with email " + clubmemberEmail + " exitsts. Returning null");
@@ -388,7 +388,7 @@ public class ClubManagementAPI {
     /**
      * Saves a Clubmember object and stores it to the datastore.
      *
-     * @param user A user who invokes this method, null when the user is not signed in.
+     * @param user           A user who invokes this method, null when the user is not signed in.
      * @param clubmemberForm The clubmember name
      * @return An updated clubmember object.
      * @throws UnauthorizedException when the user is not signed in.
@@ -590,5 +590,22 @@ public class ClubManagementAPI {
         });
         return new WrappedBoolean(result.getResult());
     }
-}
 
+    /**
+     * Checks if a Clubmember is a member of the given Team.
+     */
+    @ApiMethod(
+            name = "isMember",
+            path = "teams/{websafeTeamKey}",
+            httpMethod = HttpMethod.GET
+    )
+    public Clubmember isMember(@Named("clubmemberTeam") final String clubmemberTeam) throws Exception {
+        Clubmember clubmember = ofy().load()
+                .type(Clubmember.class)
+                .filter("team =", clubmemberTeam)
+                .first()
+                .now();
+        return clubmember != null ? clubmember : null;
+    }
+
+}
