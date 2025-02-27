@@ -1,12 +1,16 @@
 package domain;
 
+import clubmanagement.Constants;
 import com.google.common.base.Preconditions;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Cache;
+import com.googlecode.objectify.annotation.Index;
 import form.MatchForm;
 import spi.ClubManagementAPI;
+
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 @Entity
@@ -19,6 +23,8 @@ public class Match {
     private String matchTime;
 
     private String matchTeam;
+
+    private String websafeTeamsInMatchKey;
     private String guest;
 
     private int homeGoals;
@@ -49,6 +55,8 @@ public class Match {
     public String getMatchTeam() {
         return matchTeam;
     }
+
+    public String getWebsafeTeamsInMatchKey() {return websafeTeamsInMatchKey; }
 
     public String getGuest(){return guest;}
 

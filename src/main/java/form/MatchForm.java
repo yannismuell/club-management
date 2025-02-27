@@ -6,6 +6,7 @@ public class MatchForm {
     private String matchDate;
     private String matchTime;
     private String matchTeam;
+    private String websafeTeamsInMatchKey;
     private String guest;
     private int homeGoals;
     private int guestGoals;
@@ -19,10 +20,11 @@ public class MatchForm {
      * @param matchTime
      * @param websafeMatchKey
      */
-    public MatchForm(String matchDate, String matchTime, String matchTeam, String guest, int homeGoals, int guestGoals, String websafeMatchKey) {
+    public MatchForm(String matchDate, String matchTime, String matchTeam, String websafeTeamsInMatchKey, String guest, int homeGoals, int guestGoals, String websafeMatchKey) {
         this.matchDate = matchDate;
         this.matchTime = matchTime;
         this.matchTeam = matchTeam;
+        this.websafeTeamsInMatchKey = websafeTeamsInMatchKey;
         this.guest = guest;
         this.homeGoals = homeGoals;
         this.guestGoals = guestGoals;
@@ -45,6 +47,8 @@ public class MatchForm {
     public String getMatchTeam() {
         return matchTeam;
     }
+
+    public String getWebsafeTeamsInMatchKey() {return websafeTeamsInMatchKey;}
 
     public String getGuest() {
         return guest;

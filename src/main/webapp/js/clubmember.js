@@ -226,6 +226,7 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
 
     // Initialize the controller
     $scope.init = function () {
+        console.log("Init Clubmembers")
         var retrieveTeamsCallback = function () {
             console.log("finally");
             $scope.loading = true;
@@ -268,34 +269,7 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
                 });
         };
 
-        var retrieveTeams = function () {
-            $scope.loading = true;
-            gapi.client.clubmanagement.getTeamsName().
-                execute(function (resp) {
-                    $scope.$apply(function () {
-                        $scope.loading = false;
-                        if (resp.error) {
-                            // The request has failed.
-                            var errorMessage = resp.error.message || '';
-                            $scope.messages = 'Failed to obtain teams : ' + errorMessage;
-                            $scope.alertStatus = 'warning';
-                            $log.error($scope.messages);
-                        } else {
-                            // The request has succeeded.
-                            $scope.submitted = false;
-                            $scope.messages = 'Query succeeded';
-                            $scope.alertStatus = 'success';
-                            $log.info($scope.messages);
-                            $scope.teams = resp.items;
-                            $scope.filteredTeams = $scope.teams;
-                            parentProvider.teams = $scope.teams;
-                        }
-                        $scope.submitted = true;
-                    });
-                });
-        };
-
-            retrieveTeamsCallback();
+        retrieveTeamsCallback();
     };
 
     // Set focus on the name input element
@@ -338,8 +312,6 @@ ClubManagementApp.controllers.controller('createClubmemberCtrl', function ($scop
 
         document.getElementById("name").focus();
     };
-
-    $scope.init();
 });
 
 
