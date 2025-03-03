@@ -30,7 +30,6 @@ ClubManagementApp.controllers = angular.module('clubmanagementControllers', ['ui
  */
 ClubManagementApp.controllers.controller('MatchesPageCtrl', function ($scope, $log, HTTP_ERRORS) {
     activeURL = '#!/matchesPage';
-    console.log("bin aaaaa")
     $scope.matches = [];
     $scope.filteredMatches = [];
 
@@ -110,7 +109,6 @@ ClubManagementApp.controllers.controller('MatchesPageCtrl', function ($scope, $l
  * A controller used for the Teams_members page.
  */
 ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, $log, $routeParams, HTTP_ERRORS) {
-    activeURL = '#!/members/:websafeTeamKey';
     console.log("Teams_membersCtrl initialized");
 
     $scope.clubmembers = [];
@@ -160,10 +158,8 @@ ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, 
         var retrieveClubmembers = function () {
             console.log("Retrieving club members...");
             $scope.loading = true;
-
-            console.log("TeamName:", $scope.getTeamsName);
-
-            gapi.client.clubmanagement.getClubmembersName().execute(function (resp) {
+            console.log("TeamName:", $scope.clubm);
+            gapi.client.clubmanagement.getClubmembers().execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
@@ -199,7 +195,6 @@ ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, 
  */
 ClubManagementApp.controllers.controller('TeamsPageCtrl', function ($scope, $log, HTTP_ERRORS) {
     activeURL = '#!/teamsPage';
-    console.log("bin aaaaa")
     $scope.teams = [];
     $scope.filteredTeams = [];
 
@@ -237,9 +232,7 @@ ClubManagementApp.controllers.controller('TeamsPageCtrl', function ($scope, $log
     }
 
     $scope.init = function () {
-        console.log("bin im init")
         var retrieveTeams = function () {
-            console.log("bin im retrieve")
             $scope.loading = true;
             gapi.client.clubmanagement.getTeamsName().
                 execute(function (resp) {
@@ -282,7 +275,6 @@ ClubManagementApp.controllers.controller('TeamsPageCtrl', function ($scope, $log
  */
 ClubManagementApp.controllers.controller('ArchiveCtrl', function ($scope, $log, HTTP_ERRORS) {
     activeURL = '#!/archive';
-    console.log("bin aaaaa")
     $scope.teams = [];
     $scope.filteredTeams = [];
 
@@ -320,9 +312,7 @@ ClubManagementApp.controllers.controller('ArchiveCtrl', function ($scope, $log, 
     }
 
     $scope.init = function () {
-        console.log("bin im init")
         var retrieveTeams = function () {
-            console.log("bin im retrieve")
             $scope.loading = true;
             gapi.client.clubmanagement.getTeamsName().
                 execute(function (resp) {
