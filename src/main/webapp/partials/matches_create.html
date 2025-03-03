@@ -1,4 +1,4 @@
-<div class="container-fluid" ng-show="getSignedInState()">
+<div ng-init="init()" class="container-fluid" ng-show="getSignedInState()">
     <div class="row">
         <div ng-include src="'partials/management_nav.html'"></div>
 
@@ -28,10 +28,14 @@
                                 <label for="matchTime">MatchTime <span class="required">*</span></label>
                                 <input id="matchTime" type="text" name="matchTime" ng-model="match.matchTime" class="form-control" ng-required="true"/>
                             </div>
+
                             <div class="form-group">
-                                <label for="matchTeam">MatchTeam <span class="required">*</span></label>
-                                <input id="matchTeam" type="text" name="matchTeam" ng-model="match.matchTeam" class="form-control" ng-required="true"/>
+                                <label for="team">Team</label>
+                                <select id="team" ng-model="match.team" ng-options="team for team in teams">
+                                    <option value="">Wählen Sie ein Team</option>
+                                </select>
                             </div>
+
                             <div class="form-group">
                                 <label for="guest">Guest <span class="required">*</span></label>
                                 <input id="guest" type="text" name="guest" ng-model="match.guest" class="form-control" ng-required="true"/>

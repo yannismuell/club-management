@@ -447,6 +447,25 @@ public class ClubManagementAPI {
      * Returns a list of Teams
      * In order to receive the websafeTeamKey via the JSON params, uses a POST method.
      *
+     * @param user An user who invokes this method, null when the user is not signed in.
+     * @return a list of Teams that the user created.
+     * @throws UnauthorizedException when the user is not signed in.
+     */
+    @ApiMethod(
+            name = "getMatchTeam",
+            path = "match/team",
+            httpMethod = HttpMethod.POST
+    )
+    public List<Team> getMatchTeam(final User user) throws Exception {
+        checkUserOk(user);
+        List<Team> teams = ofy().load().type(Team.class).list();
+        return teams;
+    }
+
+    /**
+     * Returns a list of Teams
+     * In order to receive the websafeTeamKey via the JSON params, uses a POST method.
+     *
      * @return a list of Teams that the user created.
      * @throws UnauthorizedException when the user is not signed in.
      */

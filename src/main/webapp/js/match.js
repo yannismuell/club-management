@@ -148,7 +148,6 @@ ClubManagementApp.controllers.controller('detailedMatchCtrl', function ($scope, 
         return angular.element(event.target).hasClass('disabled');
     }
 
-
     Array.prototype.clone = function(){
       return this.slice(0)
     }
@@ -225,6 +224,51 @@ ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $l
 
     $scope.match = {};
 
+    // Initialize the controller
+    $scope.init = function () {
+        console.log("Init Matches");
+        var retrieveTeamsCallback = function () {
+            console.log("finally");
+            $scope.loading = true;
+            gapi.client.clubmanagement.getTeams()
+            .execute(function (resp) {
+                $scope.$apply(function () {
+                    $scope.loading = false;
+                    if (resp.error) {
+                        // The request has failed.
+                        var errorMessage = resp.error.message || '';
+                        $scope.messages = 'Failed to obtain teams : ' + errorMessage;
+                        $scope.alertStatus = 'warning';
+                        $log.error($scope.messages);
+                    } else {
+                        // The request has succeeded.
+                        $scope.submitted = false;
+                        $scope.messages = 'Query succeeded';
+                        $scope.alertStatus = 'success';
+                        $log.info($scope.messages);
+                        $scope.Teams = resp.items;
+                        console.log("Teams from DB: " + JSON.stringify(resp.items));
+                        $scope.teams = [];
+                        $scope.Teams.forEach(function (element) {
+                        $scope.teams.push(element.name);
+                        });
+
+                        $scope.teams.sort();
+                        $scope.filteredTeams = $scope.teams;
+                        console.log("retrieve: ", JSON.stringify($scope.teams));
+                    }
+                    $scope.name = "Team Name";
+                    if ($scope.teams.length > 0) {
+                        $scope.createMatch.team = $scope.teams[0];
+                    }
+                    $scope.submitted = true;
+                });
+            });
+        };
+
+        retrieveTeamsCallback();
+    };
+
     document.getElementById("matchDate").focus();
 
     $scope.isValidMatch = function (matchForm) {
@@ -239,8 +283,8 @@ ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $l
         var createMatch = function() {
             $scope.loading = true;
             console.log("create: ", JSON.stringify($scope.match));
-            gapi.client.clubmanagement.createMatch($scope.match).
-            execute(function (resp) {
+            gapi.client.clubmanagement.createMatch($scope.match)
+            .execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
@@ -251,7 +295,7 @@ ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $l
                         $log.error($scope.messages + ' Match : ' + JSON.stringify($scope.match));
                     } else {
                         // The request has succeeded.
-                        $scope.messages = 'The match has been saved : ' + resp.result.matchDate;
+                        $scope.messages = 'The match has been saved : ' + resp.result.name;
                         $scope.alertStatus = 'success';
                         $scope.submitted = false;
                         $scope.match = {};
@@ -259,16 +303,13 @@ ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $l
                     }
                 });
             });
-        }
+        };
         createMatch();
 
         document.getElementById("matchDate").focus();
     };
-
-    $scope.init = function () {
-            $scope.newMatch = {};
-    };
 });
+
 
 /**
  * @ngdoc controller
