@@ -321,68 +321,100 @@ ClubManagementApp.controllers.controller('createMatchCtrl', function ($scope, $l
 ClubManagementApp.controllers.controller('saveMatchCtrl', function ($scope, $log, $location, $route, $routeParams, HTTP_ERRORS) {
 
     $scope.match = {};
+    $scope.createMatch = {}; // Ensure createMatch is defined
 
     $scope.init = function () {
+        console.log("Init Matches");
+
         var getMatch = function() {
             $scope.loading = true;
-            gapi.client.clubmanagement.getMatch({websafeMatchKey: $routeParams.websafeMatchKey
-            }).execute(function (resp) {
-                $scope.$apply(function () {
-                    $scope.loading = false;
-                    if (resp.error) {
-                        // The request has failed.
-                        var errorMessage = resp.error.message || '';
-                        $scope.messages = 'Failed to get the match : ' + $routeParams.websafeMatchKey  + ' ' + errorMessage;
-                        $scope.alertStatus = 'warning';
-                        $log.error($scope.messages);
-                    } else {
-                        // The request has succeeded.
-                        $scope.alertStatus = 'success';
-                        $scope.match = resp.result;
-                    }
+            gapi.client.clubmanagement.getMatch({ websafeMatchKey: $routeParams.websafeMatchKey })
+                .execute(function (resp) {
+                    $scope.$apply(function () {
+                        $scope.loading = false;
+                        if (resp.error) {
+                            var errorMessage = resp.error.message || '';
+                            $scope.messages = 'Failed to get the match: ' + $routeParams.websafeMatchKey + ' ' + errorMessage;
+                            $scope.alertStatus = 'warning';
+                            $log.error($scope.messages);
+                        } else {
+                            $scope.alertStatus = 'success';
+                            $scope.match = resp.result;
+                        }
+                    });
                 });
-            });
-        }
+        };
+
+        var retrieveTeamsCallback = function () {
+            console.log("Fetching teams");
+            $scope.loading = true;
+            gapi.client.clubmanagement.getTeams()
+                .execute(function (resp) {
+                    $scope.$apply(function () {
+                        $scope.loading = false;
+                        if (resp.error) {
+                            var errorMessage = resp.error.message || '';
+                            $scope.messages = 'Failed to obtain teams: ' + errorMessage;
+                            $scope.alertStatus = 'warning';
+                            $log.error($scope.messages);
+                        } else {
+                            $scope.submitted = false;
+                            $scope.messages = 'Query succeeded';
+                            $scope.alertStatus = 'success';
+                            $log.info($scope.messages);
+                            $scope.Teams = resp.items || [];
+                            console.log("Teams from DB: ", JSON.stringify(resp.items));
+
+                            $scope.teams = $scope.Teams.map(element => element.name).sort();
+                            $scope.filteredTeams = $scope.teams;
+
+                            console.log("Retrieved teams: ", JSON.stringify($scope.teams));
+
+                            if ($scope.teams.length > 0) {
+                                $scope.createMatch.team = $scope.teams[0];
+                            }
+                        }
+                        $scope.submitted = true;
+                    });
+                });
+        };
 
         getMatch();
+        retrieveTeamsCallback();
     };
 
     $scope.isValidMatch = function (matchForm) {
-             return !matchForm.$invalid;
-    }
+        return !matchForm.$invalid;
+    };
 
     $scope.saveMatch = function (matchForm) {
-         $scope.match.websafeMatchKey = $routeParams.websafeMatchKey;
-         if (!$scope.isValidMatch(matchForm)) {
-             return;
-         }
-    }
+        if (!$scope.isValidMatch(matchForm)) {
+            return;
+        }
 
-    $scope.saveMatch = function () {
-         $scope.submitted = true;
-         $scope.loading = true;
-         var saveMatch = function() {
-            gapi.client.clubmanagement.saveMatch($scope.match)
-             .execute(function (resp) {
-                 $scope.$apply(function () {
+        $scope.match.websafeMatchKey = $routeParams.websafeMatchKey;
+        $scope.submitted = true;
+        $scope.loading = true;
+
+        gapi.client.clubmanagement.saveMatch($scope.match)
+            .execute(function (resp) {
+                $scope.$apply(function () {
                     $scope.loading = false;
-                     if (resp.error) {
-                         var errorMessage = resp.error.message || '';
-                         $scope.messages = 'Failed to save a match : ' + errorMessage;
-                         $scope.alertStatus = 'warning';
-                         $log.error($scope.messages + ' Match : ' + JSON.stringify($scope.match));
-                     } else {
-                         $scope.messages = 'The match has been saved : ' + resp.result.matchDate;
-                         $scope.alertStatus = 'success';
-                         $scope.submitted = false;
-                         $scope.match = {};
-                         $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
-                         window.history.back();
-                     }
-                 });
-             });
-         }
-
-         saveMatch();
+                    if (resp.error) {
+                        var errorMessage = resp.error.message || '';
+                        $scope.messages = 'Failed to save match: ' + errorMessage;
+                        $scope.alertStatus = 'warning';
+                        $log.error($scope.messages + ' Match: ' + JSON.stringify($scope.match));
+                    } else {
+                        $scope.messages = 'The match has been saved: ' + resp.result.matchDate;
+                        $scope.alertStatus = 'success';
+                        $scope.submitted = false;
+                        $scope.match = {};
+                        $log.info($scope.messages + ' : ' + JSON.stringify(resp.result));
+                        window.history.back();
+                    }
+                });
+            });
     };
+
 });

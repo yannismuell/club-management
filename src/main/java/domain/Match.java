@@ -22,7 +22,7 @@ public class Match {
     private String matchDate;
     private String matchTime;
 
-    private String matchTeam;
+    private String team;
 
     private String websafeTeamsInMatchKey;
     private String guest;
@@ -33,10 +33,16 @@ public class Match {
     private static final Logger LOG = Logger.getLogger(ClubManagementAPI.class.getName());
 
     private Match() {}
-    public Match(final long id, final MatchForm matchForm) {
+    public Match(Long id, MatchForm matchForm) {
         LOG.info("Date: ." + matchForm.getMatchDate());
         Preconditions.checkNotNull(matchForm.getMatchDate(), "The date is required");
         this.id = id;
+        this.matchDate = matchForm.getMatchDate();
+        this.matchTime = matchForm.getMatchTime();
+        this.team = matchForm.getTeam();
+        this.guest = matchForm.getGuest();
+        this.homeGoals = matchForm.getHomeGoals();
+        this.guestGoals = matchForm.getGuestGoals();
         updateWithMatchForm(matchForm);
     }
 
@@ -52,8 +58,8 @@ public class Match {
         return matchTime;
     }
 
-    public String getMatchTeam() {
-        return matchTeam;
+    public String getTeam() {
+        return team;
     }
 
     public String getWebsafeTeamsInMatchKey() {return websafeTeamsInMatchKey; }
@@ -75,7 +81,7 @@ public class Match {
     public void updateWithMatchForm(MatchForm matchForm) {
         this.matchDate = matchForm.getMatchDate();
         this.matchTime = matchForm.getMatchTime();
-        this.matchTeam = matchForm.getMatchTeam();
+        this.team = matchForm.getTeam();
         this.guest = matchForm.getGuest();
         this.homeGoals = matchForm.getHomeGoals();
         this.guestGoals = matchForm.getGuestGoals();
