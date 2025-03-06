@@ -346,23 +346,6 @@ public class ClubManagementAPI {
     }
 
     /**
-     * Returns a list of Clubmembers
-     * In order to receive the websafeClubmemberKey via the JSON params, uses a POST method.
-     *
-     * @return a list of Clubmembers that the user created.
-     * @throws UnauthorizedException when the user is not signed in.
-     */
-    @ApiMethod(
-            name = "getClubmembersName",
-            path = "clubmember/name",
-            httpMethod = HttpMethod.POST
-    )
-    public List<Clubmember> getClubmembersName(final User user) throws Exception {
-        List<Clubmember> clubmembers = ofy().load().type(Clubmember.class).list();
-        return clubmembers;
-    }
-
-    /**
      * Creates a new Clubmember object and stores it to the datastore.
      *
      * @param user A user who invokes this method, null when the user is not signed in.
@@ -595,17 +578,14 @@ public class ClubManagementAPI {
      * Checks if a Clubmember is a member of the given Team.
      */
     @ApiMethod(
-            name = "isMember",
+            name = "getClubmembersForTeam",
             path = "teams/{websafeTeamKey}",
             httpMethod = HttpMethod.GET
     )
-    public Clubmember isMember(@Named("clubmemberTeam") final String clubmemberTeam) throws Exception {
-        Clubmember clubmember = ofy().load()
-                .type(Clubmember.class)
-                .filter("team =", clubmemberTeam)
-                .first()
-                .now();
-        return clubmember != null ? clubmember : null;
+    public List<Clubmember> getClubmembersForTeam(@Named("clubmemberTeam") final String clubmemberTeam) throws Exception {
+
+        Query<Clubmember> clubmembers = ofy().load().type(Clubmember.class).filter("team =", clubmemberTeam);
+        return clubmembers.list();
     }
 
 }

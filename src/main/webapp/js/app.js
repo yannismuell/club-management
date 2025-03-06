@@ -18,7 +18,7 @@ var app = angular.module('ClubManagementApp', ['clubmanagementControllers', 'ngR
               templateUrl: 'partials/teamsPage.html',
               controller: 'TeamsPageCtrl'
         }).
-          when('/archive', {
+        when('/archive', {
                       templateUrl: 'partials/archive.html',
                       controller: 'ArchiveCtrl'
                 }).
