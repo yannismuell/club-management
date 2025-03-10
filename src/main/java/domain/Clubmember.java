@@ -48,12 +48,13 @@ public class Clubmember {
         updateWithClubmemberForm(clubmemberForm);
     }
 
-    public Clubmember(String name, String surname, String email) {
+    public Clubmember(String name, String surname, String email, String team) {
         this.id = (long)999999999;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.isAdmin = true;
+        this.team = team;
     }
 
     public long getId() {

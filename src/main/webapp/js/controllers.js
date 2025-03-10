@@ -88,7 +88,6 @@ ClubManagementApp.controllers.controller('MatchesPageCtrl', function ($scope, $l
                             $log.info($scope.messages);
                             $scope.matches = resp.items;
                             $scope.filteredMatches = $scope.matches;
-                            /*parentProvider.matches = $scope.matches;*/
 
                         }
                         $scope.submitted = true;
@@ -136,15 +135,12 @@ ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, 
 
     $scope.queryClubmembersByName = function (search_field) {
         if (!search_field || search_field.trim() === '') {
-            $scope.filteredClubmembers = $scope.clubmembers.filter(member =>
-                member.team === $scope.websafeTeamKey
-            );
+            $scope.filteredClubmembers = $scope.clubmembers;
             return;
         }
 
         let searchString = search_field.toLowerCase();
         $scope.filteredClubmembers = $scope.clubmembers.filter(member =>
-            member.team === $scope.websafeTeamKey &&
             member.name.toLowerCase().includes(searchString)
         );
 
@@ -156,10 +152,11 @@ ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, 
         $scope.websafeTeamKey = $routeParams.websafeTeamKey;
 
         var retrieveClubmembers = function () {
-            console.log("Retrieving club members...");
             $scope.loading = true;
-            console.log("TeamName:", $scope.clubm);
-            gapi.client.clubmanagement.getClubmembers().execute(function (resp) {
+
+            gapi.client.clubmanagement.getClubmembersForTeam({
+                websafeTeamKey: $scope.websafeTeamKey
+            }).execute(function (resp) {
                 $scope.$apply(function () {
                     $scope.loading = false;
                     if (resp.error) {
@@ -172,19 +169,17 @@ ClubManagementApp.controllers.controller('Teams_membersCtrl', function ($scope, 
                         $scope.alertStatus = 'success';
                         $log.info($scope.messages);
                         $scope.clubmembers = resp.items || [];
-
-                        $scope.filteredClubmembers = $scope.clubmembers.filter(member =>
-                            member.team === $scope.websafeTeamKey
-                        );
+                        $scope.filteredClubmembers = $scope.clubmembers;
                     }
                 });
             });
         };
+
         retrieveClubmembers();
     };
+
     $scope.init();
 });
-
 
 /**
  * @ngdoc controller

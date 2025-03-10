@@ -298,7 +298,7 @@ public class ClubManagementAPI {
         if (clubmember != null) return clubmember;
 
         if (Arrays.asList(clubmanagement.Constants.CLUBMEMBER_EMAILS).contains(clubmemberEmail)) {
-            clubmember = new Clubmember("Clubmember", "Admin", "admin@devicesharing.ey.r.appspot.com");
+            clubmember = new Clubmember("Clubmember", "Admin", "admin@clubmanagement.ey.r.appspot.com", "U14");
         }
 
         return clubmember;
@@ -582,10 +582,9 @@ public class ClubManagementAPI {
             path = "teams/{websafeTeamKey}",
             httpMethod = HttpMethod.GET
     )
-    public List<Clubmember> getClubmembersForTeam(@Named("clubmemberTeam") final String clubmemberTeam) throws Exception {
-
-        Query<Clubmember> clubmembers = ofy().load().type(Clubmember.class).filter("team =", clubmemberTeam);
-        return clubmembers.list();
+    public List<Clubmember> getClubmembersForTeam(@Named("websafeTeamKey") final String websafeTeamKey) throws Exception {
+        return ofy().load().type(Clubmember.class).filter("team =", websafeTeamKey).list();
     }
+
 
 }
