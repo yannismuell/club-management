@@ -23,11 +23,6 @@
                                 <span class="required-label-red label label-danger" ng-show="teamForm.name.$error.required">Required!</span>
                                 <input id="name" type="text" name="name" ng-model="team.name" class="form-control" ng-required="true"/>
                             </div>
-                            <div class="form-group">
-                                <label for="clubmember">Clubmember <span class="required">*</span></label>
-                                <span class="required-label-red label label-danger" ng-show="teamForm.clubmember.$error.required">Required!</span>
-                                <input id="clubmember" type="select" name="clubmember" ng-model="team.clubmember" class="form-control" ng-required="true"/>
-                            </div>
 
                             <button ng-click="saveTeam(teamForm)" class="btn btn-add-custom" ng-disabled="!isValidTeam(teamForm) || loading">Save</button>
                         </form>
